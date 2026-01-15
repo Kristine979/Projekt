@@ -1,3 +1,0 @@
-ADC.c:11:6:ADC_init	16	static
-ADC.c:51:6:ADC_config	16	static
-ADC.c:55:6:ADC_measure	16	static
