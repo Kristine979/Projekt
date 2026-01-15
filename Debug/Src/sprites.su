@@ -1,5 +1,0 @@
-sprites.c:10:6:alien_sprite	24	static
-sprites.c:18:6:asteroid_sprite	24	static
-sprites.c:28:6:ship_1_sprite	24	static
-sprites.c:37:6:ship_2_sprite	24	static
-sprites.c:45:6:ship_3_sprite	24	static

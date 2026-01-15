@@ -10,20 +10,21 @@
 
 void ADC_init() {
 	RCC->AHBENR |= RCC_AHBPeriph_GPIOA; // Enable clock for GPIO Port A
-	// Set pin PA0 to input
-	GPIOA->MODER &= ~(0x00000003 << (0 * 2)); // Clear mode register
-	GPIOA->MODER |= (0x00000000 << (0 * 2)); // Set mode register (0x00 –
+
+	// Set pin PA6 to input
+	GPIOA->MODER &= ~(0x00000003 << (6 * 2)); // Clear mode register
+	GPIOA->MODER |= (0x00000000 << (6 * 2)); // Set mode register (0x00 –
 	// Input, 0x01 - Output, 0x02 - Alternate Function, 0x03 - Analog in/out)
-	GPIOA->PUPDR &= ~(0x00000003 << (0 * 2)); // Clear push/pull register
-	GPIOA->PUPDR |= (0x00000002 << (0 * 2)); // Set push/pull register (0x00 -
+	GPIOA->PUPDR &= ~(0x00000003 << (6 * 2)); // Clear push/pull register
+	GPIOA->PUPDR |= (0x00000002 << (6 * 2)); // Set push/pull register (0x00 -
 	// No pull, 0x01 - Pull-up, 0x02 - Pull-down)
 
-	// Set pin PA1 to input
-	GPIOA->MODER &= ~(0x00000003 << (1 * 2)); // Clear mode register
-	GPIOA->MODER |= (0x00000000 << (1 * 2)); // Set mode register (0x00 –
+	// Set pin PA7 to input
+	GPIOA->MODER &= ~(0x00000003 << (7 * 2)); // Clear mode register
+	GPIOA->MODER |= (0x00000000 << (7 * 2)); // Set mode register (0x00 –
 	// Input, 0x01 - Output, 0x02 - Alternate Function, 0x03 - Analog in/out)
-	GPIOA->PUPDR &= ~(0x00000003 << (1 * 2)); // Clear push/pull register
-	GPIOA->PUPDR |= (0x00000002 << (1 * 2)); // Set push/pull register (0x00 -
+	GPIOA->PUPDR &= ~(0x00000003 << (7 * 2)); // Clear push/pull register
+	GPIOA->PUPDR |= (0x00000002 << (7 * 2)); // Set push/pull register (0x00 -
 	// No pull, 0x01 - Pull-up, 0x02 - Pull-down)
 
 	// setup of ADC
@@ -53,13 +54,13 @@ void ADC_config(uint8_t channel) { // ADC_Channel_1 or ADC_Channel_2
 
 void ADC_measure(ADC_t *adc) {
 	// ADC1
-	ADC_config(ADC_Channel_1);
+	ADC_config(ADC_Channel_15);
 	ADC_StartConversion(ADC1); // Start ADC read
 	while (ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == 0); // Wait for ADC read
 	adc->c1 = ADC_GetConversionValue(ADC1); // Read the ADC value
 
 	// ADC2
-	ADC_config(ADC_Channel_2);
+	ADC_config(ADC_Channel_10);
 	ADC_StartConversion(ADC1); // Start ADC read
 	while (ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == 0); // Wait for ADC read
 	adc->c2 = ADC_GetConversionValue(ADC1); // Read the ADC value
