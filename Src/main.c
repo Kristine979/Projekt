@@ -60,8 +60,8 @@ int main(void)
 	location_t loc = {0, 1}; // setup location on lcd, defining slice (s) and line (l)
 	ship_vector_t ship_vec;
 	ship_coord_t ship_coordinate = {90, 25};
-	ship_size_t ship_size;
-	int screen = MENU, change = 0, difficulty = 1; // int to decide what screen is shown, and change to know whether the screen needs to change
+	ship_size_t ship_size = {0,0};
+	int screen = GAME, change = 0, difficulty = 1; // int to decide what screen is shown, and change to know whether the screen needs to change
 	high_score_t hs; // initialize high score structure and set to 0
 	printf("%c\x1B[?25l", ESC); // hide cursor, \x1B[?25h to show, \x1B[?25l to hide
 	window(); // draw window
@@ -79,7 +79,7 @@ int main(void)
 			lcd_write_string(str, loc, buffer);
 		}
 		if (change !=0) switch_screen(hs, &change, screen);
-		if (t.s == 1 && t.cs == 1) {change = 1; screen = GAME;}
+		//if (t.s == 1) {change = 1; screen = GAME;}
 		// game play
 		switch(screen) {
 			case MENU:
@@ -89,7 +89,8 @@ int main(void)
 			case HELP:
 				break;
 			case GAME:
-				if (t.cs == 1 || t.cs == 50) {
+				if (t.flag == 1) {
+					t.flag = 0;
 					ship_vector(&ship_vec, adc);
 					draw_ship(difficulty, ship_vec, &ship_coordinate, &ship_size);
 					loc.l = 0;

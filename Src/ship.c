@@ -8,9 +8,11 @@
 #include "ship.h"
 
 void ship_vector(ship_vector_t *sv, ADC_t adc) {
-	int offset = 2048;
-	adc.c1 = adc.c1 - offset;
-	adc.c2 = adc.c2 - offset;
+	int offset = 1900;
+	if (adc.c1 > 1800 && adc.c1 < 2000) adc.c1 = 0;
+	else adc.c1 = adc.c1 - offset;
+	if (adc.c2 > 1800 && adc.c2 < 2000) adc.c2 = 0;
+	else adc.c2 = adc.c2 - offset;
 	while (abs(adc.c1) > 1 || abs(adc.c2) > 1) {
 		adc.c1 = adc.c1>>1;
 		adc.c2 = adc.c2>>1;
@@ -30,7 +32,7 @@ void draw_ship(int diff, ship_vector_t sv, ship_coord_t *sc, ship_size_t *ss) {
 		}
 		// update ship coordinates
 		sc->x = sc->x+(sv.x<<1);
-		sc->y = sc->y+sv.y;
+		sc->y = sc->y-sv.y;
 
 		// draw correct sprite
 		if (diff == 1) {
