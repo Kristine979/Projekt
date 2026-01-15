@@ -19,6 +19,9 @@ void switch_screen(high_score_t hs, int *change, int screen) {
 			break;
 		case HELP:
 			break;
+		case DIFF:
+			difficulty(); // draw menu
+			break;
 		case GAME:
 			break;
 		case BOSS:
