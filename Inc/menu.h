@@ -15,5 +15,6 @@
 
 void PrintText(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t num, char text[]);
 void menu();
+void difficulty();
 
 #endif /* MENU_H_ */
