@@ -13,6 +13,7 @@
 #include "screens.h"
 #include "ship.h"
 #include "Difficulty.h"
+#include "alien.h"
 
 /*
 int main(void) // test main
