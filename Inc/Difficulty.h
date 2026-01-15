@@ -8,6 +8,8 @@
 #ifndef DIFFICULTY_H_
 #define DIFFICULTY_H_
 
+#include "menu.h"
+
 void difficulty();
 
 #endif /* DIFFICULTY_H_ */
