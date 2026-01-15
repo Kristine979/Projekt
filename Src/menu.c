@@ -90,9 +90,9 @@ void Arrow_Update(ArrowState *arrow, int32_t adcValue)
     int8_t dir;
 
     // ADC → retning
-    if (adcValue < (2048 - 500))
+    if (adcValue < (2048 - 300))
         dir = 1;       // NED
-    else if (adcValue > (2048 + 500))
+    else if (adcValue > (2048 + 300))
         dir = -1;      // OP
     else
         dir = 0;       // NEUTRAL

@@ -61,16 +61,16 @@ int main(void)
 	ship_vector_t ship_vec;
 	ship_coord_t ship_coordinate = {90, 25};
 	ship_size_t ship_size = {0,0};
-	int screen = GAME, change = 0, difficulty = 1; // int to decide what screen is shown, and change to know whether the screen needs to change
+	int screen = MENU, change = 0, difficulty = 1; // int to decide what screen is shown, and change to know whether the screen needs to change
 	high_score_t hs; // initialize high score structure and set to 0
 	printf("%c\x1B[?25l", ESC); // hide cursor, \x1B[?25h to show, \x1B[?25l to hide
 	window(); // draw window
 	menu(); // draw menu
 	char str[25]; // string used to write to lcd
 	ArrowState arrow;
-	ADC_init();
 	Arrow_Init(&arrow);     // Tegner pilen ved (4,8)
 	while(1){
+		ADC_config(2);   // joystick Y
 		ADC_measure(&adc);
 		char string[15];
 		loc.l = 2;
@@ -86,7 +86,7 @@ int main(void)
 		// game play
 		switch(screen) {
 			case MENU:
-
+				Arrow_Update(&arrow, adc.c2);   // Flytter kun pilen
 				break;
 			case HS:
 				break;
@@ -107,7 +107,7 @@ int main(void)
 				break;
 			case BOSS:
 				break;
-		Arrow_Update(&arrow, adc.c2);   // Flytter kun pilen
+
 		}
 	}
 }
