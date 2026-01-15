@@ -67,6 +67,9 @@ int main(void)
 	window(); // draw window
 	menu(); // draw menu
 	char str[25]; // string used to write to lcd
+	ArrowState arrow;
+	ADC_init();
+	Arrow_Init(&arrow);     // Tegner pilen ved (4,8)
 	while(1){
 		ADC_measure(&adc);
 		char string[15];
@@ -83,6 +86,7 @@ int main(void)
 		// game play
 		switch(screen) {
 			case MENU:
+
 				break;
 			case HS:
 				break;
@@ -102,6 +106,8 @@ int main(void)
 				break;
 			case BOSS:
 				break;
+		Arrow_Update(&arrow, adc.c2);   // Flytter kun pilen
 		}
 	}
 }
+
