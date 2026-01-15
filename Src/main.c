@@ -46,6 +46,32 @@ int main(void) // test main
 }
 */
 
+int main(void) // Difficulty main
+{
+	uart_init(230400);
+	clrscr();
+	clock_init(); // initialize timer
+	lcd_init(); // initialize lcd
+	uint8_t buffer[512]; // set up buffer for lcd
+	clear_lcd(buffer); // clear lcd screen
+	location_t loc = {0, 1}; // setup location on lcd, defining slice (s) and line (l)
+	printf("%c\x1B[?25l", ESC); // hide cursor, \x1B[?25h to show, \x1B[?25l to hide
+	window(); // draw window
+	difficulty(); // draw menu
+	char str[25]; // string used to write to lcd
+	alien_sprite(10, 170, 10);
+	asteroid_sprite(8, 140, 10);
+	lcd_write_heart(2, loc, buffer); // full_heart for filling, empty_heart for empty
+	loc.l = 2;
+	while(1){
+		if (t.cs == 1) {
+			sprintf(str, "t: %ld, min: %ld, s: %ld", t.h, t.m, t.s);
+			lcd_write_string(str, loc, buffer);
+		}
+	}
+}
+
+/*
 int main(void)
 {
 	uart_init(230400);
@@ -105,3 +131,11 @@ int main(void)
 		}
 	}
 }
+*/
+
+
+
+
+
+
+
