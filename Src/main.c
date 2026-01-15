@@ -45,9 +45,8 @@ int main(void) // test main
 		}
 	}
 }
-*/
 
-int main(void) // Difficulty main
+int main(void) // Aliens
 {
 	uart_init(230400);
 	clrscr();
@@ -89,10 +88,9 @@ int main(void) // Difficulty main
 	}
 }
 }
+*/
 
 
-
-/*
 int main(void)
 {
 	uart_init(230400);
@@ -156,8 +154,6 @@ int main(void)
 		}
 	}
 }
-
-
 
 
 
