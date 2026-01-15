@@ -33,7 +33,8 @@ void TIM1_BRK_TIM15_IRQHandler() {
 			}
 		}
 	}
-	if (t.cs == 50) t.flag = 1;
-	if (t.s == 1) t.sec_marker = 1;
+	if (t.cs == 1) t.flag = 1;
+	if (t.s == 1) t.one_sec_flag = 1;
+	if (t.cs == 1) t.counter_flag =1;
 	TIM15->SR &= ~0x0001; // Clear interrupt bit
 }

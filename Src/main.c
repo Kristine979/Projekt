@@ -73,13 +73,14 @@ int main(void)
 		loc.l = 2;
 		sprintf(string, "%04ld, %04ld", adc.c1, adc.c2);
 		lcd_write_string(string, loc, buffer);
-		if (t.cs == 1) {
+		if (t.counter_flag == 1) {
+			t.counter_flag = 0;
 			loc.l = 1;
 			sprintf(str, "t: %ld, min: %ld, s: %ld", t.h, t.m, t.s);
 			lcd_write_string(str, loc, buffer);
 		}
 		if (change !=0) switch_screen(hs, &change, screen);
-		//if (t.s == 1) {change = 1; screen = GAME;}
+		if (t.one_sec_flag == 1) {change = 1; screen = GAME; t.one_sec_flag = 0;}
 		// game play
 		switch(screen) {
 			case MENU:
