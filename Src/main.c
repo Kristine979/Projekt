@@ -12,6 +12,7 @@
 #include "ADC.h"
 #include "screens.h"
 #include "ship.h"
+#include "Difficulty.h"
 
 /*
 int main(void) // test main
@@ -44,9 +45,8 @@ int main(void) // test main
 		}
 	}
 }
-*/
 
-int main(void) // Difficulty main
+int main(void) // Aliens
 {
 	uart_init(230400);
 	clrscr();
@@ -63,15 +63,34 @@ int main(void) // Difficulty main
 	asteroid_sprite(8, 140, 10);
 	lcd_write_heart(2, loc, buffer); // full_heart for filling, empty_heart for empty
 	loc.l = 2;
+	int change = 0, screen = MENU;
+	high_score_t hs; // initialize high score structure and set to 0
 	while(1){
 		if (t.cs == 1) {
 			sprintf(str, "t: %ld, min: %ld, s: %ld", t.h, t.m, t.s);
 			lcd_write_string(str, loc, buffer);
+
 		}
+		if (t.s == 1) {change = 1; screen = GAME;}
+		if (change !=0) {
+			switch_screen(hs, &change, screen);
+			spawn(0, 0, 0);
+			spawn(1, 10, 15);
+			spawn(2, 20, 30);
+			spawn(3, 7, 45);
+		}
+
+		if (t.s >= 2){
+			update_alien(0);
+			update_alien(1);
+			update_alien(2);
+			update_alien(3);
 	}
 }
+}
+*/
 
-/*
+
 int main(void)
 {
 	uart_init(230400);
@@ -87,32 +106,39 @@ int main(void)
 	ship_vector_t ship_vec;
 	ship_coord_t ship_coordinate = {90, 25};
 	ship_size_t ship_size = {0,0};
-	int screen = GAME, change = 0, difficulty = 1; // int to decide what screen is shown, and change to know whether the screen needs to change
+	int screen = MENU, change = 0, difficulty = 1; // int to decide what screen is shown, and change to know whether the screen needs to change
 	high_score_t hs; // initialize high score structure and set to 0
 	printf("%c\x1B[?25l", ESC); // hide cursor, \x1B[?25h to show, \x1B[?25l to hide
 	window(); // draw window
 	menu(); // draw menu
 	char str[25]; // string used to write to lcd
+	ArrowState arrow;
+	Arrow_Init(&arrow);     // Tegner pilen ved (4,8)
 	while(1){
+		ADC_config(2);   // joystick Y
 		ADC_measure(&adc);
 		char string[15];
 		loc.l = 2;
 		sprintf(string, "%04ld, %04ld", adc.c1, adc.c2);
 		lcd_write_string(string, loc, buffer);
-		if (t.cs == 1) {
+		if (t.counter_flag == 1) {
+			t.counter_flag = 0;
 			loc.l = 1;
 			sprintf(str, "t: %ld, min: %ld, s: %ld", t.h, t.m, t.s);
 			lcd_write_string(str, loc, buffer);
 		}
 		if (change !=0) switch_screen(hs, &change, screen);
-		//if (t.s == 1) {change = 1; screen = GAME;}
+		if (t.one_sec_flag == 1) {change = 1; screen = MENU; t.one_sec_flag = 0;}
 		// game play
 		switch(screen) {
 			case MENU:
+				Arrow_Update(&arrow, adc.c2);   // Flytter kun pilen
 				break;
 			case HS:
 				break;
 			case HELP:
+				break;
+			case DIFF:
 				break;
 			case GAME:
 				if (t.flag == 1) {
@@ -129,12 +155,10 @@ int main(void)
 				break;
 			case BOSS:
 				break;
+
 		}
 	}
 }
-*/
-
-
 
 
 

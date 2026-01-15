@@ -12,9 +12,24 @@
 #include "defs.h"
 #include "window.h"
 #include "ansi.h"
+#include "ADC.h"
+#include "stdint.h"
+
+
+typedef struct
+{
+    uint8_t index;
+    int8_t  lastDir;
+} ArrowState;
+
+
+void Arrow_Init(ArrowState *arrow);
+void Arrow_Update(ArrowState *arrow, int32_t adcY);
+
+
+
 
 void PrintText(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t num, char text[]);
 void menu();
-void difficulty();
 
 #endif /* MENU_H_ */

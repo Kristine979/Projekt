@@ -1,12 +1,14 @@
 /*
  * Difficulty.h
  *
- *  Created on: Jan 15, 2026
- *      Author: root
+ *  Created on: 15. jan. 2026
+ *      Author: Bruger
  */
 
 #ifndef DIFFICULTY_H_
 #define DIFFICULTY_H_
+
+#include "menu.h"
 
 void difficulty();
 
