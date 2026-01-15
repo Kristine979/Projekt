@@ -12,6 +12,7 @@
 #include "ADC.h"
 #include "screens.h"
 #include "ship.h"
+#include "Difficulty.h"
 
 /*
 int main(void) // test main
@@ -127,7 +128,7 @@ int main(void)
 			lcd_write_string(str, loc, buffer);
 		}
 		if (change !=0) switch_screen(hs, &change, screen);
-		if (t.one_sec_flag == 1) {change = 1; screen = DIFF; t.one_sec_flag = 0;}
+		if (t.one_sec_flag == 1) {change = 1; screen = MENU; t.one_sec_flag = 0;}
 		// game play
 		switch(screen) {
 			case MENU:
