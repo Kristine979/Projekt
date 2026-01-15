@@ -28,4 +28,3 @@ void menu() {
 	PrintText(4,10,20,12,1, "High score");
 	PrintText(4,13,20,15,1, "Help");
 }
-// Hello

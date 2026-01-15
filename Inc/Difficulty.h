@@ -8,6 +8,6 @@
 #ifndef DIFFICULTY_H_
 #define DIFFICULTY_H_
 
-
+void difficulty();
 
 #endif /* DIFFICULTY_H_ */
