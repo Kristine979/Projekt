@@ -46,6 +46,32 @@ int main(void) // test main
 }
 */
 
+int main(void) // Difficulty main
+{
+	uart_init(230400);
+	clrscr();
+	clock_init(); // initialize timer
+	lcd_init(); // initialize lcd
+	uint8_t buffer[512]; // set up buffer for lcd
+	clear_lcd(buffer); // clear lcd screen
+	location_t loc = {0, 1}; // setup location on lcd, defining slice (s) and line (l)
+	printf("%c\x1B[?25l", ESC); // hide cursor, \x1B[?25h to show, \x1B[?25l to hide
+	window(); // draw window
+	difficulty(); // draw menu
+	char str[25]; // string used to write to lcd
+	alien_sprite(10, 170, 10);
+	asteroid_sprite(8, 140, 10);
+	lcd_write_heart(2, loc, buffer); // full_heart for filling, empty_heart for empty
+	loc.l = 2;
+	while(1){
+		if (t.cs == 1) {
+			sprintf(str, "t: %ld, min: %ld, s: %ld", t.h, t.m, t.s);
+			lcd_write_string(str, loc, buffer);
+		}
+	}
+}
+
+/*
 int main(void)
 {
 	uart_init(230400);
@@ -60,8 +86,8 @@ int main(void)
 	location_t loc = {0, 1}; // setup location on lcd, defining slice (s) and line (l)
 	ship_vector_t ship_vec;
 	ship_coord_t ship_coordinate = {90, 25};
-	ship_size_t ship_size;
-	int screen = MENU, change = 0, difficulty = 1; // int to decide what screen is shown, and change to know whether the screen needs to change
+	ship_size_t ship_size = {0,0};
+	int screen = GAME, change = 0, difficulty = 1; // int to decide what screen is shown, and change to know whether the screen needs to change
 	high_score_t hs; // initialize high score structure and set to 0
 	printf("%c\x1B[?25l", ESC); // hide cursor, \x1B[?25h to show, \x1B[?25l to hide
 	window(); // draw window
@@ -79,7 +105,7 @@ int main(void)
 			lcd_write_string(str, loc, buffer);
 		}
 		if (change !=0) switch_screen(hs, &change, screen);
-		if (t.s == 1 && t.cs == 1) {change = 1; screen = GAME;}
+		//if (t.s == 1) {change = 1; screen = GAME;}
 		// game play
 		switch(screen) {
 			case MENU:
@@ -89,7 +115,8 @@ int main(void)
 			case HELP:
 				break;
 			case GAME:
-				if (t.cs == 1 || t.cs == 50) {
+				if (t.flag == 1) {
+					t.flag = 0;
 					ship_vector(&ship_vec, adc);
 					draw_ship(difficulty, ship_vec, &ship_coordinate, &ship_size);
 					loc.l = 0;
@@ -105,3 +132,11 @@ int main(void)
 		}
 	}
 }
+*/
+
+
+
+
+
+
+
