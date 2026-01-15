@@ -12,6 +12,7 @@
 #include "ADC.h"
 #include "screens.h"
 #include "ship.h"
+#include "alien.h"
 
 /*
 int main(void) // test main
@@ -63,26 +64,30 @@ int main(void) // Difficulty main
 	asteroid_sprite(8, 140, 10);
 	lcd_write_heart(2, loc, buffer); // full_heart for filling, empty_heart for empty
 	loc.l = 2;
+	int change = 0, screen = MENU;
+	high_score_t hs; // initialize high score structure and set to 0
 	while(1){
 		if (t.cs == 1) {
 			sprintf(str, "t: %ld, min: %ld, s: %ld", t.h, t.m, t.s);
 			lcd_write_string(str, loc, buffer);
 
 		}
+		if (t.s == 1) {change = 1; screen = GAME;}
 		if (change !=0) {
-					switch_screen(hs, &change, screen);
-					spawn(0, 0, 0);
-					spawn(1, 10, 15);
-					spawn(2, 20, 30);
-					spawn(3, 7, 45);
+			switch_screen(hs, &change, screen);
+			spawn(0, 0, 0);
+			spawn(1, 10, 15);
+			spawn(2, 20, 30);
+			spawn(3, 7, 45);
+		}
 
-				}
-				if (t.s >= 2){
-					update_alien(0);
-					update_alien(1);
-					update_alien(2);
-					update_alien(3);
+		if (t.s >= 2){
+			update_alien(0);
+			update_alien(1);
+			update_alien(2);
+			update_alien(3);
 	}
+}
 }
 
 
@@ -149,7 +154,6 @@ int main(void)
 	}
 }
 */
-
 
 
 
