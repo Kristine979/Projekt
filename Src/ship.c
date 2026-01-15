@@ -44,3 +44,5 @@ void draw_ship(int diff, ship_vector_t sv, ship_coord_t *sc, ship_size_t *ss) {
 		}
 	}
 }
+
+//
