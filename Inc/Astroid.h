@@ -16,6 +16,7 @@ typedef struct {
     int16_t color;
     int8_t active;
     int8_t speed;
+    uint16_t rng;
 } astroid_t;
 
 // astroide funktioner

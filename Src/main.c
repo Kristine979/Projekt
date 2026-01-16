@@ -174,7 +174,7 @@ int main(void)
 			sprintf(str, "t: %02ld, min: %02ld, s: %02ld", t.h, t.m, t.s);
 			lcd_write_string(str, loc, buffer);
 		}
-		if (change !=0) switch_screen(hs, &change, screen);
+		if (change !=0) switch_screen(hs, &change, screen, &astroids);
 		if (t.one_sec_flag == 1) {change = 1; screen = GAME; t.one_sec_flag = 0;}
 		// game play
 		switch(screen) {
