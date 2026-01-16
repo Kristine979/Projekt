@@ -16,6 +16,8 @@
 #include "alien.h"
 #include "Astroid.h"
 #include "boss.h"
+#include "bullets.h"
+#include "powerups.h"
 
 #define max_astroids 8
 #define astroid_spawntime 5
@@ -120,11 +122,14 @@ int main(void)
 	ship_coord_t ship_coordinate = {90, 25};
 	ship_size_t ship_size = {0,0};
 	high_score_t hs = {}; // initialize high score structure and set to 0
+	bullet_t bullet[MAXBULLETS];
+	power_up_t PowerUp = {};
 
 	// variables initializers
 	int screen = MENU, change = 0, difficulty = 1; // int to decide what screen is shown, and change to know whether the screen needs to change
 	int prev_screen; // go from normal screen to boss key and back, depending on value
 	uint8_t PushButton = button(), CheckButton = button();
+	int shoot = 0, current_power_up = MULTIPLEBULLETS;
 
 	// draw screen
 	window(); // draw window
@@ -150,6 +155,7 @@ int main(void)
 			screen = arrow.index+1;
 			}
 			else if (screen == HS || screen == DIFF || screen == HELP) {change = 1; screen = MENU;}
+			else if (screen == GAME) {shoot = 1;}
 		}
 		if (CheckButton==RED) {
 			if (screen != BOSS) {change = 1; prev_screen = screen; screen = BOSS;}
@@ -165,10 +171,10 @@ int main(void)
 		if (t.counter_flag == 1) {
 			t.counter_flag = 0;
 			loc.l = 1;
-			sprintf(str, "t: %ld, min: %ld, s: %ld", t.h, t.m, t.s);
+			sprintf(str, "t: %02ld, min: %02ld, s: %02ld", t.h, t.m, t.s);
 			lcd_write_string(str, loc, buffer);
 		}
-		if (change !=0) switch_screen(hs, &change, screen, &arrow);
+		if (change !=0) switch_screen(hs, &change, screen);
 		if (t.one_sec_flag == 1) {change = 1; screen = GAME; t.one_sec_flag = 0;}
 		// game play
 		switch(screen) {
@@ -201,6 +207,22 @@ int main(void)
 					loc.l = 3;
 					sprintf(str, "x: %ld, y: %ld", ship_coordinate.x, ship_coordinate.y);
 					lcd_write_string(str, loc, buffer);
+				}
+				if (t.bullet_flag == 1) {
+					t.bullet_flag = 0;
+					if (shoot == 1) {
+						shoot = 0;
+						assign_bullet (&bullet, ship_coordinate, ship_size);
+					}
+					draw_bullet(&bullet);
+					if (PowerUp.alive == 1)	{
+						move_power_up(&PowerUp, PowerUp, ship_coordinate, ship_size);
+					}
+				}
+				if (t.pu_flag == 1) {
+					spawn_power_up(&PowerUp);
+					PowerUp.alive = 1;
+					t.pu_flag=0;
 				}
 				break;
 			case BOSS:
