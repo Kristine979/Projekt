@@ -127,6 +127,7 @@ int main(void)
 	high_score_t hs = {}; // initialize high score structure and set to 0
 	bullet_t bullet[MAXBULLETS];
 	power_up_t PowerUp = {};
+	ArrowState arrow;
 
 	// variables initializers
 	int screen = MENU, change = 0, difficulty = 1; // int to decide what screen is shown, and change to know whether the screen needs to change
@@ -137,7 +138,6 @@ int main(void)
 	// draw screen
 	window(); // draw window
 	menu(); // draw menu
-	ArrowState arrow;
 
 
 	//astroide
@@ -158,7 +158,8 @@ int main(void)
 			change = 1;
 			screen = arrow.index+1;
 			}
-			else if (screen == HS || screen == DIFF || screen == HELP) {change = 1; screen = MENU;}
+			else if (screen == HS || screen == HELP) {change = 1; screen = MENU;}
+			else if (screen == DIFF) {change = 1; screen = GAME;}
 			else if (screen == GAME) {shoot = 1;}
 		}
 		if (CheckButton==RED) {
@@ -194,7 +195,6 @@ int main(void)
 				Arrow_Update(&arrow, adc.c2);   // Flytter kun pilen
 				break;
 			case DIFF:
-				//Arrow_Update(&arrow, adc.c2);   // Flytter kun pilen
 				break;
 			case HS:
 				break;
@@ -226,13 +226,13 @@ int main(void)
 					t.bullet_flag = 0;
 					if (shoot == 1) {
 						shoot = 0;
-						assign_bullet (&bullet, ship_coordinate, ship_size);
+						assign_bullet (bullet, ship_coordinate, ship_size);
 					}
-					draw_bullet(&bullet);
+					draw_bullet(bullet);
 
 					// move power up symbol
 					if (PowerUp.alive == 1)	{
-						move_power_up(&PowerUp, PowerUp, ship_coordinate, ship_size);
+						move_power_up(&PowerUp, PowerUp, ship_coordinate, ship_size, &current_power_up);
 					}
 				}
 				// spawn power up

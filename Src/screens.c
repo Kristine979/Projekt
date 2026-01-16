@@ -6,8 +6,6 @@
  */
 
 # include "screens.h"
-# include "menu.h"
-
 
 void switch_screen(high_score_t hs, int *change, int screen, ArrowState *a){
 	clrscr();
@@ -15,7 +13,7 @@ void switch_screen(high_score_t hs, int *change, int screen, ArrowState *a){
 	switch(screen) {
 		case MENU:
 			menu(); // draw menu
-			Arrow_Init(a);
+			Arrow_init(a);
 			break;
 		case DIFF:
 			difficulty(); // draw menu
@@ -30,7 +28,12 @@ void switch_screen(high_score_t hs, int *change, int screen, ArrowState *a){
 		case GAME:
 			break;
 		case BOSS:
-			printf("boss");
+			// print out "MENU" in big letters, one line at a time
+			printf("%c[%d;%dH###   ###   ###  ###", ESC, 6, 30);
+			printf("%c[%d;%dH#  # #   # #    #", ESC, 7, 30);
+			printf("%c[%d;%dH###  #   #  ##   ##", ESC, 8, 30);
+			printf("%c[%d;%dH#  # #   #    #    #", ESC, 9, 30);
+			printf("%c[%d;%dH###   ###  ###  ###", ESC, 10, 30);
 			break;
 	}
 	*change = 0; // stop the screens from changing

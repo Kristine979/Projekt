@@ -6,7 +6,6 @@
  */
 
 #include "menu.h"
-#include "stdio.h"
 
 
 /* Faste pil-positioner */
@@ -84,7 +83,7 @@ void Arrow_Clear(ArrowState *arrow)
 }
 
 
-void Arrow_Init(ArrowState *arrow)
+void Arrow_init(ArrowState *arrow)
 {
     arrow->index   = 0;
     arrow->lastDir = 0;

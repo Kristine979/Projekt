@@ -7,7 +7,7 @@
 
 #include "powerups.h"
 
-int did_ship_hit_power_up(power_up_t pu, ship_coord_t sc, ship_size_t ss) {
+int did_ship_hit_power_up(power_up_t pu, ship_coord_t sc, ship_size_t ss, int *current_power_up) {
 	// return 1 if power up hits ship, 0 otherwise
 	int is_x_same = 0;
 	int is_y_same = 0;
@@ -19,6 +19,7 @@ int did_ship_hit_power_up(power_up_t pu, ship_coord_t sc, ship_size_t ss) {
 	for (int i = 0; i<ss.h; i++) {if (y_coords[i] == pu.y) is_y_same = 1;}
 	if (is_x_same == 1 && is_y_same == 1) {
 		setLED(1,0,0); // Blue, red, green
+		*current_power_up = pu.power;
 		t.five_sec_counter = 0;
 		return 1;
 	}
@@ -31,8 +32,8 @@ void spawn_power_up(power_up_t *pu) {
 	printf("%c[%d;%dHP", ESC, pu->y, pu->x);
 }
 
-void move_power_up(power_up_t *pu, power_up_t pu_check, ship_coord_t sc, ship_size_t ss) {
-	if ((pu->x - 1) > 0 && did_ship_hit_power_up(pu_check, sc, ss) == 0) {
+void move_power_up(power_up_t *pu, power_up_t pu_check, ship_coord_t sc, ship_size_t ss, int *current_power_up) {
+	if ((pu->x - 1) > 0 && did_ship_hit_power_up(pu_check, sc, ss, current_power_up) == 0) {
 		// set new coordinates
 		pu->x -= 1;
 		printf("%c[%d;%dHP", ESC, pu->y, pu->x);

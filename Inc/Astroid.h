@@ -22,6 +22,8 @@ typedef struct {
 void astroid_init(astroid_t *a, int16_t x, int16_t y, int16_t color, int8_t speed);
 void astroid_update(astroid_t *a);
 void astroid_draw(const astroid_t *a);
+void astroid_spawn(astroid_t astroids[], int max_astroids,
+                   int16_t start_x, int16_t color, int8_t speed);
 
 
 #endif /* ASTROID_H_ */
