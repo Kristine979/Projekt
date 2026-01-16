@@ -8,6 +8,7 @@
 #include "menu.h"
 #include "stdio.h"
 
+
 /* Faste pil-positioner */
 #define ARROW_X     3
 #define START_Y     8
@@ -75,6 +76,11 @@ static int8_t adcToDir(uint16_t adc)
         return -1;   // op
     else
         return 0;    // neutral
+}
+
+void Arrow_Clear(ArrowState *arrow)
+{
+    eraseArrow(arrow->index);
 }
 
 

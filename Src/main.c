@@ -14,10 +14,14 @@
 #include "ship.h"
 #include "Difficulty.h"
 #include "alien.h"
+#include "Astroid.h"
 #include "boss.h"
 #include "bullets.h"
 #include "powerups.h"
 #include "LED.h"
+
+#define max_astroids 8
+#define astroid_spawntime 5
 
 /*
 int main(void) // test main
@@ -134,13 +138,26 @@ int main(void)
 	window(); // draw window
 	menu(); // draw menu
 	ArrowState arrow;
-	Arrow_Init(&arrow);     // Tegner pilen ved (4,8)
+
+
+	//astroide
+	astroid_t astroids[max_astroids];
+	int astroid_timer = 0;
+	int i;
+
+	for (i=0; i<max_astroids; i++){
+		astroids[i].active=0; // 0 astroider når spillet starter, de spawner efterhånden
+	}
 
 	while(1){
 		// check if button have been pressed
 		CheckButton = IsButtonChanged(&PushButton);
 		if (CheckButton==WHITE) {
-			if (screen == MENU) {change = 1; screen = arrow.index+1;}
+			if (screen == MENU)
+			{Arrow_Clear(&arrow);
+			change = 1;
+			screen = arrow.index+1;
+			}
 			else if (screen == HS || screen == DIFF || screen == HELP) {change = 1; screen = MENU;}
 			else if (screen == GAME) {shoot = 1;}
 		}
@@ -185,6 +202,15 @@ int main(void)
 			case GAME:
 				if (t.flag == 1) {
 					t.flag = 0;
+					astroid_timer++;
+					if (astroid_timer >= astroid_spawntime){
+						astroid_timer = 0;
+						astroid_spawn(astroids, max_astroids, 170, 8, 3);
+					}
+					for (i=0; i<max_astroids; i++){
+						astroid_update(&astroids[i]);
+						astroid_draw(&astroids[i]);
+					}
 					ship_vector(&ship_vec, adc);
 					draw_ship(difficulty, ship_vec, &ship_coordinate, &ship_size);
 					loc.l = 0;

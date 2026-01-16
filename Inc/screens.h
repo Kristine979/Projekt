@@ -13,6 +13,6 @@
 #include "Difficulty.h"
 #include "Help.h"
 
-void switch_screen(high_score_t hs, int *change, int screen);
+void switch_screen(high_score_t hs, int *change, int screen, ArrowState *a);
 
 #endif /* SCREENS_H_ */

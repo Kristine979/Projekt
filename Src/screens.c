@@ -6,13 +6,16 @@
  */
 
 # include "screens.h"
+# include "menu.h"
 
-void switch_screen(high_score_t hs, int *change, int screen) {
+
+void switch_screen(high_score_t hs, int *change, int screen, ArrowState *a){
 	clrscr();
 	window();
 	switch(screen) {
 		case MENU:
 			menu(); // draw menu
+			Arrow_Init(a);
 			break;
 		case DIFF:
 			difficulty(); // draw menu

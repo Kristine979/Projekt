@@ -18,20 +18,20 @@
 
 typedef struct
 {
-    uint8_t index;
-    int8_t  lastDir;
+	uint8_t index;
+	int8_t lastDir;
 } ArrowState;
 
-
-void Arrow_Init(ArrowState *arrow);
-void Arrow_Update(ArrowState *arrow, int32_t adcY);
-static int8_t adcToDir(uint16_t adc);
-static void eraseArrow(uint8_t index);
-
-
-
-
-void PrintText(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t num, char text[]);
+// Menu
 void menu();
 
-#endif /* MENU_H_ */
+//ARROW
+void Arrow_init(ArrowState *arrow);
+void Arrow_Update(ArrowState *arrow, int32_t adcY);
+void Arrow_Clear(ArrowState *arrow);
+
+void PrintText(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t num, char text[]);
+
+
+#endif /* MENU_H_*/
+
