@@ -185,8 +185,8 @@ int main(void)
 			lcd_write_string(str, loc, buffer);
 		}
 
-		if (change !=0) switch_screen(hs, &change, screen); // Switch screens if necessary
-		if (t.one_sec_flag == 1) {change = 1; screen = HELP; t.one_sec_flag = 0;} // buffer code to get correct screen for checking code
+		if (change !=0) switch_screen(hs, &change, screen, &arrow); // Switch screens if necessary
+		//if (t.one_sec_flag == 1) {change = 1; screen = HELP; t.one_sec_flag = 0;} // buffer code to get correct screen for checking code
 
 		// game play
 		switch(screen) {
@@ -194,6 +194,7 @@ int main(void)
 				Arrow_Update(&arrow, adc.c2);   // Flytter kun pilen
 				break;
 			case DIFF:
+				//Arrow_Update(&arrow, adc.c2);   // Flytter kun pilen
 				break;
 			case HS:
 				break;
