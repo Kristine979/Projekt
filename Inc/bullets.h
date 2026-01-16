@@ -13,7 +13,7 @@
 
 typedef struct {
 int alive, x, y;
-} bullet_t[15];
+} bullet_t;
 
 void assign_bullet (bullet_t *b, ship_coord_t sc, ship_size_t ss);
 void draw_bullet(bullet_t *b);

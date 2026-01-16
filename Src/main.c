@@ -118,7 +118,7 @@ int main(void)
 	ship_coord_t ship_coordinate = {90, 25};
 	ship_size_t ship_size = {0,0};
 	high_score_t hs = {}; // initialize high score structure and set to 0
-	bullet_t bullet = {};
+	bullet_t bullet[MAXBULLETS];
 	power_up_t PowerUp = {};
 
 	// variables initializers
@@ -189,7 +189,9 @@ int main(void)
 						assign_bullet (&bullet, ship_coordinate, ship_size);
 					}
 					draw_bullet(&bullet);
-					if (PowerUp.alive == 1)	move_power_up(&PowerUp, PowerUp, ship_coordinate, ship_size);
+					if (PowerUp.alive == 1)	{
+						move_power_up(&PowerUp, PowerUp, ship_coordinate, ship_size);
+					}
 				}
 				if (t.pu_flag == 1) {
 					spawn_power_up(&PowerUp);
