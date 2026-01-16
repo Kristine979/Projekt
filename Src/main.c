@@ -90,7 +90,7 @@ int main(void) // Aliens
 }
 */
 
-
+/*
 int main(void)
 {
 	uart_init(230400);
@@ -159,8 +159,15 @@ int main(void)
 		}
 	}
 }
+*/
 
-
-
+int main(void){
+	uart_init(230400);
+	acc_init();
+	while(1){
+		printf("%d\r\n", acc_motion_bit());
+		acc_delay_ms(100);
+	}
+}
 
 
