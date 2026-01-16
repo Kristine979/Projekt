@@ -14,6 +14,7 @@
 #include "ship.h"
 #include "Difficulty.h"
 #include "alien.h"
+#include "Astroid.h"
 
 /*
 int main(void) // test main
@@ -115,6 +116,8 @@ int main(void)
 	char str[25]; // string used to write to lcd
 	ArrowState arrow;
 	Arrow_Init(&arrow);     // Tegner pilen ved (4,8)
+	astroid_t asteroid;
+	astroid_init(&asteroid, 170, 10, 8, 5); // sidste tal ændre hastighed
 	while(1){
 		ADC_config(2);   // joystick Y
 		ADC_measure(&adc);
@@ -129,7 +132,7 @@ int main(void)
 			lcd_write_string(str, loc, buffer);
 		}
 		if (change !=0) switch_screen(hs, &change, screen);
-		if (t.one_sec_flag == 1) {change = 1; screen = MENU; t.one_sec_flag = 0;}
+		if (t.one_sec_flag == 1) {change = 1; screen = GAME; t.one_sec_flag = 0;}
 		// game play
 		switch(screen) {
 			case MENU:
@@ -144,6 +147,8 @@ int main(void)
 			case GAME:
 				if (t.flag == 1) {
 					t.flag = 0;
+					astroid_update(&asteroid);
+					astroid_draw(&asteroid);
 					ship_vector(&ship_vec, adc);
 					draw_ship(difficulty, ship_vec, &ship_coordinate, &ship_size);
 					loc.l = 0;
