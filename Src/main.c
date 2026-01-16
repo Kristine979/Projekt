@@ -127,7 +127,7 @@ int main(void)
 	high_score_t hs = {}; // initialize high score structure and set to 0
 	bullet_t bullet[MAXBULLETS];
 	power_up_t PowerUp = {};
-	ArrowState arrow;
+	ArrowState arrow = {0,0};
 
 	// variables initializers
 	int screen = MENU, change = 0, difficulty = 1; // int to decide what screen is shown, and change to know whether the screen needs to change
@@ -159,7 +159,13 @@ int main(void)
 			screen = arrow.index+1;
 			}
 			else if (screen == HS || screen == HELP) {change = 1; screen = MENU;}
-			else if (screen == DIFF) {change = 1; screen = GAME;}
+			else if (screen == DIFF) {
+				change = 1;
+				screen = GAME;
+				if (arrow.index == 0) difficulty = 1;
+				if (arrow.index == 1) difficulty = 2;
+				if (arrow.index == 2) difficulty = 3;
+			}
 			else if (screen == GAME) {shoot = 1;}
 		}
 		if (CheckButton==RED) {
@@ -187,7 +193,6 @@ int main(void)
 		}
 
 		if (change !=0) switch_screen(hs, &change, screen, &arrow); // Switch screens if necessary
-		//if (t.one_sec_flag == 1) {change = 1; screen = HELP; t.one_sec_flag = 0;} // buffer code to get correct screen for checking code
 
 		// game play
 		switch(screen) {
@@ -195,6 +200,7 @@ int main(void)
 				Arrow_Update(&arrow, adc.c2);   // Flytter kun pilen
 				break;
 			case DIFF:
+				Arrow_Update(&arrow, adc.c2);   // Flytter kun pilen
 				break;
 			case HS:
 				break;
