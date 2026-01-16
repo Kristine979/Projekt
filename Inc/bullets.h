@@ -1,0 +1,21 @@
+/*
+ * bullets.h
+ *
+ *  Created on: 16. jan. 2026
+ *      Author: Bruger
+ */
+
+#ifndef BULLETS_H_
+#define BULLETS_H_
+#include "defs.h"
+#include "ship.h"
+#include "sprites.h"
+
+typedef struct {
+int alive, x, y;
+} bullet_t[15];
+
+void assign_bullet (bullet_t *b, ship_coord_t sc, ship_size_t ss);
+void draw_bullet(bullet_t *b);
+
+#endif /* BULLETS_H_ */
