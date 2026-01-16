@@ -14,17 +14,18 @@ void switch_screen(high_score_t hs, int *change, int screen) {
 		case MENU:
 			menu(); // draw menu
 			break;
+		case DIFF:
+			difficulty(); // draw menu
+			break;
 		case HS:
 			hs_menu(hs); // draw high scores
 			break;
 		case HELP:
 			break;
-		case DIFF:
-			difficulty(); // draw menu
-			break;
 		case GAME:
 			break;
 		case BOSS:
+			printf("boss");
 			break;
 	}
 	*change = 0; // stop the screens from changing
