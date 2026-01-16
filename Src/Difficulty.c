@@ -6,7 +6,6 @@
  */
 
 #include "Difficulty.h"
-#include "menu.h"
 
 
 void difficulty(){

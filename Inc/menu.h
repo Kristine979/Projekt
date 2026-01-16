@@ -25,6 +25,8 @@ typedef struct
 
 void Arrow_Init(ArrowState *arrow);
 void Arrow_Update(ArrowState *arrow, int32_t adcY);
+static int8_t adcToDir(uint16_t adc);
+static void eraseArrow(uint8_t index);
 
 
 
