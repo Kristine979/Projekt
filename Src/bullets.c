@@ -35,5 +35,4 @@ void draw_bullet(bullet_t *b) {
 			printf("%c[%d;%dH ", ESC, b[i].y, b[i].x);
 		}
 	}
-
 }
