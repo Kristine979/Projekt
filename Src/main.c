@@ -17,6 +17,9 @@
 #include "Astroid.h"
 #include "boss.h"
 
+#define max_astroids 8
+#define astroid_spawntime 5
+
 /*
 int main(void) // test main
 {
@@ -127,14 +130,25 @@ int main(void)
 	window(); // draw window
 	menu(); // draw menu
 	ArrowState arrow;
-	Arrow_Init(&arrow);     // Tegner pilen ved (4,8)
-	astroid_t asteroid;
-	astroid_init(&asteroid, 170, 10, 8, 5); // sidste tal ændre hastighed
+
+
+	//astroide
+	astroid_t astroids[max_astroids];
+	int astroid_timer = 0;
+	int i;
+
+	for (i=0; i<max_astroids; i++){
+		astroids[i].active=0; // 0 astroider når spillet starter, de spawner efterhånden
+	}
 
 	while(1){
 		CheckButton = IsButtonChanged(&PushButton);
 		if (CheckButton==WHITE) {
-			if (screen == MENU) {change = 1; screen = arrow.index+1;}
+			if (screen == MENU)
+			{Arrow_Clear(&arrow);
+			change = 1;
+			screen = arrow.index+1;
+			}
 			else if (screen == HS || screen == DIFF || screen == HELP) {change = 1; screen = MENU;}
 		}
 		if (CheckButton==RED) {
@@ -154,7 +168,7 @@ int main(void)
 			sprintf(str, "t: %ld, min: %ld, s: %ld", t.h, t.m, t.s);
 			lcd_write_string(str, loc, buffer);
 		}
-		if (change !=0) switch_screen(hs, &change, screen);
+		if (change !=0) switch_screen(hs, &change, screen, &arrow);
 		if (t.one_sec_flag == 1) {change = 1; screen = GAME; t.one_sec_flag = 0;}
 		// game play
 		switch(screen) {
@@ -170,8 +184,15 @@ int main(void)
 			case GAME:
 				if (t.flag == 1) {
 					t.flag = 0;
-					astroid_update(&asteroid);
-					astroid_draw(&asteroid);
+					astroid_timer++;
+					if (astroid_timer >= astroid_spawntime){
+						astroid_timer = 0;
+						astroid_spawn(astroids, max_astroids, 170, 8, 3);
+					}
+					for (i=0; i<max_astroids; i++){
+						astroid_update(&astroids[i]);
+						astroid_draw(&astroids[i]);
+					}
 					ship_vector(&ship_vec, adc);
 					draw_ship(difficulty, ship_vec, &ship_coordinate, &ship_size);
 					loc.l = 0;
