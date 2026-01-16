@@ -192,6 +192,7 @@ int main(void)
 				Arrow_Update(&arrow, adc.c2);   // Flytter kun pilen
 				break;
 			case DIFF:
+				//Arrow_Update(&arrow, adc.c2);   // Flytter kun pilen
 				break;
 			case HS:
 				break;

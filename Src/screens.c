@@ -19,6 +19,7 @@ void switch_screen(high_score_t hs, int *change, int screen, ArrowState *a){
 			break;
 		case DIFF:
 			difficulty(); // draw menu
+			//Arrow_Init(a);
 			break;
 		case HS:
 			hs_menu(hs); // draw high scores
