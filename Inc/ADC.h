@@ -17,5 +17,6 @@ void ADC_init();
 void ADC_config(uint8_t channel);
 void ADC_measure (ADC_t *adc);
 uint8_t button();
+uint8_t IsButtonChanged(uint8_t *pb);
 
 #endif /* ADC_H_ */

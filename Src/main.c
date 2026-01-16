@@ -119,8 +119,8 @@ int main(void)
 
 	// variables initializers
 	int screen = MENU, change = 0, difficulty = 1; // int to decide what screen is shown, and change to know whether the screen needs to change
-	int boss = 0, prev_screen; // go from normal screen to boss key and back, depending on value
-	uint8_t PushButton = button();
+	int prev_screen; // go from normal screen to boss key and back, depending on value
+	uint8_t PushButton = button(), CheckButton = button();
 
 	// draw screen
 	window(); // draw window
@@ -129,12 +129,12 @@ int main(void)
 	Arrow_Init(&arrow);     // Tegner pilen ved (4,8)
 
 	while(1){
-
-		if (IsButtonChanged(&PushButton)==WHITE) {
+		CheckButton = IsButtonChanged(&PushButton);
+		if (CheckButton==WHITE) {
 			if (screen == MENU) {change = 1; screen = arrow.index+1;}
 			else if (screen == HS || screen == DIFF || screen == HELP) {change = 1; screen = MENU;}
 		}
-		if (IsButtonChanged(&PushButton)==RED) {
+		if (CheckButton==RED) {
 			if (screen != BOSS) {change = 1; prev_screen = screen; screen = BOSS;}
 			else {change = 1; screen = prev_screen;}
 		}

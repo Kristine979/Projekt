@@ -97,3 +97,11 @@ uint8_t button() {
 		val = RED;
 		return output;
 }
+
+uint8_t IsButtonChanged(uint8_t *pb) {
+	if (*pb!=button()) {
+		*pb=button();
+		return button();
+	}
+	else return NOPUSH;
+}
