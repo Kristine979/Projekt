@@ -169,7 +169,7 @@ int main(void)
 		}
 
 		if (change !=0) switch_screen(hs, &change, screen); // Switch screens if necessary
-		if (t.one_sec_flag == 1) {change = 1; screen = GAME; t.one_sec_flag = 0;} // buffer code to get correct screen for checking code
+		if (t.one_sec_flag == 1) {change = 1; screen = HELP; t.one_sec_flag = 0;} // buffer code to get correct screen for checking code
 
 		// game play
 		switch(screen) {
