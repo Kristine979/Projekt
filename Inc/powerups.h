@@ -9,10 +9,13 @@
 #define POWERUPS_H_
 #include "defs.h"
 #include "ship.h"
-#define MULTIPLEBULLETS 0
-#define DOUBLEDAMAGE 1
-#define FASTERBULLETS 2
-#define GAINLIFE 3
+#include "LED.h"
+#include "clock.h"
+#define NOPOWER 0
+#define MULTIPLEBULLETS 1
+#define DOUBLEDAMAGE 2
+#define FASTERBULLETS 3
+#define GAINLIFE 4
 
 /* Powerups:
  * Multiple bullets (5)

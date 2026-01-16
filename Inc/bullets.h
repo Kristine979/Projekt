@@ -10,9 +10,10 @@
 #include "defs.h"
 #include "ship.h"
 #include "sprites.h"
+#include "powerups.h"
 
 typedef struct {
-int alive, x, y;
+int alive, x, y, power;
 } bullet_t;
 
 void assign_bullet (bullet_t *b, ship_coord_t sc, ship_size_t ss);

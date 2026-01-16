@@ -24,6 +24,7 @@ void switch_screen(high_score_t hs, int *change, int screen, ArrowState *a){
 			hs_menu(hs); // draw high scores
 			break;
 		case HELP:
+			help();
 			break;
 		case GAME:
 			break;
