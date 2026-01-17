@@ -50,3 +50,12 @@ void ship_3_sprite(int column, int row, ship_size_t *ship_size) {
 	ship_size ->h = 3;
 }
 
+void ship_4_sprite(int column, int row, ship_size_t *ship_size) {
+	printf("%c[%d;%dH   \x5F\x5F\x5C\x5F  ", ESC, row, column);
+	printf("%c[%d;%dH\xAF\x3D\x2F   \x28\x6F\x3E", ESC, row+1, column);
+	printf("%c[%d;%dH   \xEE\xEE\x2F\xEE  ", ESC, row+2, column);
+	ship_size ->l = 9;
+	ship_size ->h = 4;
+}
+
+

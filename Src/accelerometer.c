@@ -7,7 +7,7 @@
 #include "accelerometer.h"
 
 /* ===== MMA7660 (accelerometer) constants ===== */
-#define MMA_ADDR   (0x4C << 1)   // I2C address of MMA7660 (shifted format)
+#define MMA_ADDR   (0x98)   // I2C address of MMA7660 (shifted format)
 #define REG_X      0x00          // sensor register for X axis
 #define REG_Y      0x01          // sensor register for Y axis
 #define REG_Z      0x02          // sensor register for Z axis
@@ -146,6 +146,6 @@ int acc_motion_bit(void) {
 
     px = x; py = y; pz = z;                             // update "previous" values
 
-    return (dx + dy + dz) > 30;                          // threshold: >4 means "moving"
+    return (dx + dy + dz) > 25;                          // threshold: >4 means "moving"
 }
 
