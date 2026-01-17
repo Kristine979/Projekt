@@ -12,4 +12,3 @@ void spawn(int number, int x, int y);
 void update_alien(int number);
 
 #endif /* ALIEN_H_ */
-

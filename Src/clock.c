@@ -24,7 +24,7 @@ void TIM1_BRK_TIM15_IRQHandler() {
 	if (t.cs < 99) {t.cs += 1;}
 	else {
 		t.cs = 0;
-		if (t.s < 59) {t.s += 1;}
+		if (t.s < 59) {t.s += 1; t.five_sec_counter +=1;}
 		else {
 			t.s = 0;
 			if (t.m < 59) {t.m += 1;}
@@ -33,8 +33,11 @@ void TIM1_BRK_TIM15_IRQHandler() {
 			}
 		}
 	}
+	t.bullet_counter += 1;
+	if (t.bullet_counter == 10) {t.bullet_counter = 0; t.bullet_flag = 1;}
 	if (t.cs == 1) t.flag = 1;
 	if (t.s == 1) t.one_sec_flag = 1;
+	if (t.s == 10) t.pu_flag = 1;
 	if (t.cs == 1) t.counter_flag =1;
 	TIM15->SR &= ~0x0001; // Clear interrupt bit
 }

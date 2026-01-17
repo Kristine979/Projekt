@@ -6,7 +6,7 @@
  */
 
 #include "menu.h"
-#include "stdio.h"
+
 
 /* Faste pil-positioner */
 #define ARROW_X     3
@@ -77,8 +77,13 @@ static int8_t adcToDir(uint16_t adc)
         return 0;    // neutral
 }
 
+void Arrow_Clear(ArrowState *arrow)
+{
+    eraseArrow(arrow->index);
+}
 
-void Arrow_Init(ArrowState *arrow)
+
+void Arrow_init(ArrowState *arrow)
 {
     arrow->index   = 0;
     arrow->lastDir = 0;
