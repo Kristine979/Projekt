@@ -31,12 +31,13 @@ void lcd_write_string(char str[], location_t loc, uint8_t *buffer) {
 	lcd_push_buffer(buffer);
 }
 
+//3 lives = 3 full hearts, 0 lives means 3 empty hearts
 void lcd_write_heart(int lives, location_t loc, uint8_t *buffer) {
 	int spot = loc.s + lcd_lut(loc.l); // starts the hearts at the right place
 	int ind = 0; // indent
 	for (int i = 0;i<3;i++) {
 		for (int j = 0; j<5; j++) {
-			if (i-lives < 0) {
+			if (lives -i > 0) {
 				memset(buffer+spot+j+ind,character_data[0x7F-0x20][j],1); // Sets some elements of the buffer to the given hex
 				memset(buffer+spot+j+ind+5,character_data[0x80-0x20][j],1);
 			}

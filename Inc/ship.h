@@ -19,7 +19,16 @@ typedef struct {
 int32_t x, y;
 } ship_vector_t;
 
+typedef struct {
+	ship_coord_t coord;
+	// tilføj size og hit boolean
+} ship_t;
+
+typedef struct {
+	int hit, lives; // parameter der angiver om skibet er ramt og hvor mange liv der er tilbage
+} ship_hit_t;
+
 void ship_vector(ship_vector_t *sv, ADC_t adc);
-void draw_ship(int diff, ship_vector_t sv, ship_coord_t *sc, ship_size_t *ss);
+void draw_ship(int diff, ship_vector_t sv, ship_coord_t *sc, ship_size_t *ss, ship_hit_t *ship_hit);
 
 #endif /* SHIP_H_ */

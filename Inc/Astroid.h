@@ -19,6 +19,7 @@ typedef struct {
 } astroid_t;
 
 // astroide funktioner
+void astroid_clear(astroid_t *a);
 void astroid_init(astroid_t *a, int16_t x, int16_t y, int16_t color, int8_t speed);
 void astroid_update(astroid_t *a);
 void astroid_draw(const astroid_t *a);

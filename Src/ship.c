@@ -21,7 +21,7 @@ void ship_vector(ship_vector_t *sv, ADC_t adc) {
 	sv->y = adc.c2;
 }
 
-void draw_ship(int diff, ship_vector_t sv, ship_coord_t *sc, ship_size_t *ss) {
+void draw_ship(int diff, ship_vector_t sv, ship_coord_t *sc, ship_size_t *ss, ship_hit_t *ship_hit){ /*TODO tilføj bool som argument*/
 	if (sv.x+sc->x > 2 && sv.x+sc->x < 170 && sv.y+sc->y > 2 && sv.y+sc->y < 50) {
 		// remove current ship
 		for (int iy = 0; iy<ss->h; iy++) {
@@ -36,13 +36,25 @@ void draw_ship(int diff, ship_vector_t sv, ship_coord_t *sc, ship_size_t *ss) {
 
 		// draw correct sprite
 		if (diff == 1) {
-			ship_1_sprite(sc->x, sc->y, ss);
+			if (ship_hit->hit == 1){
+				ship_4_sprite(sc->x, sc->y);
+			} else {
+				ship_1_sprite(sc->x, sc->y, ss); // TODO lav if med om skibet er ramt, hvis ja vis 4 ellers vis 1
+			}
 		}
 		if (diff == 2) {
-			ship_2_sprite(sc->x, sc->y, ss);
+			if (ship_hit->hit == 1){
+				ship_5_sprite(sc->x, sc->y);
+			} else {
+				ship_2_sprite(sc->x, sc->y, ss); // TODO lav if med om skibet er ramt, hvis ja vis 4 ellers vis 1
+			}
 		}
 		if (diff == 3) {
-			ship_3_sprite(sc->x, sc->y, ss);
+			if (ship_hit->hit == 1){
+				ship_6_sprite(sc->x, sc->y);
+			} else {
+				ship_3_sprite(sc->x, sc->y, ss);
+			}
 		}
 	}
 }
