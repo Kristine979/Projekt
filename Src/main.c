@@ -125,7 +125,7 @@ int main(void)
 	ship_coord_t ship_coordinate = {90, 25};
 	ship_size_t ship_size = {0,0};
 	high_score_t hs = {}; // initialize high score structure and set to 0
-	bullet_t bullet[MAXBULLETS];
+	bullet_t bullet[MAXBULLETS] = {};
 	power_up_t PowerUp = {};
 	ArrowState arrow = {0,0};
 
@@ -182,7 +182,10 @@ int main(void)
 		loc.l = 2;
 		sprintf(string, "%04ld, %04ld", adc.c1, adc.c2);
 		lcd_write_string(string, loc, buffer);
-		if (t.five_sec_counter >= 5) setLED(0,0,0);
+		if (t.five_sec_counter >= 5) {
+			setLED(0,0,0);
+			current_power_up = NOPOWER;
+		}
 
 		// counter on LCD
 		if (t.counter_flag == 1) {
@@ -220,9 +223,14 @@ int main(void)
 					}
 					ship_vector(&ship_vec, adc);
 					draw_ship(difficulty, ship_vec, &ship_coordinate, &ship_size);
+					// write to LCD
 					loc.l = 0;
+					sprintf(str, "%d", current_power_up);
+					lcd_write_string(str, loc, buffer);
+					/* ship vector
 					sprintf(str, "vx: %ld, vy: %ld", ship_vec.x, ship_vec.y);
 					lcd_write_string(str, loc, buffer);
+					*/
 					loc.l = 3;
 					sprintf(str, "x: %ld, y: %ld", ship_coordinate.x, ship_coordinate.y);
 					lcd_write_string(str, loc, buffer);
@@ -246,7 +254,7 @@ int main(void)
 					spawn_power_up(&PowerUp);
 					PowerUp.alive = 1;
 					t.pu_flag = 0;
-					if (PowerUp.power > 4) PowerUp.power += 1;
+					if (PowerUp.power < 4) PowerUp.power += 1;
 					else PowerUp.power = 1;
 				}
 				break;
