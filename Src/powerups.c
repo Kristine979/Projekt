@@ -29,14 +29,27 @@ int did_ship_hit_power_up(power_up_t pu, ship_coord_t sc, ship_size_t ss, int *c
 void spawn_power_up(power_up_t *pu) {
 	pu->x = X2-1;
 	pu->y = 20;
-	printf("%c[%d;%dHP", ESC, pu->y, pu->x);
 }
 
 void move_power_up(power_up_t *pu, power_up_t pu_check, ship_coord_t sc, ship_size_t ss, int *current_power_up) {
 	if ((pu->x - 1) > 0 && did_ship_hit_power_up(pu_check, sc, ss, current_power_up) == 0) {
 		// set new coordinates
 		pu->x -= 1;
-		printf("%c[%d;%dHP", ESC, pu->y, pu->x);
+		// print correct power up
+		switch (pu->power) {
+		case (1):
+				printf("%c[%d;%dH1", ESC, pu->y, pu->x);
+				break;
+		case (2):
+				printf("%c[%d;%dH2", ESC, pu->y, pu->x);
+				break;
+		case (3):
+				printf("%c[%d;%dH3", ESC, pu->y, pu->x);
+				break;
+		case (4):
+				printf("%c[%d;%dH4", ESC, pu->y, pu->x);
+				break;
+		}
 		// erase previous bullet
 		printf("%c[%d;%dH ", ESC, pu->y, pu->x+1);
 	}
