@@ -19,6 +19,8 @@ void asteroid_sprite(int color, int column, int row);
 void ship_1_sprite(int column, int row, ship_size_t *ship_size);
 void ship_2_sprite(int column, int row, ship_size_t *ship_size);
 void ship_3_sprite(int column, int row, ship_size_t *ship_size);
-void ship_4_sprite(int column, int row, ship_size_t *ship_size);
+void ship_4_sprite(int column, int row);
+void ship_5_sprite(int column, int row);
+void ship_6_sprite(int column, int row);
 
 #endif /* SPRITES_H_ */

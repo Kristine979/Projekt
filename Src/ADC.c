@@ -87,15 +87,15 @@ void ADC_measure(ADC_t *adc) {
 
 uint8_t button() {
 	uint8_t output = NOPUSH;
-		uint16_t val;
-		val = GPIOB->IDR & (0x0001 << 0); //Read from pin PB0 (B2, SW1)
-		if (val != 0) { output = WHITE;}
-		val = WHITE;
+	uint16_t val;
+	val = GPIOB->IDR & (0x0001 << 0); //Read from pin PB0 (B2, SW1)
+	if (val != 0) { output = WHITE;}
+	val = WHITE;
 
-		val = GPIOA->IDR & (0x0001 << 4); //Read from pin PA4 (B1, SW2)
-		if (val != 0) {output = RED;}
-		val = RED;
-		return output;
+	val = GPIOA->IDR & (0x0001 << 4); //Read from pin PA4 (B1, SW2)
+	if (val != 0) {output = RED;}
+	val = RED;
+	return output;
 }
 
 uint8_t IsButtonChanged(uint8_t *pb) {

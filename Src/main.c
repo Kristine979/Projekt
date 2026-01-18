@@ -19,6 +19,7 @@
 #include "bullets.h"
 #include "powerups.h"
 #include "LED.h"
+#include "accelerometer.h"
 
 #define max_astroids 8
 #define astroid_spawntime 5
@@ -54,11 +55,13 @@ int main(void) // test main
 		}
 	}
 }
-
+*/
+/*
 int main(void) // Aliens
 {
 	uart_init(230400);
 	clrscr();
+	ArrowState arrow = {0,0};
 	clock_init(); // initialize timer
 	lcd_init(); // initialize lcd
 	uint8_t buffer[512]; // set up buffer for lcd
@@ -82,11 +85,14 @@ int main(void) // Aliens
 		}
 		if (t.s == 1) {change = 1; screen = GAME;}
 		if (change !=0) {
-			switch_screen(hs, &change, screen);
+			switch_screen(hs, &change, screen, &arrow);
 			spawn(0, 0, 0);
 			spawn(1, 10, 15);
 			spawn(2, 20, 30);
 			spawn(3, 7, 45);
+			ship_4_sprite(120, 10);
+			ship_5_sprite(120, 15);
+			ship_6_sprite(120, 20);
 		}
 
 		if (t.s >= 2){
@@ -96,10 +102,10 @@ int main(void) // Aliens
 			update_alien(3);
 	}
 }
-}
-*/
+}*/
 
-/*
+
+
 int main(void)
 {
 	uart_init(230400);
@@ -112,11 +118,13 @@ int main(void)
 	ADC_init();
 	led_init();
 	setLED(0,0,0); // no light
+	acc_init();
 
 	// lcd
 	uint8_t buffer[512]; // set up buffer for lcd
 	clear_lcd(buffer); // clear lcd screen
 	char str[25]; // string used to write to lcd
+	char string[15];
 
 	// struct initializers
 	ADC_t adc;
@@ -124,6 +132,10 @@ int main(void)
 	ship_vector_t ship_vec = {};
 	ship_coord_t ship_coordinate = {90, 25};
 	ship_size_t ship_size = {0,0};
+	ship_hit_t ship_hit = {0,3}; // initialisere at skibet ikke er ramt og der er 3 liv tilbage
+
+
+
 	high_score_t hs = {}; // initialize high score structure and set to 0
 	bullet_t bullet[MAXBULLETS];
 	power_up_t PowerUp = {};
@@ -140,7 +152,7 @@ int main(void)
 	menu(); // draw menu
 
 
-	//astroide
+	// astroide
 	astroid_t astroids[max_astroids];
 	int astroid_timer = 0;
 	int i;
@@ -149,16 +161,24 @@ int main(void)
 		astroids[i].active=0; // 0 astroider når spillet starter, de spawner efterhånden
 	}
 
+	// for at få spillet til at virke uden joystick
+	change = 1;
+	screen = GAME;
+	difficulty = 1;
+
 	while(1){
 		// check if button have been pressed
 		CheckButton = IsButtonChanged(&PushButton);
 		if (CheckButton==WHITE) {
-			if (screen == MENU)
-			{Arrow_Clear(&arrow);
-			change = 1;
-			screen = arrow.index+1;
+			if (screen == MENU)	{
+				Arrow_Clear(&arrow);
+				change = 1;
+				screen = arrow.index+1;
 			}
-			else if (screen == HS || screen == HELP) {change = 1; screen = MENU;}
+			else if (screen == HS || screen == HELP) {
+				change = 1;
+				screen = MENU;
+			}
 			else if (screen == DIFF) {
 				change = 1;
 				screen = GAME;
@@ -166,7 +186,9 @@ int main(void)
 				if (arrow.index == 1) difficulty = 2;
 				if (arrow.index == 2) difficulty = 3;
 			}
-			else if (screen == GAME) {shoot = 1;}
+			else if (screen == GAME) {
+				shoot = 1;
+			}
 		}
 		if (CheckButton==RED) {
 			if (screen != BOSS) {change = 1; prev_screen = screen; screen = BOSS;}
@@ -178,11 +200,13 @@ int main(void)
 		ADC_measure(&adc);
 
 		// LCD setup
-		char string[15];
 		loc.l = 2;
 		sprintf(string, "%04ld, %04ld", adc.c1, adc.c2);
 		lcd_write_string(string, loc, buffer);
 		if (t.five_sec_counter >= 5) setLED(0,0,0);
+
+		loc.l = 1;
+		lcd_write_heart(ship_hit.lives, loc, buffer);
 
 		// counter on LCD
 		if (t.counter_flag == 1) {
@@ -207,7 +231,17 @@ int main(void)
 			case HELP:
 				break;
 			case GAME:
+
+				if(ship_hit.hit==1){
+					if (acc_motion_bit() == 1){
+						ship_hit.hit = 0;
+					}				// TODO tilføj ryste tjek her eller
+				}
 				if (t.flag == 1) {
+					// TODO tilføj ryste tjek her. det handler om det skal ske med et tick på skærmen (her) eller imellem, så hver gang den del af koden bliver kørt(ovenover if)
+					/*if (acc_motion_bit() == 1){
+						ship_hit.hit = 0;
+					}*/
 					t.flag = 0;
 					astroid_timer++;
 					if (astroid_timer >= astroid_spawntime){
@@ -219,7 +253,13 @@ int main(void)
 						astroid_draw(&astroids[i]);
 					}
 					ship_vector(&ship_vec, adc);
-					draw_ship(difficulty, ship_vec, &ship_coordinate, &ship_size);
+
+
+					draw_ship(difficulty, ship_vec, &ship_coordinate, &ship_size, &ship_hit);
+
+					//collision check between astroids and ship
+					shipAstroidCollision(&ship_coordinate, &ship_size, &astroids, &ship_hit);
+
 					loc.l = 0;
 					sprintf(str, "vx: %ld, vy: %ld", ship_vec.x, ship_vec.y);
 					lcd_write_string(str, loc, buffer);
@@ -255,8 +295,8 @@ int main(void)
 		}
 	}
 }
-*/
 
+/*
 int main(void){
 	uart_init(230400);
 	acc_init();
@@ -264,6 +304,6 @@ int main(void){
 		printf("%d\r\n", acc_motion_bit());
 		acc_delay_ms(100);
 	}
-}
+}*/
 
 
