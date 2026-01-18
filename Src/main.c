@@ -162,9 +162,11 @@ int main(void)
 	}
 
 	// for at få spillet til at virke uden joystick
+	/*
 	change = 1;
 	screen = GAME;
 	difficulty = 1;
+	*/
 
 	while(1){
 		// check if button have been pressed
@@ -207,7 +209,6 @@ int main(void)
 			setLED(0,0,0);
 			current_power_up = NOPOWER;
 		}
-
 		loc.l = 1;
 		lcd_write_heart(ship_hit.lives, loc, buffer);
 
@@ -285,7 +286,7 @@ int main(void)
 
 					// move power up symbol
 					if (PowerUp.alive == 1)	{
-						move_power_up(&PowerUp, PowerUp, ship_coordinate, ship_size, &current_power_up);
+						move_power_up(&PowerUp, PowerUp, ship_coordinate, ship_size, &current_power_up, &ship_hit);
 					}
 				}
 				// spawn power up

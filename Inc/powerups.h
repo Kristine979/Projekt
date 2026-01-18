@@ -28,10 +28,10 @@ typedef struct {
 int x, y, power, alive;
 } power_up_t;
 
-int did_ship_hit_power_up(power_up_t pu, ship_coord_t sc, ship_size_t ss, int *current_power_up);
+int did_ship_hit_power_up(power_up_t pu, ship_coord_t sc, ship_size_t ss, int *current_power_up, ship_hit_t *ship_hit);
 
 void spawn_power_up(power_up_t *pu);
 
-void move_power_up(power_up_t *pu, power_up_t pu_check, ship_coord_t sc, ship_size_t ss, int *current_power_up);
+void move_power_up(power_up_t *pu, power_up_t pu_check, ship_coord_t sc, ship_size_t ss, int *current_power_up, ship_hit_t *ship_hit);
 
 #endif /* POWERUPS_H_ */
