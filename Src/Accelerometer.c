@@ -1,3 +1,5 @@
+
+
 #include "stm32f30x.h"
 #include "stm32f30x_rcc.h"
 #include "stm32f30x_gpio.h"
@@ -144,5 +146,6 @@ int acc_motion_bit(void) {
 
     px = x; py = y; pz = z;                             // update "previous" values
 
-    return (dx + dy + dz) > 20;                          // threshold: >4 means "moving"
+    return (dx + dy + dz) > 25;                          // threshold: >4 means "moving"
 }
+
