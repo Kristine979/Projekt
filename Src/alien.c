@@ -6,37 +6,24 @@
  */
 
 #include "alien.h"
-#include "sprites.h"
-#include "clock.h"
 
-struct alien_info {
-	//char alive;
-	int sec;
-	int min;
-	int hour;
-	int x;
-	int y;
-
-};
-
-
-struct alien_info arr[4];
-
-void spawn(int number, int x, int y){
-	arr[number].x = x + 145;
-	arr[number].y = y + 5;
-	alien_sprite(10, 145+x, 5+y);
-	int temp_sec = t.s + 3;
-	if (temp_sec > 59){
-		temp_sec -= 60;
+int is_alien_here(alien_info_t *alien, int value) {
+	for (int i = 0; i<4; i++) {
+		if (value > (alien[i].y-4) && value < (alien[i].y+4)) return 1;
 	}
-	arr[number].sec = temp_sec;
+	return 0;
 }
 
-void update_alien(int number){
-	if (t.s == arr[number].sec){
-		asteroid_sprite(8, arr[number].x - 8, arr[number].y-1);
+void spawn_alien(alien_info_t *alien, int j){
+	int cont = 1;
+	alien[j].x = X2-7;
+	int random_num;
+	while (cont == 1) {
+		random_num = rand_range();
+		cont = is_alien_here(alien, random_num);
 	}
+	alien[j].y = random_num;
+	alien_sprite(10, alien[j].x, alien[j].y);
 }
 
 

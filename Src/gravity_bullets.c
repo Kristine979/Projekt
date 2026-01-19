@@ -1,6 +1,4 @@
 #include "gravity_bullets.h"
-#include <stdio.h>
-#include <math.h>
 
 #ifndef ESC
 #define ESC 0x1B
@@ -69,16 +67,6 @@ static void gravity_accel_at(const gbullet_t *p,
 
     *out_ax = ax;
     *out_ay = ay;
-}
-
-// public API
-void gbullets_init(gbullet_t *b, int n) {
-    for (int i = 0; i < n; i++) {
-        b[i].alive = 0;
-        b[i].x = b[i].y = 0.0f;
-        b[i].vx = b[i].vy = 0.0f;
-        b[i].last_x = b[i].last_y = -9999;
-    }
 }
 
 void gbullet_spawn(gbullet_t *b, int n, float x, float y, float vx, float vy)

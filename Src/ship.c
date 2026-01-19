@@ -39,14 +39,14 @@ void draw_ship(int diff, ship_vector_t sv, ship_coord_t *sc, ship_size_t *ss, sh
 			if (ship_hit->hit == 1){
 				ship_4_sprite(sc->x, sc->y);
 			} else {
-				ship_1_sprite(sc->x, sc->y, ss); // TODO lav if med om skibet er ramt, hvis ja vis 4 ellers vis 1
+				ship_1_sprite(sc->x, sc->y, ss);
 			}
 		}
 		if (diff == 2) {
 			if (ship_hit->hit == 1){
 				ship_5_sprite(sc->x, sc->y);
 			} else {
-				ship_2_sprite(sc->x, sc->y, ss); // TODO lav if med om skibet er ramt, hvis ja vis 4 ellers vis 1
+				ship_2_sprite(sc->x, sc->y, ss);
 			}
 		}
 		if (diff == 3) {

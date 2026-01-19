@@ -9,24 +9,9 @@
 #define GRAVITY_BULLETS_H
 
 #include <stdint.h>
-
-#ifndef MAXBULLETS
-#define MAXBULLETS 16
-#endif
-
-//Visible area boundaries (terminal coordinates: x=column, y=row)
-#ifndef X1
-#define X1 2
-#endif
-#ifndef Y1
-#define Y1 2
-#endif
-#ifndef X2
-#define X2 170
-#endif
-#ifndef Y2
-#define Y2 50
-#endif
+#include <stdio.h>
+#include <math.h>
+#include "defs.h"
 
 // Types
 typedef struct {

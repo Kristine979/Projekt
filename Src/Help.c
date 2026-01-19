@@ -7,8 +7,6 @@
 
 
 #include "Help.h"
-#include "menu.h"
-#include "sprites.h"
 
 // Print text inside a box without overwriting borders, supports '\n'
 void PrintTextHelp(int x1, int y1, int x2, int y2, const char text[])

@@ -16,12 +16,10 @@
 #include "alien.h"
 #include "Astroid.h"
 #include "boss.h"
-#include "bullets.h"
 #include "powerups.h"
 #include "LED.h"
 #include "accelerometer.h"
-
-#define USE_GRAVITY_BULLETS 1
+#include "collision.h"
 #include "gravity_bullets.h"
 
 #define max_astroids 8
@@ -112,8 +110,6 @@ int main(void) // Aliens
 
 int main(void)
 {
-
-
 	uart_init(230400);
 	clrscr();
 	printf("%c\x1B[?25l", ESC); // hide cursor, \x1B[?25h to show, \x1B[?25l to hide
@@ -139,35 +135,22 @@ int main(void)
 	ship_coord_t ship_coordinate = {90, 25};
 	ship_size_t ship_size = {0,0};
 	ship_hit_t ship_hit = {0,3}; // initialisere at skibet ikke er ramt og der er 3 liv tilbage
-
-
-
 	high_score_t hs = {}; // initialize high score structure and set to 0
-	bullet_t bullet[MAXBULLETS] = {};
-	gbullet_t gbullets[MAXBULLETS] = {0}; //gravitation
+	gbullet_t gbullets[MAXBULLETS] = {{}}; //gravitation
 	grav_source_t grav[max_astroids]; // gravitation
+	alien_info_t aliens[4] = {};
 	power_up_t PowerUp = {};
 	ArrowState arrow = {0,0};
 
 	// variables initializers
-	int screen = MENU, change = 0, difficulty = 1; // int to decide what screen is shown, and change to know whether the screen needs to change
+	int screen = MENU, change = 1, difficulty = 1; // int to decide what screen is shown, and change to know whether the screen needs to change
 	int prev_screen; // go from normal screen to boss key and back, depending on value
 	uint8_t PushButton = button(), CheckButton = button();
 	int shoot = 0, current_power_up = NOPOWER;
 
-	// draw screen
-	window(); // draw window
-	menu(); // draw menu
-
-
-	// astroide
-	astroid_t astroids[max_astroids];
+	// astroid initializers
+	astroid_t astroids[max_astroids] = {};
 	int astroid_timer = 0;
-	int i;
-
-	for (i=0; i<max_astroids; i++){
-		astroids[i].active=0; // 0 astroider når spillet starter, de spawner efterhånden
-	}
 
 	// for at få spillet til at virke uden joystick
 	/*
@@ -175,29 +158,44 @@ int main(void)
 	screen = GAME;
 	difficulty = 1;
 	*/
-	gbullets_init(gbullets, MAXBULLETS); //Gravitation
+
 	while(1){
+		// check if there's still health, and reset if health is 0
+		if (ship_hit.lives <= 0) {
+			screen = GAMEOVER;
+			change = 1;
+			ship_hit.lives = 3;
+			for (int i = 0; i < max_astroids; i++) {
+				astroids[i].active=0;
+			}
+			PowerUp.alive = 0; PowerUp.power = 0; PowerUp.x = X2-1;
+		}
 		// check if button have been pressed
 		CheckButton = IsButtonChanged(&PushButton);
 		if (CheckButton==WHITE) {
-			if (screen == MENU)	{
+			switch (screen) {
+			case MENU:
 				Arrow_Clear(&arrow);
 				change = 1;
 				screen = arrow.index+1;
-			}
-			else if (screen == HS || screen == HELP) {
+				break;
+			case HS:
+			case HELP:
+			case GAMEOVER:
 				change = 1;
 				screen = MENU;
-			}
-			else if (screen == DIFF) {
+				break;
+			case DIFF:
 				change = 1;
 				screen = GAME;
 				if (arrow.index == 0) difficulty = 1;
 				if (arrow.index == 1) difficulty = 2;
 				if (arrow.index == 2) difficulty = 3;
-			}
-			else if (screen == GAME) {
+				ship_coordinate.x = 90; ship_coordinate.y = 25;
+				break;
+			case GAME:
 				shoot = 1;
+				break;
 			}
 		}
 		if (CheckButton==RED) {
@@ -206,8 +204,7 @@ int main(void)
 		}
 
 		// check if ADC have been changed
-		ADC_config(2);   // joystick Y
-		ADC_measure(&adc);
+		check_ADC(&adc);
 
 		// LCD setup
 		loc.l = 2;
@@ -228,7 +225,14 @@ int main(void)
 			lcd_write_string(str, loc, buffer);
 		}
 
-		if (change !=0) switch_screen(hs, &change, screen, &arrow); // Switch screens if necessary
+		if (change !=0) {
+			switch_screen(hs, &change, screen, &arrow); // Switch screens if necessary
+			if (screen == GAME) {
+				for (int i = 0; i<4; i++) {
+					spawn_alien(aliens, i);
+				}
+			}
+		}
 
 		// game play
 		switch(screen) {
@@ -247,38 +251,30 @@ int main(void)
 				if(ship_hit.hit==1){
 					if (acc_motion_bit() == 1){
 						ship_hit.hit = 0;
-					}				// TODO tilføj ryste tjek her eller
+					}
 				}
 				if (t.flag == 1) {
-					// TODO tilføj ryste tjek her. det handler om det skal ske med et tick på skærmen (her) eller imellem, så hver gang den del af koden bliver kørt(ovenover if)
-					/*if (acc_motion_bit() == 1){
-						ship_hit.hit = 0;
-					}*/
 					t.flag = 0;
 					astroid_timer++;
 					if (astroid_timer >= astroid_spawntime){
 						astroid_timer = 0;
-						astroid_spawn(astroids, max_astroids, 170, 8, 3);
+						astroid_spawn(astroids, max_astroids, 8, 3);
 					}
-					for (i=0; i<max_astroids; i++){
+					for (int i=0; i<max_astroids; i++){
 						astroid_update(&astroids[i]);
 						astroid_draw(&astroids[i]);
 					}
 					ship_vector(&ship_vec, adc);
 
-
 					draw_ship(difficulty, ship_vec, &ship_coordinate, &ship_size, &ship_hit);
 
 					//collision check between astroids and ship
-					shipAstroidCollision(&ship_coordinate, &ship_size, &astroids, &ship_hit);
+					shipAstroidCollision(&ship_coordinate, &ship_size, astroids, &ship_hit, difficulty);
 
 					loc.l = 0;
 					sprintf(str, "%d", current_power_up);
 					lcd_write_string(str, loc, buffer);
-					/* ship vector
-					sprintf(str, "vx: %ld, vy: %ld", ship_vec.x, ship_vec.y);
-					lcd_write_string(str, loc, buffer);
-					*/
+
 					loc.l = 3;
 					sprintf(str, "x: %ld, y: %ld", ship_coordinate.x, ship_coordinate.y);
 					lcd_write_string(str, loc, buffer);
@@ -286,9 +282,6 @@ int main(void)
 				if (t.bullet_flag == 1) {
 				    t.bullet_flag = 0;
 
-				#if USE_GRAVITY_BULLETS
-
-				    // Gravity bullets mode (only when you set USE_GRAVITY_BULLETS=1)
 				    int gN = 0;
 				    for (int k = 0; k < max_astroids; k++) {
 				        if (astroids[k].active) {
@@ -308,17 +301,6 @@ int main(void)
 
 				    gbullets_step_and_draw(gbullets, MAXBULLETS, grav, gN, 0.05f);
 
-				#else
-
-				    // --- Original bullets mode (group-safe, default) ---
-				    if (shoot == 1) {
-				        shoot = 0;
-				        assign_bullet(bullet, ship_coordinate, ship_size);
-				    }
-				    draw_bullet(bullet);
-
-				#endif
-
 				    // PowerUp stays the same in both modes
 				    if (PowerUp.alive == 1) {
 				        move_power_up(&PowerUp, PowerUp, ship_coordinate, ship_size, &current_power_up, &ship_hit);
@@ -333,20 +315,10 @@ int main(void)
 					else PowerUp.power = 1;
 				}
 				break;
+			case GAMEOVER:
+				break;
 			case BOSS:
 				break;
 		}
 	}
 }
-
-/*
-int main(void){
-	uart_init(230400);
-	acc_init();
-	while(1){
-		printf("%d\r\n", acc_motion_bit());
-		acc_delay_ms(100);
-	}
-}*/
-
-
