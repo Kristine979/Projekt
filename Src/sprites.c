@@ -58,13 +58,16 @@ void ship_4_sprite(int column, int row) {
 }
 
 void ship_5_sprite(int column, int row) {
-	printf("%c[%d;%dH   \xDB\x5C ", ESC, row, column);
-	printf("%c[%d;%dH\xAF\x3D\x28\xDB\x6F\xDB\x3E", ESC, row+1, column);
-	printf("%c[%d;%dH\xDB   \xDB\x2F ", ESC, row+2, column);
+	printf("%c[%d;%dH\xDB \x5C \xDB", ESC, row, column);
+	printf("%c[%d;%dH\xAF\x3D\x28\x6F\x3E", ESC, row+1, column);
+	printf("%c[%d;%dH \xDB\x2F \xDB", ESC, row+2, column);
 }
 
+
+
 void ship_6_sprite(int column, int row) {
-	printf("%c[%d;%dH   \xDB\x5F\x5F\xDB\x5C\x5F  ", ESC, row, column);
-	printf("%c[%d;%dH\xAF\x3D\xDB\x2F   \x28\xDB\x6F\x3E", ESC, row+1, column);
-	printf("%c[%d;%dH   \xEE\xEE\x2F\xDB\xEE  ", ESC, row+2, column);
+	printf("%c[%d;%dH \xDB\x5F\x5F\xDB\x5C\x5F  ", ESC, row, column);
+	printf("%c[%d;%dH\xAF\x3D\x2F \xDB \x28\x6F\x3E", ESC, row+1, column);
+	printf("%c[%d;%dH  \xEE\xDB\xEE\x2F\xEE \xDB", ESC, row+2, column);
+
 }

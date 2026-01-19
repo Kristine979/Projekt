@@ -20,6 +20,7 @@
 #include "powerups.h"
 #include "LED.h"
 #include "accelerometer.h"
+#include "collision.h"
 
 #define max_astroids 8
 #define astroid_spawntime 5
@@ -162,7 +163,6 @@ int main(void)
 			screen = GAMEOVER;
 			change = 1;
 			ship_hit.lives = 3;
-			ship_coordinate.x = 90; ship_coordinate.y = 25;
 			for (int i = 0; i < max_astroids; i++) {
 				astroids[i].active=0;
 			}
@@ -189,6 +189,7 @@ int main(void)
 				if (arrow.index == 0) difficulty = 1;
 				if (arrow.index == 1) difficulty = 2;
 				if (arrow.index == 2) difficulty = 3;
+				ship_coordinate.x = 90; ship_coordinate.y = 25;
 				break;
 			case GAME:
 				shoot = 1;
@@ -260,11 +261,10 @@ int main(void)
 					}
 					ship_vector(&ship_vec, adc);
 
-
 					draw_ship(difficulty, ship_vec, &ship_coordinate, &ship_size, &ship_hit);
 
 					//collision check between astroids and ship
-					shipAstroidCollision(&ship_coordinate, &ship_size, &astroids, &ship_hit);
+					shipAstroidCollision(&ship_coordinate, &ship_size, astroids, &ship_hit, difficulty);
 
 					loc.l = 0;
 					sprintf(str, "%d", current_power_up);

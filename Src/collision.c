@@ -21,7 +21,7 @@ char collision(
 }
 
 
-char shipAstroidCollision(ship_coord_t *ship_coord, ship_size_t *ship_size, astroid_t *astroids, ship_hit_t *ship_hit){
+char shipAstroidCollision(ship_coord_t *ship_coord, ship_size_t *ship_size, astroid_t *astroids, ship_hit_t *ship_hit, int diff){
 	for (int i = 0; i < 8; ++i) {
 		if (collision(ship_coord->x, ship_coord->y, ship_size->h, ship_size->l,
 			(int)(astroids[i]).x, (int)(astroids[i]).y, 5, 6
@@ -30,7 +30,17 @@ char shipAstroidCollision(ship_coord_t *ship_coord, ship_size_t *ship_size, astr
 			astroid_clear(&astroids[i]);
 			astroids[i].active = 0;
 			astroids[i].x = 200; astroids[i].y = 0;
-			ship_4_sprite(ship_coord->x, ship_coord->y);
+			switch (diff) {
+			case 1:
+				ship_4_sprite(ship_coord->x, ship_coord->y);
+				break;
+			case 2:
+				ship_5_sprite(ship_coord->x, ship_coord->y);
+				break;
+			case 3:
+				ship_6_sprite(ship_coord->x, ship_coord->y);
+				break;
+			}
 			ship_hit->hit = 1; //skib hit = true (1)
 			ship_hit->lives -= 1; // reducere antal liv med 1
 		}
