@@ -16,13 +16,10 @@
 #include "alien.h"
 #include "Astroid.h"
 #include "boss.h"
-#include "bullets.h"
 #include "powerups.h"
 #include "LED.h"
 #include "accelerometer.h"
 #include "collision.h"
-
-#define USE_GRAVITY_BULLETS 1
 #include "gravity_bullets.h"
 
 #define max_astroids 8
@@ -113,8 +110,6 @@ int main(void) // Aliens
 
 int main(void)
 {
-
-
 	uart_init(230400);
 	clrscr();
 	printf("%c\x1B[?25l", ESC); // hide cursor, \x1B[?25h to show, \x1B[?25l to hide
@@ -140,11 +135,10 @@ int main(void)
 	ship_coord_t ship_coordinate = {90, 25};
 	ship_size_t ship_size = {0,0};
 	ship_hit_t ship_hit = {0,3}; // initialisere at skibet ikke er ramt og der er 3 liv tilbage
-
 	high_score_t hs = {}; // initialize high score structure and set to 0
-	bullet_t bullet[MAXBULLETS] = {};
-	gbullet_t gbullets[MAXBULLETS] = {0}; //gravitation
+	gbullet_t gbullets[MAXBULLETS] = {{}}; //gravitation
 	grav_source_t grav[max_astroids]; // gravitation
+	alien_info_t aliens[4] = {};
 	power_up_t PowerUp = {};
 	ArrowState arrow = {0,0};
 
@@ -164,7 +158,7 @@ int main(void)
 	screen = GAME;
 	difficulty = 1;
 	*/
-	gbullets_init(gbullets, MAXBULLETS); //Gravitation
+
 	while(1){
 		// check if there's still health, and reset if health is 0
 		if (ship_hit.lives <= 0) {
@@ -231,7 +225,14 @@ int main(void)
 			lcd_write_string(str, loc, buffer);
 		}
 
-		if (change !=0) switch_screen(hs, &change, screen, &arrow); // Switch screens if necessary
+		if (change !=0) {
+			switch_screen(hs, &change, screen, &arrow); // Switch screens if necessary
+			if (screen == GAME) {
+				for (int i = 0; i<4; i++) {
+					spawn_alien(aliens, i);
+				}
+			}
+		}
 
 		// game play
 		switch(screen) {
@@ -250,18 +251,14 @@ int main(void)
 				if(ship_hit.hit==1){
 					if (acc_motion_bit() == 1){
 						ship_hit.hit = 0;
-					}				// TODO tilføj ryste tjek her eller
+					}
 				}
 				if (t.flag == 1) {
-					// TODO tilføj ryste tjek her. det handler om det skal ske med et tick på skærmen (her) eller imellem, så hver gang den del af koden bliver kørt(ovenover if)
-					/*if (acc_motion_bit() == 1){
-						ship_hit.hit = 0;
-					}*/
 					t.flag = 0;
 					astroid_timer++;
 					if (astroid_timer >= astroid_spawntime){
 						astroid_timer = 0;
-						astroid_spawn(astroids, max_astroids, 170, 8, 3);
+						astroid_spawn(astroids, max_astroids, 8, 3);
 					}
 					for (int i=0; i<max_astroids; i++){
 						astroid_update(&astroids[i]);
@@ -277,10 +274,7 @@ int main(void)
 					loc.l = 0;
 					sprintf(str, "%d", current_power_up);
 					lcd_write_string(str, loc, buffer);
-					/* ship vector
-					sprintf(str, "vx: %ld, vy: %ld", ship_vec.x, ship_vec.y);
-					lcd_write_string(str, loc, buffer);
-					*/
+
 					loc.l = 3;
 					sprintf(str, "x: %ld, y: %ld", ship_coordinate.x, ship_coordinate.y);
 					lcd_write_string(str, loc, buffer);
@@ -288,9 +282,6 @@ int main(void)
 				if (t.bullet_flag == 1) {
 				    t.bullet_flag = 0;
 
-				#if USE_GRAVITY_BULLETS
-
-				    // Gravity bullets mode (only when you set USE_GRAVITY_BULLETS=1)
 				    int gN = 0;
 				    for (int k = 0; k < max_astroids; k++) {
 				        if (astroids[k].active) {
@@ -309,17 +300,6 @@ int main(void)
 				    }
 
 				    gbullets_step_and_draw(gbullets, MAXBULLETS, grav, gN, 0.05f);
-
-				#else
-
-				    // --- Original bullets mode (group-safe, default) ---
-				    if (shoot == 1) {
-				        shoot = 0;
-				        assign_bullet(bullet, ship_coordinate, ship_size);
-				    }
-				    draw_bullet(bullet);
-
-				#endif
 
 				    // PowerUp stays the same in both modes
 				    if (PowerUp.alive == 1) {
@@ -342,15 +322,3 @@ int main(void)
 		}
 	}
 }
-
-/*
-int main(void){
-	uart_init(230400);
-	acc_init();
-	while(1){
-		printf("%d\r\n", acc_motion_bit());
-		acc_delay_ms(100);
-	}
-}*/
-
-
