@@ -1,4 +1,4 @@
-/*
+ /*
  * HighScore.c
  *
  *  Created on: 12. jan. 2026

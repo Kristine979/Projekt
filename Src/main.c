@@ -20,8 +20,8 @@
 #include "powerups.h"
 #include "LED.h"
 
-#define max_astroids 8
-#define astroid_spawntime 5
+#define max_astroids 10
+#define astroid_spawntime 3
 
 /*
 int main(void) // test main
@@ -142,12 +142,19 @@ int main(void)
 
 	//astroide
 	astroid_t astroids[max_astroids];
-	int astroid_timer = 0;
+	astroid_ctrl_t astroid_ctrl;
 	int i;
 
-	for (i=0; i<max_astroids; i++){
-		astroids[i].active=0; // 0 astroider når spillet starter, de spawner efterhånden
+	/* init controller */
+	astroid_ctrl.spawn_timer = 0;
+	astroid_ctrl.spawn_interval = astroid_spawntime;
+
+	/* alle asteroider starter inaktive */
+	for (i = 0; i < max_astroids; i++) {
+	    astroids[i].active = 0;
+	    astroids[i].rng = (uint16_t)(i + 1);  // gyldigt start-seed
 	}
+
 
 	while(1){
 		// check if button have been pressed
@@ -192,7 +199,7 @@ int main(void)
 				Arrow_Update(&arrow, adc.c2);   // Flytter kun pilen
 				break;
 			case DIFF:
-				//Arrow_Update(&arrow, adc.c2);   // Flytter kun pilen
+				Arrow_Update(&arrow, adc.c2);   // Flytter kun pilen´+
 				break;
 			case HS:
 				break;
@@ -201,15 +208,15 @@ int main(void)
 			case GAME:
 				if (t.flag == 1) {
 					t.flag = 0;
-					astroid_timer++;
-					if (astroid_timer >= astroid_spawntime){
-						astroid_timer = 0;
-						astroid_spawn(astroids, max_astroids, 170, 8, 3);
+					/* spawn + opdatering */
+					astroid_spawn(astroids, max_astroids, &astroid_ctrl, 170, 8, 3);
+
+					for (i = 0; i < max_astroids; i++) {
+					astroid_update(&astroids[i]);
+					astroid_draw(&astroids[i]);
 					}
-					for (i=0; i<max_astroids; i++){
-						astroid_update(&astroids[i]);
-						astroid_draw(&astroids[i]);
-					}
+
+
 					ship_vector(&ship_vec, adc);
 					draw_ship(difficulty, ship_vec, &ship_coordinate, &ship_size);
 					loc.l = 0;
