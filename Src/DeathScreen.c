@@ -12,7 +12,7 @@
 void Death(){
 	int XD = 50;
 	int YD = 10;
-	printf("%c[%d;%dH", ESC, 2+YD, XD, "              ......................              ");
+	printf("%c[%d;%dH", ESC, 2+YD, XD);
 	printf("%c[%d;%dH", ESC, 3+YD, XD);
 	printf("%c[%d;%dH", ESC, 4+YD, XD);
 	printf("%c[%d;%dH", ESC, 5+YD, XD);

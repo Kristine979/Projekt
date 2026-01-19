@@ -24,7 +24,7 @@
 
 #define max_astroids 8
 #define astroid_spawntime 5
-
+#define DT_FP 13   // ~0.05 in Q8 (13/256)
 
 /*
 int main(void) // test main
@@ -152,6 +152,8 @@ int main(void)
 	// astroid initializers
 	astroid_t astroids[max_astroids] = {};
 	int astroid_timer = 0;
+
+	gbullets_init(gbullets, MAXBULLETS); //gravity
 
 	// for at få spillet til at virke uden joystick
 	/*
@@ -296,17 +298,18 @@ int main(void)
 				            grav[gN].y  = astroids[k].y;
 				            grav[gN].w  = 6;
 				            grav[gN].h  = 5;
-				            grav[gN].mu = 10000;   // Gravity press
+				            grav[gN].mu = 1000;
 				            gN++;
 				        }
 				    }
 
 				    if (shoot == 1) {
 				        shoot = 0;
-				        gbullet_spawn_from_ship(gbullets, MAXBULLETS, ship_coordinate, ship_size, 60.0f, 0.0f);
+				        gbullet_spawn_from_ship(gbullets, MAXBULLETS, ship_coordinate, ship_size,
+				                                60 * FP_ONE, 0);
 				    }
 
-				    gbullets_step_and_draw(gbullets, MAXBULLETS, grav, gN, 0.05f);
+				    gbullets_step_and_draw(gbullets, MAXBULLETS, grav, gN, DT_FP);
 
 
 				    // PowerUp stays the same in both modes
