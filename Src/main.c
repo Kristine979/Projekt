@@ -147,6 +147,7 @@ int main(void)
 	int prev_screen; // go from normal screen to boss key and back, depending on value
 	uint8_t PushButton = button(), CheckButton = button();
 	int shoot = 0, current_power_up = NOPOWER;
+	uint16_t points = 0;
 
 	// astroid initializers
 	astroid_t astroids[max_astroids] = {};
@@ -169,6 +170,7 @@ int main(void)
 				astroids[i].active=0;
 			}
 			PowerUp.alive = 0; PowerUp.power = 0; PowerUp.x = X2-1;
+			update_hs(&hs, points);
 		}
 		// check if button have been pressed
 		CheckButton = IsButtonChanged(&PushButton);
@@ -210,7 +212,7 @@ int main(void)
 		loc.l = 2;
 		sprintf(string, "%04ld, %04ld", adc.c1, adc.c2);
 		lcd_write_string(string, loc, buffer);
-		if (t.five_sec_counter >= 5) {
+		if (t.five_sec_counter == 5 || t.alien_led_clock == 3) {
 			setLED(0,0,0);
 			current_power_up = NOPOWER;
 		}
@@ -229,6 +231,7 @@ int main(void)
 			switch_screen(hs, &change, screen, &arrow); // Switch screens if necessary
 			if (screen == GAME) {
 				for (int i = 0; i<4; i++) {
+					aliens[i].lives = 2;
 					spawn_alien(aliens, i);
 				}
 			}
@@ -251,6 +254,7 @@ int main(void)
 				if(ship_hit.hit==1){
 					if (acc_motion_bit() == 1){
 						ship_hit.hit = 0;
+						setLED(0,0,0); // turn off LED
 					}
 				}
 				if (t.flag == 1) {
@@ -271,6 +275,9 @@ int main(void)
 					//collision check between astroids and ship
 					shipAstroidCollision(&ship_coordinate, &ship_size, astroids, &ship_hit, difficulty);
 
+					// collision check between alien and bullet
+					is_alien_hit(aliens, gbullets, &points);
+
 					loc.l = 0;
 					sprintf(str, "%d", current_power_up);
 					lcd_write_string(str, loc, buffer);
@@ -289,7 +296,7 @@ int main(void)
 				            grav[gN].y  = astroids[k].y;
 				            grav[gN].w  = 6;
 				            grav[gN].h  = 5;
-				            grav[gN].mu = 10000.0f;   // Gravity press
+				            grav[gN].mu = 10000;   // Gravity press
 				            gN++;
 				        }
 				    }
@@ -300,6 +307,7 @@ int main(void)
 				    }
 
 				    gbullets_step_and_draw(gbullets, MAXBULLETS, grav, gN, 0.05f);
+
 
 				    // PowerUp stays the same in both modes
 				    if (PowerUp.alive == 1) {

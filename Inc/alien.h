@@ -12,6 +12,10 @@
 #include "sprites.h"
 #include "defs.h"
 #include "Astroid.h"
+#include "collision.h"
+#include "gravity_bullets.h"
+#include "clock.h"
+#include "LED.h"
 
 typedef struct {
 	int lives;
@@ -21,5 +25,6 @@ typedef struct {
 
 int is_alien_here(alien_info_t *alien, int value);
 void spawn_alien(alien_info_t *alien, int j);
+void is_alien_hit(alien_info_t *alien, gbullet_t *b, uint16_t *points);
 
 #endif /* ALIEN_H_ */

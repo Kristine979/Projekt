@@ -37,6 +37,6 @@ void TIM1_BRK_TIM15_IRQHandler() {
 	if (t.bullet_speed_counter == 10) {t.bullet_speed_counter = 0; t.bullet_flag = 1;}
 	if (t.cs == 1 || t.cs==50) t.flag = 1;
 	if (t.s == 10 && t.cs == 1) t.pu_flag = 1;
-	if (t.cs == 1) t.counter_flag = 1;
+	if (t.cs == 1) {t.counter_flag = 1; t.alien_led_clock+=1;}
 	TIM15->SR &= ~0x0001; // Clear interrupt bit
 }

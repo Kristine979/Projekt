@@ -10,7 +10,7 @@
 #include "defs.h"
 
 typedef struct {
-int32_t h, m, s, cs, counter_flag, flag, bullet_speed_counter, bullet_flag, pu_flag, five_sec_counter;
+int32_t h, m, s, cs, counter_flag, flag, bullet_speed_counter, bullet_flag, pu_flag, five_sec_counter, alien_led_clock;
 } times_t;
 
 times_t t;

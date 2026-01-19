@@ -35,7 +35,7 @@ int did_ship_hit_power_up(power_up_t pu, ship_coord_t sc, ship_size_t ss, int *c
 }
 
 void spawn_power_up(power_up_t *pu) {
-	pu->x = X2-1;
+	pu->x = X2-8;
 	pu->y = 20;
 }
 
