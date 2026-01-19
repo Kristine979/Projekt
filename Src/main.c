@@ -188,6 +188,7 @@ int main(void)
 			case GAMEOVER:
 				change = 1;
 				screen = MENU;
+				setLED(0,0,0);
 				break;
 			case DIFF:
 				change = 1;

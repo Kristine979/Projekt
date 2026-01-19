@@ -1,9 +1,5 @@
 #include "gravity_bullets.h"
 
-#ifndef ESC
-#define ESC 0x1B
-#endif
-
 // TUNING
 #define BULLET_CHAR   'O'
 
@@ -62,8 +58,8 @@ static void gravity_accel_at(const gbullet_t *p,
 
     for (int i = 0; i < src_n; i++) {
         // Rectangle center (asteroid)
-        int32_t cx = (int32_t)src[i].x + (src[i].w / 2);
-        int32_t cy = (int32_t)src[i].y + (src[i].h / 2);
+        int32_t cx = (int32_t)src[i].x + (src[i].w >> 1);
+        int32_t cy = (int32_t)src[i].y + (src[i].h >> 1);
 
         int32_t dx = cx - px;
         int32_t dy = cy - py;
@@ -155,8 +151,8 @@ void gbullets_step_and_draw(gbullet_t *b, int n,
         b[i].y_fp += (b[i].vy_fp * dt_fp) >> FP_SHIFT;
 
         // Convert to integer screen cells (rounded)
-        int xi = (int)((b[i].x_fp + (FP_ONE/2)) >> FP_SHIFT);
-        int yi = (int)((b[i].y_fp + (FP_ONE/2)) >> FP_SHIFT);
+        int xi = (int)((b[i].x_fp + (FP_ONE>>1)) >> FP_SHIFT);
+        int yi = (int)((b[i].y_fp + (FP_ONE>>1)) >> FP_SHIFT);
 
         // 4) If it flies out of the playing field (inside the frame)
         if (xi < PLAY_X1 || xi > PLAY_X2 || yi < PLAY_Y1 || yi > PLAY_Y2) {
