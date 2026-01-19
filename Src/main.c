@@ -134,32 +134,20 @@ int main(void)
 	ship_size_t ship_size = {0,0};
 	ship_hit_t ship_hit = {0,3}; // initialisere at skibet ikke er ramt og der er 3 liv tilbage
 
-
-
 	high_score_t hs = {}; // initialize high score structure and set to 0
 	bullet_t bullet[MAXBULLETS] = {};
 	power_up_t PowerUp = {};
 	ArrowState arrow = {0,0};
 
 	// variables initializers
-	int screen = MENU, change = 0, difficulty = 1; // int to decide what screen is shown, and change to know whether the screen needs to change
+	int screen = MENU, change = 1, difficulty = 1; // int to decide what screen is shown, and change to know whether the screen needs to change
 	int prev_screen; // go from normal screen to boss key and back, depending on value
 	uint8_t PushButton = button(), CheckButton = button();
 	int shoot = 0, current_power_up = NOPOWER;
 
-	// draw screen
-	window(); // draw window
-	menu(); // draw menu
-
-
-	// astroide
-	astroid_t astroids[max_astroids];
+	// astroid initializers
+	astroid_t astroids[max_astroids] = {};
 	int astroid_timer = 0;
-	int i;
-
-	for (i=0; i<max_astroids; i++){
-		astroids[i].active=0; // 0 astroider når spillet starter, de spawner efterhånden
-	}
 
 	// for at få spillet til at virke uden joystick
 	/*
@@ -169,27 +157,42 @@ int main(void)
 	*/
 
 	while(1){
+		// check if there's still health, and reset if health is 0
+		if (ship_hit.lives <= 0) {
+			screen = GAMEOVER;
+			change = 1;
+			ship_hit.lives = 3;
+			ship_coordinate.x = 90; ship_coordinate.y = 25;
+			for (int i = 0; i < max_astroids; i++) {
+				astroids[i].active=0;
+			}
+			PowerUp.alive = 0; PowerUp.power = 0; PowerUp.x = X2-1;
+		}
 		// check if button have been pressed
 		CheckButton = IsButtonChanged(&PushButton);
 		if (CheckButton==WHITE) {
-			if (screen == MENU)	{
+			switch (screen) {
+			case MENU:
 				Arrow_Clear(&arrow);
 				change = 1;
 				screen = arrow.index+1;
-			}
-			else if (screen == HS || screen == HELP) {
+				break;
+			case HS:
+			case HELP:
+			case GAMEOVER:
 				change = 1;
 				screen = MENU;
-			}
-			else if (screen == DIFF) {
+				break;
+			case DIFF:
 				change = 1;
 				screen = GAME;
 				if (arrow.index == 0) difficulty = 1;
 				if (arrow.index == 1) difficulty = 2;
 				if (arrow.index == 2) difficulty = 3;
-			}
-			else if (screen == GAME) {
+				break;
+			case GAME:
 				shoot = 1;
+				break;
 			}
 		}
 		if (CheckButton==RED) {
@@ -198,8 +201,7 @@ int main(void)
 		}
 
 		// check if ADC have been changed
-		ADC_config(2);   // joystick Y
-		ADC_measure(&adc);
+		check_ADC(&adc);
 
 		// LCD setup
 		loc.l = 2;
@@ -252,7 +254,7 @@ int main(void)
 						astroid_timer = 0;
 						astroid_spawn(astroids, max_astroids, 170, 8, 3);
 					}
-					for (i=0; i<max_astroids; i++){
+					for (int i=0; i<max_astroids; i++){
 						astroid_update(&astroids[i]);
 						astroid_draw(&astroids[i]);
 					}
@@ -297,6 +299,8 @@ int main(void)
 					if (PowerUp.power < 4) PowerUp.power += 1;
 					else PowerUp.power = 1;
 				}
+				break;
+			case GAMEOVER:
 				break;
 			case BOSS:
 				break;

@@ -18,6 +18,7 @@
 #define HELP 3
 #define GAME 4
 #define BOSS 5
+#define GAMEOVER 6
 #define NOPUSH 0
 #define WHITE 1
 #define RED 2

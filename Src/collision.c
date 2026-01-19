@@ -29,6 +29,7 @@ char shipAstroidCollision(ship_coord_t *ship_coord, ship_size_t *ship_size, astr
 			//clear astroid
 			astroid_clear(&astroids[i]);
 			astroids[i].active = 0;
+			astroids[i].x = 200; astroids[i].y = 0;
 			ship_4_sprite(ship_coord->x, ship_coord->y);
 			ship_hit->hit = 1; //skib hit = true (1)
 			ship_hit->lives -= 1; // reducere antal liv med 1

@@ -85,6 +85,12 @@ void ADC_measure(ADC_t *adc) {
 	adc->c2 = ADC_GetConversionValue(ADC1); // Read the ADC value
 }
 
+void check_ADC(ADC_t *adc) {
+	// check if ADC have been changed
+	ADC_config(2);   // joystick Y
+	ADC_measure(adc);
+}
+
 uint8_t button() {
 	uint8_t output = NOPUSH;
 	uint16_t val;
@@ -105,3 +111,4 @@ uint8_t IsButtonChanged(uint8_t *pb) {
 	}
 	else return NOPUSH;
 }
+
