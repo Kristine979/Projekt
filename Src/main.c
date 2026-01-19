@@ -21,8 +21,12 @@
 #include "LED.h"
 #include "accelerometer.h"
 
+#define USE_GRAVITY_BULLETS 1
+#include "gravity_bullets.h"
+
 #define max_astroids 8
 #define astroid_spawntime 5
+
 
 /*
 int main(void) // test main
@@ -108,6 +112,8 @@ int main(void) // Aliens
 
 int main(void)
 {
+
+
 	uart_init(230400);
 	clrscr();
 	printf("%c\x1B[?25l", ESC); // hide cursor, \x1B[?25h to show, \x1B[?25l to hide
@@ -138,6 +144,8 @@ int main(void)
 
 	high_score_t hs = {}; // initialize high score structure and set to 0
 	bullet_t bullet[MAXBULLETS] = {};
+	gbullet_t gbullets[MAXBULLETS] = {0}; //gravitation
+	grav_source_t grav[max_astroids]; // gravitation
 	power_up_t PowerUp = {};
 	ArrowState arrow = {0,0};
 
@@ -167,7 +175,7 @@ int main(void)
 	screen = GAME;
 	difficulty = 1;
 	*/
-
+	gbullets_init(gbullets, MAXBULLETS); //Gravitation
 	while(1){
 		// check if button have been pressed
 		CheckButton = IsButtonChanged(&PushButton);
@@ -276,18 +284,45 @@ int main(void)
 					lcd_write_string(str, loc, buffer);
 				}
 				if (t.bullet_flag == 1) {
-					// bullets
-					t.bullet_flag = 0;
-					if (shoot == 1) {
-						shoot = 0;
-						assign_bullet (bullet, ship_coordinate, ship_size);
-					}
-					draw_bullet(bullet);
+				    t.bullet_flag = 0;
 
-					// move power up symbol
-					if (PowerUp.alive == 1)	{
-						move_power_up(&PowerUp, PowerUp, ship_coordinate, ship_size, &current_power_up, &ship_hit);
-					}
+				#if USE_GRAVITY_BULLETS
+
+				    // Gravity bullets mode (only when you set USE_GRAVITY_BULLETS=1)
+				    int gN = 0;
+				    for (int k = 0; k < max_astroids; k++) {
+				        if (astroids[k].active) {
+				            grav[gN].x  = astroids[k].x;
+				            grav[gN].y  = astroids[k].y;
+				            grav[gN].w  = 6;
+				            grav[gN].h  = 5;
+				            grav[gN].mu = 10000.0f;   // Gravity press
+				            gN++;
+				        }
+				    }
+
+				    if (shoot == 1) {
+				        shoot = 0;
+				        gbullet_spawn_from_ship(gbullets, MAXBULLETS, ship_coordinate, ship_size, 60.0f, 0.0f);
+				    }
+
+				    gbullets_step_and_draw(gbullets, MAXBULLETS, grav, gN, 0.05f);
+
+				#else
+
+				    // --- Original bullets mode (group-safe, default) ---
+				    if (shoot == 1) {
+				        shoot = 0;
+				        assign_bullet(bullet, ship_coordinate, ship_size);
+				    }
+				    draw_bullet(bullet);
+
+				#endif
+
+				    // PowerUp stays the same in both modes
+				    if (PowerUp.alive == 1) {
+				        move_power_up(&PowerUp, PowerUp, ship_coordinate, ship_size, &current_power_up, &ship_hit);
+				    }
 				}
 				// spawn power up
 				if (t.pu_flag == 1) {
