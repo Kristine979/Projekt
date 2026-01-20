@@ -138,7 +138,7 @@ int main(void)
 	high_score_t hs = {}; // initialize high score structure and set to 0
 	gbullet_t gbullets[MAXBULLETS] = {{}}; //gravitation
 	grav_source_t grav[max_astroids]; // gravitation
-	alien_info_t aliens[4] = {};
+	alien_info_t aliens[9] = {};
 	power_up_t PowerUp = {};
 	ArrowState arrow = {0,0};
 
@@ -148,6 +148,7 @@ int main(void)
 	uint8_t PushButton = button(), CheckButton = button();
 	int shoot = 0, current_power_up = NOPOWER;
 	uint16_t points = 0;
+	int alien_amount = 4;
 
 	// astroid initializers
 	astroid_t astroids[max_astroids] = {};
@@ -174,6 +175,7 @@ int main(void)
 			PowerUp.alive = 0; PowerUp.power = 0; PowerUp.x = X2-1;
 			update_hs(&hs, points);
 		}
+
 		// check if button have been pressed
 		CheckButton = IsButtonChanged(&PushButton);
 		if (CheckButton==WHITE) {
@@ -233,9 +235,9 @@ int main(void)
 		if (change !=0) {
 			switch_screen(hs, &change, screen, &arrow); // Switch screens if necessary
 			if (screen == GAME) {
-				for (int i = 0; i<4; i++) {
+				for (int i = 0; i<alien_amount; i++) {
 					aliens[i].lives = 2;
-					spawn_alien(aliens, i);
+					spawn_alien(aliens, i, alien_amount);
 				}
 			}
 		}
@@ -253,6 +255,8 @@ int main(void)
 			case HELP:
 				break;
 			case GAME:
+				// check if any aliens are alive
+				is_alien_alive(aliens, &change, &screen, alien_amount);
 
 				if(ship_hit.hit==1){
 					if (acc_motion_bit() == 1){
@@ -261,7 +265,7 @@ int main(void)
 					}
 				}
 				// collision check between alien and bullet
-				is_alien_hit(aliens, gbullets, &points);
+				is_alien_hit(aliens, gbullets, &points, alien_amount);
 
 				if (t.flag == 1) {
 					t.flag = 0;
@@ -329,6 +333,8 @@ int main(void)
 			case GAMEOVER:
 				break;
 			case BOSS:
+				break;
+			case NEXTLEVEL:
 				break;
 		}
 	}
