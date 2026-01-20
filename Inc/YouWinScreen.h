@@ -7,8 +7,7 @@
 
 #ifndef YOUWINSCREEN_H_
 #define YOUWINSCREEN_H_
-
-#include "menu.h"
+#include "defs.h"
 
 void youwin();
 

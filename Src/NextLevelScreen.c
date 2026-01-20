@@ -10,8 +10,8 @@
 #include "menu.h"
 
 void NextLevelScreen(){
-	int XL = 70;
-	int YL = 10;
+	int XL = 50;
+	int YL = 15;
 	printf("%c[%d;%dH#     # ####### #     # #######        #       ####### #     # ####### #      ", ESC, 2+YL, XL);
 	printf("%c[%d;%dH##    # #        #   #     #           #       #       #     # #       #      ", ESC, 3+YL, XL);
 	printf("%c[%d;%dH# #   # #         # #      #           #       #       #     # #       #      ", ESC, 4+YL, XL);
