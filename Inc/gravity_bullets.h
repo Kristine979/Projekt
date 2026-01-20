@@ -45,11 +45,11 @@ void gbullets_init(gbullet_t *b, int n);
 
 void gbullet_spawn(gbullet_t *b, int n,
                    int16_t x, int16_t y,
-                   int32_t vx_fp, int32_t vy_fp);
+                   int32_t vx_fp, int32_t vy_fp, int spawn);
 
 void gbullet_spawn_from_ship(gbullet_t *b, int n,
                              ship_coord_t sc, ship_size_t ss,
-                             int32_t vx_fp, int32_t vy_fp);
+                             int32_t vx_fp, int32_t vy_fp, int power);
 
 /*
     One physics step + draw.
@@ -59,9 +59,12 @@ void gbullet_spawn_from_ship(gbullet_t *b, int n,
 */
 void gbullets_step_and_draw(gbullet_t *b, int n,
                             const grav_source_t *src, int src_n,
-                            int32_t dt_fp);
+                            int32_t dt_fp, int power);
 
 // Auxiliary
 int point_in_rect(int px, int py, int rx, int ry, int rw, int rh);
+
+void draw_strong_bullet(gbullet_t *b);
+void erase_strong_bullets(gbullet_t *b);
 
 #endif

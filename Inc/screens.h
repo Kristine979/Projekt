@@ -12,6 +12,8 @@
 #include "HighScore.h"
 #include "Difficulty.h"
 #include "Help.h"
+#include "DeathScreen.h"
+#include "NextLevelScreen.h"
 
 void switch_screen(high_score_t hs, int *change, int screen, ArrowState *a);
 

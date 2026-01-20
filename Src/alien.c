@@ -27,7 +27,7 @@ void spawn_alien(alien_info_t *alien, int j, int alien_amount){
 }
 
 
-void is_alien_hit(alien_info_t *alien, gbullet_t *b, uint16_t *points, int alien_amount) {
+void is_alien_hit(alien_info_t *alien, gbullet_t *b, int16_t *points, int alien_amount) {
     for (int i = 0; i<alien_amount; i++) {
     	for (int j = 0; j<MAXBULLETS; j++) {
     		if (collision(alien[i].x, alien[i].y, 3,5, b[j].x_fp>>8, b[j].y_fp>>8, 1, 1) && b[j].alive == 1) { // check if aliens are hit
@@ -52,5 +52,5 @@ void is_alien_alive(alien_info_t alien[], int *change, int *screen, int alien_am
 			count += 1;
 		}
 	}
-	if (count > 3) {*change=1; *screen = NEXTLEVEL;}
+	if (count >= alien_amount) {*change=1; *screen = NEXTLEVEL; t.five_sec_counter = 0;}
 }

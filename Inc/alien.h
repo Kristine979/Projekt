@@ -25,7 +25,7 @@ typedef struct {
 
 int is_alien_here(alien_info_t *alien, int value, int alien_amount);
 void spawn_alien(alien_info_t *alien, int j, int alien_amount);
-void is_alien_hit(alien_info_t *alien, gbullet_t *b, uint16_t *points, int alien_amount);
+void is_alien_hit(alien_info_t *alien, gbullet_t *b, int16_t *points, int alien_amount);
 void is_alien_alive(alien_info_t alien[], int *change, int *screen, int alien_amount);
 
 #endif /* ALIEN_H_ */

@@ -27,16 +27,17 @@ void TIM1_BRK_TIM15_IRQHandler() {
 		if (t.s < 59) {t.s += 1; t.five_sec_counter +=1;}
 		else {
 			t.s = 0;
-			if (t.m < 59) {t.m += 1;}
-			else {
-				t.m = 0;
-			}
+			t.m += 1;
 		}
 	}
 	t.bullet_speed_counter += 1;
-	if (t.bullet_speed_counter == 10) {t.bullet_speed_counter = 0; t.bullet_flag = 1;}
+	t.astroid_clock += 1;
+	if (t.astroid_clock == 5) {t.astroid_clock = 0; t.astroid_flag += 1;}
+	if (t.bullet_speed_counter == 5) {t.bullet_speed_counter = 0; t.bullet_flag += 1;}
 	if (t.cs == 1 || t.cs==50) t.flag = 1;
 	if (t.s == 10 && t.cs == 1) t.pu_flag = 1;
 	if (t.cs == 1) {t.counter_flag = 1; t.alien_led_clock+=1;}
+	if (t.cs == 1 ||t.cs == 10 || t.cs == 20 || t.cs == 30 || t.cs == 40
+			||t.cs == 50 || t.cs == 60 || t.cs == 70 || t.cs == 80 || t.cs == 90) {t.ship_clock += 1;}
 	TIM15->SR &= ~0x0001; // Clear interrupt bit
 }

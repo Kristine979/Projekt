@@ -39,6 +39,7 @@ void switch_screen(high_score_t hs, int *change, int screen, ArrowState *a){
 			Death();
 			break;
 		case NEXTLEVEL:
+			NextLevelScreen();
 			break;
 	}
 	*change = 0; // stop the screens from changing

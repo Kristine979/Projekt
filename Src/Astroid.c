@@ -44,7 +44,7 @@ void astroid_draw(const astroid_t *a){
 int rand_range() {
 	uint8_t random = rand();
 	random>>=2;
-	if (random>50) random -= 20;
+	if (random>48) random -= 20;
     return (random+1);
 }
 

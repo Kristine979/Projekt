@@ -10,9 +10,10 @@
 #include "ship.h"
 #include "Astroid.h"
 #include "sprites.h"
-
+#include "LED.h"
 
 char collision(int x1, int y1, int h1, int w1, int x2, int y2, int h2, int w2);
-char shipAstroidCollision(ship_coord_t *ship_coord, ship_size_t *ship_size, astroid_t *astroids, ship_hit_t *ship_hit, int diff);
+char shipAstroidCollision(ship_coord_t *ship_coord, ship_size_t *ship_size, astroid_t *astroids,
+		ship_hit_t *ship_hit, int diff, int16_t *points);
 
 #endif /* COLLISION_H_ */

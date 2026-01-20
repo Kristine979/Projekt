@@ -22,7 +22,7 @@ void ship_vector(ship_vector_t *sv, ADC_t adc) {
 }
 
 void draw_ship(int diff, ship_vector_t sv, ship_coord_t *sc, ship_size_t *ss, ship_hit_t *ship_hit){ /*TODO tilføj bool som argument*/
-	if (sv.x+sc->x > 2 && sv.x+sc->x < 170 && sc->y-sv.y > 2 && sc->y-sv.y < 50 && ship_hit->hit == 0) {
+	if (sv.x+sc->x > 2 && sv.x+sc->x < 167 && sc->y-sv.y > 1 && sc->y-sv.y < 52 && ship_hit->hit == 0) {
 		// remove current ship
 		for (int iy = 0; iy<ss->h; iy++) {
 			printf("%c[%ld;%ldH", ESC, sc->y+iy, sc->x);

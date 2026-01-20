@@ -7,7 +7,6 @@
 
 
 #include "DeathScreen.h"
-#include "menu.h"
 
 void Death(){
 	int XD = 70;

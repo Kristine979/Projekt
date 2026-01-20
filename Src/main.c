@@ -139,16 +139,17 @@ int main(void)
 	gbullet_t gbullets[MAXBULLETS] = {{}}; //gravitation
 	grav_source_t grav[max_astroids]; // gravitation
 	alien_info_t aliens[9] = {};
-	power_up_t PowerUp = {};
+	power_up_t PowerUp = {0,0,1,0};
 	ArrowState arrow = {0,0};
 
 	// variables initializers
 	int screen = MENU, change = 1, difficulty = 1; // int to decide what screen is shown, and change to know whether the screen needs to change
 	int prev_screen; // go from normal screen to boss key and back, depending on value
 	uint8_t PushButton = button(), CheckButton = button();
-	int shoot = 0, current_power_up = NOPOWER;
-	uint16_t points = 0;
-	int alien_amount = 4;
+	int shoot = 0, current_power_up = NOPOWER, faster_bullets;
+	int16_t points = 0;
+	int alien_amount = 2;
+	int astroid_modifier = 14;
 
 	// astroid initializers
 	astroid_t astroids[max_astroids] = {};
@@ -164,6 +165,10 @@ int main(void)
 	*/
 
 	while(1){
+		loc.l = 3;
+		sprintf(str, "x: %ld, y: %ld  ", ship_coordinate.x, ship_coordinate.y);
+		lcd_write_string(str, loc, buffer);
+
 		// check if there's still health, and reset if health is 0
 		if (ship_hit.lives <= 0) {
 			screen = GAMEOVER;
@@ -172,8 +177,11 @@ int main(void)
 			for (int i = 0; i < max_astroids; i++) {
 				astroids[i].active=0;
 			}
-			PowerUp.alive = 0; PowerUp.power = 0; PowerUp.x = X2-1;
+			PowerUp.alive = 0; PowerUp.power = 1; PowerUp.x = X2-1;
 			update_hs(&hs, points);
+			alien_amount = 2;
+			ship_coordinate.x = 90; ship_coordinate.y = 20;
+			astroid_modifier = 16;
 		}
 
 		// check if button have been pressed
@@ -198,7 +206,6 @@ int main(void)
 				if (arrow.index == 0) difficulty = 1;
 				if (arrow.index == 1) difficulty = 2;
 				if (arrow.index == 2) difficulty = 3;
-				ship_coordinate.x = 90; ship_coordinate.y = 25;
 				break;
 			case GAME:
 				shoot = 1;
@@ -217,8 +224,9 @@ int main(void)
 		loc.l = 2;
 		sprintf(string, "%04ld, %04ld", adc.c1, adc.c2);
 		lcd_write_string(string, loc, buffer);
-		if (t.five_sec_counter == 5 || t.alien_led_clock == 3) {
+		if (t.five_sec_counter == 30 || t.alien_led_clock == 3) {
 			setLED(0,0,0);
+			if (current_power_up == STRONGERBULLETS) erase_strong_bullets(gbullets);
 			current_power_up = NOPOWER;
 		}
 		loc.l = 1;
@@ -228,7 +236,7 @@ int main(void)
 		if (t.counter_flag == 1) {
 			t.counter_flag = 0;
 			loc.l = 1;
-			sprintf(str, "t: %02ld, min: %02ld, s: %02ld", t.h, t.m, t.s);
+			sprintf(str, "min: %02ld, s: %02ld", t.m, t.s);
 			lcd_write_string(str, loc, buffer);
 		}
 
@@ -267,8 +275,9 @@ int main(void)
 				// collision check between alien and bullet
 				is_alien_hit(aliens, gbullets, &points, alien_amount);
 
-				if (t.flag == 1) {
-					t.flag = 0;
+				// update asteroid position
+				if (t.astroid_flag > astroid_modifier) {
+					t.astroid_flag = 0;
 					astroid_timer++;
 					if (astroid_timer >= astroid_spawntime){
 						astroid_timer = 0;
@@ -278,24 +287,28 @@ int main(void)
 						astroid_update(&astroids[i]);
 						astroid_draw(&astroids[i]);
 					}
+					//collision check between astroids and ship
+					shipAstroidCollision(&ship_coordinate, &ship_size, astroids, &ship_hit, difficulty, &points);
+				}
+				if (t.ship_clock > difficulty) {
+					t.ship_clock = 0;
 					ship_vector(&ship_vec, adc);
 
 					draw_ship(difficulty, ship_vec, &ship_coordinate, &ship_size, &ship_hit);
-
-					//collision check between astroids and ship
-					shipAstroidCollision(&ship_coordinate, &ship_size, astroids, &ship_hit, difficulty);
 
 					loc.l = 0;
 					sprintf(str, "%d", current_power_up);
 					lcd_write_string(str, loc, buffer);
 
-					loc.l = 3;
-					sprintf(str, "x: %ld, y: %ld", ship_coordinate.x, ship_coordinate.y);
-					lcd_write_string(str, loc, buffer);
+					//collision check between astroids and ship
+					shipAstroidCollision(&ship_coordinate, &ship_size, astroids, &ship_hit, difficulty, &points);
 				}
-				if (t.bullet_flag == 1) {
-				    t.bullet_flag = 0;
 
+				// bullets and powerup
+				if (current_power_up != FASTERBULLETS) faster_bullets = 1;
+				else faster_bullets = 0;
+				if (t.bullet_flag > faster_bullets) {
+				    t.bullet_flag = 0;
 				    int gN = 0;
 				    for (int k = 0; k < max_astroids; k++) {
 				        if (astroids[k].active) {
@@ -310,17 +323,33 @@ int main(void)
 
 				    if (shoot == 1) {
 				        shoot = 0;
+				        if (current_power_up != MULTIPLEBULLETS) {
 				        gbullet_spawn_from_ship(gbullets, MAXBULLETS, ship_coordinate, ship_size,
-				                                60 * FP_ONE, 0);
+				                                60 * FP_ONE, 0, current_power_up);
+				        }
+				        else if (current_power_up == MULTIPLEBULLETS) { // multiple bullets
+					        gbullet_spawn_from_ship(gbullets, MAXBULLETS, ship_coordinate, ship_size,
+					                                60 * FP_ONE, 0, current_power_up);
+					        gbullet_spawn_from_ship(gbullets, MAXBULLETS, ship_coordinate, ship_size,
+					                                60 * FP_ONE, 10<<8, current_power_up);
+					        gbullet_spawn_from_ship(gbullets, MAXBULLETS, ship_coordinate, ship_size,
+					                                60 * FP_ONE, 20<<8, current_power_up);
+					        gbullet_spawn_from_ship(gbullets, MAXBULLETS, ship_coordinate, ship_size,
+					                                60 * FP_ONE, -10<<8, current_power_up);
+					        gbullet_spawn_from_ship(gbullets, MAXBULLETS, ship_coordinate, ship_size,
+					                                60 * FP_ONE, -20<<8, current_power_up);
+				        }
 				    }
-
-				    gbullets_step_and_draw(gbullets, MAXBULLETS, grav, gN, DT_FP);
+				    if (current_power_up != STRONGERBULLETS) gbullets_step_and_draw(gbullets, MAXBULLETS, grav, gN,
+				    		DT_FP, current_power_up);
+				    else draw_strong_bullet(gbullets);
 
 				    // PowerUp stays the same in both modes
 				    if (PowerUp.alive == 1) {
 				        move_power_up(&PowerUp, PowerUp, ship_coordinate, ship_size, &current_power_up, &ship_hit);
 				    }
 				}
+
 				// spawn power up
 				if (t.pu_flag == 1) {
 					spawn_power_up(&PowerUp);
@@ -335,6 +364,13 @@ int main(void)
 			case BOSS:
 				break;
 			case NEXTLEVEL:
+				if (t.five_sec_counter > 5) {
+					change = 1;
+					screen = GAME;
+					alien_amount += 1;
+					astroid_modifier -= 2;
+					for (int i = 0; i<MAXBULLETS; i++) gbullets->alive = 0;
+				}
 				break;
 		}
 	}

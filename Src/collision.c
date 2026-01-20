@@ -21,7 +21,8 @@ char collision(
 }
 
 
-char shipAstroidCollision(ship_coord_t *ship_coord, ship_size_t *ship_size, astroid_t *astroids, ship_hit_t *ship_hit, int diff){
+char shipAstroidCollision(ship_coord_t *ship_coord, ship_size_t *ship_size, astroid_t *astroids,
+		ship_hit_t *ship_hit, int diff, int16_t *points){
 	for (int i = 0; i < 8; ++i) {
 		if (collision(ship_coord->x, ship_coord->y, ship_size->h, ship_size->l,
 			(int)(astroids[i]).x, (int)(astroids[i]).y, 5, 6
@@ -43,6 +44,7 @@ char shipAstroidCollision(ship_coord_t *ship_coord, ship_size_t *ship_size, astr
 			}
 			ship_hit->hit = 1; //skib hit = true (1)
 			ship_hit->lives -= 1; // reducere antal liv med 1
+			if (*points >= 5) *points -= 5;
 			setLED(0,1,0); // glow red when stuck
 		}
 	}
