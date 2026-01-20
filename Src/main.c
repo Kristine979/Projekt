@@ -62,7 +62,7 @@ int main(void)
 	int prev_screen; // go from normal screen to boss key and back, depending on value
 	uint8_t PushButton = button(), CheckButton = button();
 	int shoot = 0, current_power_up = NOPOWER, faster_bullets; int16_t points = 0;
-	int alien_amount = 2; int astroid_modifier = 14;
+	int alien_amount = 9; int astroid_modifier = 14;
 
 	// astroid initializers
 	astroid_t astroids[max_astroids] = {}; int astroid_timer = 0;
@@ -271,8 +271,20 @@ int main(void)
 				if (t.five_sec_counter > 5) {
 					change = 1;
 					alien_amount += 1;
-					if (alien_amount >= 9) {screen = GAME, ship_hit.lives = 0;}
-					else screen = WIN;
+					if (alien_amount <= 9) screen = GAME;
+					else {
+						screen = WIN;
+						ship_hit.lives = 3;
+						for (int i = 0; i < max_astroids; i++) {
+							astroids[i].active=0;
+						}
+						PowerUp.alive = 0; PowerUp.power = 1; PowerUp.x = X2-1;
+						update_hs(&hs, points);
+						points = 0;
+						alien_amount = 2;
+						ship_coordinate.x = 90; ship_coordinate.y = 20;
+						astroid_modifier = 16;
+					}
 					astroid_modifier -= 2;
 					for (int i = 0; i<MAXBULLETS; i++) gbullets->alive = 0;
 				}
