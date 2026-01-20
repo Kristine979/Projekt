@@ -260,6 +260,9 @@ int main(void)
 						setLED(0,0,0); // turn off LED
 					}
 				}
+				// collision check between alien and bullet
+				is_alien_hit(aliens, gbullets, &points);
+
 				if (t.flag == 1) {
 					t.flag = 0;
 					astroid_timer++;
@@ -308,9 +311,6 @@ int main(void)
 				    }
 
 				    gbullets_step_and_draw(gbullets, MAXBULLETS, grav, gN, DT_FP);
-
-					// collision check between alien and bullet
-					is_alien_hit(aliens, gbullets, &points);
 
 				    // PowerUp stays the same in both modes
 				    if (PowerUp.alive == 1) {

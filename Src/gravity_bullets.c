@@ -3,15 +3,6 @@
 // TUNING
 #define BULLET_CHAR   'o'
 
-// Softening: larger => softer near asteroid (less sudden jerks)
-// Units are "cells^2"
-#define SOFTEN_R2     (9*9)
-
-// Very light damping (1.0 = off) but in integer form
-// vx = vx * DAMP_NUM / DAMP_DEN
-#define DAMP_NUM      999
-#define DAMP_DEN      1000
-
 // Cutoff: gravity only applies within a radius GRAV_RMAX from asteroid
 // Units are "cells"
 #define GRAV_RMAX     8
@@ -68,9 +59,6 @@ static void gravity_accel_at(const gbullet_t *p,
 
         // 1) cutoff: if far away, no effect
         if (r2 > GRAV_RMAX2) continue;
-
-        // 2) softening: if too close, limit force
-        if (r2 < SOFTEN_R2) r2 = SOFTEN_R2;
 
         // ax_fp += (mu * dx * FP_ONE) / r2
         // Approx gravity without division:
