@@ -11,6 +11,7 @@
 #include "ship.h"
 #include "LED.h"
 #include "clock.h"
+#include "Astroid.h"
 
 /* Powerups:
  * Multiple bullets (5)

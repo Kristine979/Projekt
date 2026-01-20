@@ -128,7 +128,6 @@ int main(void)
 	uint8_t buffer[512]; // set up buffer for lcd
 	clear_lcd(buffer); // clear lcd screen
 	char str[25]; // string used to write to lcd
-	char string[15];
 
 	// struct initializers
 	ADC_t adc;
@@ -145,7 +144,7 @@ int main(void)
 	ArrowState arrow = {0,0};
 
 	// variables initializers
-	int screen = GAME, change = 1, difficulty = 1; // int to decide what screen is shown, and change to know whether the screen needs to change
+	int screen = MENU, change = 1, difficulty = 1; // int to decide what screen is shown, and change to know whether the screen needs to change
 	int prev_screen; // go from normal screen to boss key and back, depending on value
 	uint8_t PushButton = button(), CheckButton = button();
 	int shoot = 0, current_power_up = NOPOWER, faster_bullets;
@@ -160,18 +159,7 @@ int main(void)
 
 	gbullets_init(gbullets, MAXBULLETS); //gravity
 
-	// for at få spillet til at virke uden joystick
-	/*
-	change = 1;
-	screen = GAME;
-	difficulty = 1;
-	*/
-
 	while(1){
-		loc.l = 3;
-		sprintf(str, "x: %ld, y: %ld  ", ship_coordinate.x, ship_coordinate.y);
-		lcd_write_string(str, loc, buffer);
-
 		// check if there's still health, and reset if health is 0
 		if (ship_hit.lives <= 0) {
 			screen = GAMEOVER;
@@ -182,6 +170,7 @@ int main(void)
 			}
 			PowerUp.alive = 0; PowerUp.power = 1; PowerUp.x = X2-1;
 			update_hs(&hs, points);
+			points = 0;
 			alien_amount = 2;
 			ship_coordinate.x = 90; ship_coordinate.y = 20;
 			astroid_modifier = 16;
@@ -206,6 +195,7 @@ int main(void)
 			case DIFF:
 				change = 1;
 				screen = GAME;
+				t.m = 0; t.s = 0;
 				if (arrow.index == 0) difficulty = 1;
 				if (arrow.index == 1) difficulty = 2;
 				if (arrow.index == 2) difficulty = 3;
@@ -224,22 +214,25 @@ int main(void)
 		check_ADC(&adc);
 
 		// LCD setup
-		loc.l = 2;
-		sprintf(string, "%04ld, %04ld", adc.c1, adc.c2);
-		lcd_write_string(string, loc, buffer);
 		if (t.five_sec_counter == 30 || t.alien_led_clock == 3) {
 			setLED(0,0,0);
 			if (current_power_up == STRONGERBULLETS) erase_strong_bullets(gbullets);
 			current_power_up = NOPOWER;
 		}
-		loc.l = 1;
-		lcd_write_heart(ship_hit.lives, loc, buffer);
 
-		// counter on LCD
+		// print out on LCD and HUD
 		if (t.counter_flag == 1) {
 			t.counter_flag = 0;
+			//lives
+			loc.l = 0;
+			lcd_write_heart(ship_hit.lives, loc, buffer);
+			//timer
 			loc.l = 1;
 			sprintf(str, "min: %02ld, s: %02ld", t.m, t.s);
+			lcd_write_string(str, loc, buffer);
+			//score
+			loc.l = 2;
+			sprintf(str, "Score: %05d", points);
 			lcd_write_string(str, loc, buffer);
 
 			if (screen == GAME) {
@@ -311,10 +304,6 @@ int main(void)
 					ship_vector(&ship_vec, adc);
 
 					draw_ship(difficulty, ship_vec, &ship_coordinate, &ship_size, &ship_hit);
-
-					loc.l = 0;
-					sprintf(str, "%d", current_power_up);
-					lcd_write_string(str, loc, buffer);
 
 					//collision check between astroids and ship
 					shipAstroidCollision(&ship_coordinate, &ship_size, astroids, &ship_hit, difficulty, &points);

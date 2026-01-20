@@ -8,6 +8,7 @@
 #ifndef HIGHSCORE_H_
 #define HIGHSCORE_H_
 #include "defs.h"
+#include "menu.h"
 
 typedef struct {
 int32_t h1,h2,h3,h4,h5;

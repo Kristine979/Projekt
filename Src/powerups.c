@@ -18,7 +18,7 @@ int did_ship_hit_power_up(power_up_t pu, ship_coord_t sc, ship_size_t ss, int *c
 	for (int i = 0; i<ss.l; i++) {if (x_coords[i] == pu.x) is_x_same = 1;}
 	for (int i = 0; i<ss.h; i++) {if (y_coords[i] == pu.y) is_y_same = 1;}
 	if (is_x_same == 1 && is_y_same == 1) {
-		if (pu.power == GAINLIFE) {
+		if (pu.power == GAINLIFE && ship_hit->lives < 3) {
 			setLED(1,1,0); // Blue, red, green
 			ship_hit->lives += 1;
 			t.five_sec_counter = 0;
@@ -36,7 +36,7 @@ int did_ship_hit_power_up(power_up_t pu, ship_coord_t sc, ship_size_t ss, int *c
 
 void spawn_power_up(power_up_t *pu) {
 	pu->x = X2-8;
-	pu->y = 20;
+	pu->y = rand_range();
 }
 
 void move_power_up(power_up_t *pu, power_up_t pu_check, ship_coord_t sc, ship_size_t ss, int *current_power_up, ship_hit_t *ship_hit) {

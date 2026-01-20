@@ -44,4 +44,6 @@ void hs_menu(high_score_t hs) {
 	printf("%c[%d;%dH3.	%05ld", ESC, y+2, x, hs.h3);
 	printf("%c[%d;%dH4.	%05ld", ESC, y+3, x, hs.h4);
 	printf("%c[%d;%dH5.	%05ld", ESC, y+4, x, hs.h5);
+	// back box
+	PrintText(4,50,20,52,0, "Back");
 }

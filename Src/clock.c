@@ -34,8 +34,7 @@ void TIM1_BRK_TIM15_IRQHandler() {
 	t.astroid_clock += 1;
 	if (t.astroid_clock == 5) {t.astroid_clock = 0; t.astroid_flag += 1;}
 	if (t.bullet_speed_counter == 5) {t.bullet_speed_counter = 0; t.bullet_flag += 1;}
-	if (t.cs == 1 || t.cs==50) t.flag = 1;
-	if (t.s == 10 && t.cs == 1) t.pu_flag = 1;
+	if (t.cs == 1 && (t.s == 30 || t.s == 59)) t.pu_flag = 1;
 	if (t.cs == 1) {t.counter_flag = 1; t.alien_led_clock+=1;}
 	if (t.cs == 1 ||t.cs == 10 || t.cs == 20 || t.cs == 30 || t.cs == 40
 			||t.cs == 50 || t.cs == 60 || t.cs == 70 || t.cs == 80 || t.cs == 90) {t.ship_clock += 1;}

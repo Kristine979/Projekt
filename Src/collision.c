@@ -45,7 +45,7 @@ char shipAstroidCollision(ship_coord_t *ship_coord, ship_size_t *ship_size, astr
 			ship_hit->hit = 1; //skib hit = true (1)
 			ship_hit->lives -= 1; // reducere antal liv med 1
 			if (*points >= 5) *points -= 5;
-			setLED(0,1,0); // glow red when stuck
+			setLED(1,1,1); // glow white when stuck
 		}
 	}
 	return 0;

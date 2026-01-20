@@ -214,6 +214,6 @@ void draw_strong_bullet(gbullet_t *b) {
 void erase_strong_bullets(gbullet_t *b) {
 	for (int i = 0; i<MAXBULLETS; i++) {
 		if (b[i].alive == 1)
-		printf("%c[%d;%dH ", ESC, b[i].y_fp>>8, b[i].x_fp>>8);
+		printf("%c[%ld;%ldH ", ESC, b[i].y_fp>>8, b[i].x_fp>>8);
 	}
 }
