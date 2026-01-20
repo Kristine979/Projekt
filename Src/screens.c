@@ -38,6 +38,8 @@ void switch_screen(high_score_t hs, int *change, int screen, ArrowState *a){
 		case GAMEOVER:
 			Death();
 			break;
+		case NEXTLEVEL:
+			break;
 	}
 	*change = 0; // stop the screens from changing
 }
