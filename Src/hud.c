@@ -23,24 +23,24 @@ void hud_clear(void) {
 
 
 static void draw_lives(uint8_t lives) {
-    printf("%c[%d;%dH   ", ESC, HUD_Y, HUD_X+3);
-    printf("%c[%d;%dH", ESC, HUD_Y, HUD_X+3);
+    //printf("%c[%d;%dH   ", ESC, HUD_Y, HUD_X+3);
+    printf("%c[%d;%dHLives:   ", ESC, HUD_Y, HUD_X+3);
     for (uint8_t i = 0; i < lives; i++) printf("*");
 }
 
 static void draw_time(uint8_t min, uint8_t sec) {
-    printf("%c[%d;%dH%02u:%02u", ESC,
+    printf("%c[%d;%dHTime:    %02u:%02u", ESC,
     HUD_Y+1, HUD_X+3,
     (unsigned)min, (unsigned)sec);
 }
 
 static void draw_score(uint16_t score) {
-    printf("%c[%d;%dH%u", ESC, HUD_Y+2, HUD_X+3, score);
+    printf("%c[%d;%dHScore:   %u", ESC, HUD_Y+2, HUD_X+3, score);
 }
 
 static void draw_power(uint8_t p) {
-    printf("%c[%d;%dH      ", ESC, HUD_Y+3, HUD_X+3);
-    printf("%c[%d;%dH", ESC, HUD_Y+3, HUD_X+3);
+    //printf("%c[%d;%dH      ", ESC, HUD_Y+3, HUD_X+3);
+    printf("%c[%d;%dHPowerup: ", ESC, HUD_Y+3, HUD_X+3);
 
     if      (p == 0) printf("NONE");
     else if (p == 1) printf("MULTI");
