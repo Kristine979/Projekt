@@ -11,12 +11,13 @@
 #include "ship.h"
 #include "sprites.h"
 #include "powerups.h"
+#include "gravity_bullets.h"
 
 typedef struct {
 int alive, x, y, power;
 } bullet_t;
 
-void assign_bullet (bullet_t *b, ship_coord_t sc, ship_size_t ss);
-void draw_bullet(bullet_t *b);
+void assign_bullet(bullet_t *b, ship_coord_t sc, ship_size_t ss);
+void draw_bullet(gbullet_t *b);
 
 #endif /* BULLETS_H_ */

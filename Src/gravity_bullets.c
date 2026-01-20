@@ -1,8 +1,5 @@
 #include "gravity_bullets.h"
 
-// TUNING
-#define BULLET_CHAR   'o'
-
 // Cutoff: gravity only applies within a radius GRAV_RMAX from asteroid
 // Units are "cells"
 #define GRAV_RMAX     8
@@ -24,6 +21,13 @@ static void draw_char_at(int x, int y, char c) {
 
 int point_in_rect(int px, int py, int rx, int ry, int rw, int rh) {
     return (px >= rx) && (px < rx + rw) && (py >= ry) && (py < ry + rh);
+}
+
+char bullet_type(int power) {
+	if (power == NOPOWER || power == GAINLIFE || power == MULTIPLEBULLETS) return 'O';
+	if (power == STRONGERBULLETS) return '\xDB';
+	if (power == FASTERBULLETS) return '\xAF';
+	return 'O';
 }
 
 /*
@@ -95,7 +99,7 @@ void gbullets_init(gbullet_t *b, int n) {
     }
 }
 
-void gbullet_spawn(gbullet_t *b, int n, int16_t x, int16_t y, int32_t vx_fp, int32_t vy_fp)
+void gbullet_spawn(gbullet_t *b, int n, int16_t x, int16_t y, int32_t vx_fp, int32_t vy_fp, int power)
 {
     for (int i = 0; i < n; i++) {
         if (!b[i].alive) {
@@ -113,7 +117,7 @@ void gbullet_spawn(gbullet_t *b, int n, int16_t x, int16_t y, int32_t vx_fp, int
             b[i].last_y = y;
 
             // Draw initial bullet
-            draw_char_at(b[i].last_x, b[i].last_y, BULLET_CHAR);
+            draw_char_at(b[i].last_x, b[i].last_y, bullet_type(power));
             return;
         }
     }
@@ -121,16 +125,16 @@ void gbullet_spawn(gbullet_t *b, int n, int16_t x, int16_t y, int32_t vx_fp, int
 
 void gbullet_spawn_from_ship(gbullet_t *b, int n,
                              ship_coord_t sc, ship_size_t ss,
-                             int32_t vx_fp, int32_t vy_fp)
+                             int32_t vx_fp, int32_t vy_fp, int power)
 {
     int16_t start_x = (int16_t)(sc.x + ss.l + 1);
     int16_t start_y = (int16_t)(sc.y + 1);
-    gbullet_spawn(b, n, start_x, start_y, vx_fp, vy_fp);
+    gbullet_spawn(b, n, start_x, start_y, vx_fp, vy_fp, power);
 }
 
 void gbullets_step_and_draw(gbullet_t *b, int n,
                             const grav_source_t *src, int src_n,
-                            int32_t dt_fp)
+                            int32_t dt_fp, int power)
 {
     for (int i = 0; i < n; i++) {
         if (!b[i].alive) continue;
@@ -178,9 +182,38 @@ void gbullets_step_and_draw(gbullet_t *b, int n,
         // 6) drawing
         if (xi != b[i].last_x || yi != b[i].last_y) {
             draw_char_at(b[i].last_x, b[i].last_y, ' ');
-            draw_char_at(xi, yi, BULLET_CHAR);
+            draw_char_at(xi, yi, bullet_type(power));
             b[i].last_x = xi;
             b[i].last_y = yi;
         }
     }
+}
+
+void draw_strong_bullet(gbullet_t *b) {
+	int bx, by;
+	for (int i = 0; i<MAXBULLETS; i++) {
+		bx = b[i].x_fp>>8;
+		by = b[i].y_fp>>8;
+		if (b[i].alive == 1 && bx + 2 < X2) {
+			// set new coordinates
+			bx += 2;
+			b[i].x_fp = bx<<8;
+			printf("%c[%d;%dH\xDB", ESC, by, bx);
+			// erase previous bullet
+			printf("%c[%d;%dH ", ESC, by, bx-2);
+			continue;
+			}
+		if (b[i].alive == 1 && bx + 2 >= X2) {
+			b[i].alive = 0;
+			// erase previous bullet
+			printf("%c[%d;%dH ", ESC, by, bx);
+		}
+	}
+}
+
+void erase_strong_bullets(gbullet_t *b) {
+	for (int i = 0; i<MAXBULLETS; i++) {
+		if (b[i].alive == 1)
+		printf("%c[%d;%dH ", ESC, b[i].y_fp>>8, b[i].x_fp>>8);
+	}
 }

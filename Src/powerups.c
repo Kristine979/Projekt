@@ -19,7 +19,7 @@ int did_ship_hit_power_up(power_up_t pu, ship_coord_t sc, ship_size_t ss, int *c
 	for (int i = 0; i<ss.h; i++) {if (y_coords[i] == pu.y) is_y_same = 1;}
 	if (is_x_same == 1 && is_y_same == 1) {
 		if (pu.power == GAINLIFE) {
-			setLED(0,1,0); // Blue, red, green
+			setLED(1,1,0); // Blue, red, green
 			ship_hit->lives += 1;
 			t.five_sec_counter = 0;
 			return 1;
@@ -46,16 +46,16 @@ void move_power_up(power_up_t *pu, power_up_t pu_check, ship_coord_t sc, ship_si
 		// print correct power up
 		switch (pu->power) {
 		case (MULTIPLEBULLETS):
-				printf("%c[%d;%dH1", ESC, pu->y, pu->x);
+				printf("%c[%d;%dH\xB0", ESC, pu->y, pu->x);
 				break;
-		case (DOUBLEDAMAGE):
-				printf("%c[%d;%dH2", ESC, pu->y, pu->x);
+		case (STRONGERBULLETS):
+				printf("%c[%d;%dH\x2A", ESC, pu->y, pu->x);
 				break;
 		case (FASTERBULLETS):
-				printf("%c[%d;%dH3", ESC, pu->y, pu->x);
+				printf("%c[%d;%dH\xAE", ESC, pu->y, pu->x);
 				break;
 		case (GAINLIFE):
-				printf("%c[%d;%dH4", ESC, pu->y, pu->x);
+				printf("%c[%d;%dH\x2B", ESC, pu->y, pu->x);
 				break;
 		}
 		// erase previous bullet

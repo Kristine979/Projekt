@@ -25,7 +25,12 @@
 #define RED 2
 #define ON 1
 #define OFF 0
-#define MAXBULLETS 15
+#define MAXBULLETS 100
+#define NOPOWER 0
+#define MULTIPLEBULLETS 1
+#define STRONGERBULLETS 2
+#define FASTERBULLETS 3
+#define GAINLIFE 4
 #include "stm32f30x_conf.h" // STM32 config
 #include "30010_io.h" // Input/output library for this course
 #include <stdlib.h>

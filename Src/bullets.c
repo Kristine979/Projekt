@@ -19,20 +19,24 @@ void assign_bullet (bullet_t *b, ship_coord_t sc, ship_size_t ss) {
 	b[i].y = sc.y+1; // front of ship
 }
 
-void draw_bullet(bullet_t *b) {
+void draw_bullet(gbullet_t *b) {
+	int bx, by;
 	for (int i = 0; i<MAXBULLETS; i++) {
-		if (b[i].alive == 1 && b[i].x + 1 < X2) {
+		bx = b[i].x_fp>>8;
+		by = b[i].y_fp>>8;
+		if (b[i].alive == 1 && bx + 2 < X2) {
 			// set new coordinates
-			b[i].x += 1;
-			printf("%c[%d;%dHO", ESC, b[i].y, b[i].x);
+			bx += 2;
+			b[i].x_fp = bx<<8;
+			printf("%c[%d;%dHO", ESC, by, bx);
 			// erase previous bullet
-			printf("%c[%d;%dH ", ESC, b[i].y, b[i].x-1);
+			printf("%c[%d;%dH ", ESC, by, bx-2);
 			continue;
 			}
-		if (b[i].alive == 1 && b[i].x + 1 >= X2) {
+		if (b[i].alive == 1 && bx + 2 >= X2) {
 			b[i].alive = 0;
 			// erase previous bullet
-			printf("%c[%d;%dH ", ESC, b[i].y, b[i].x);
+			printf("%c[%d;%dH ", ESC, by, bx);
 		}
 	}
 }

@@ -11,11 +11,6 @@
 #include "ship.h"
 #include "LED.h"
 #include "clock.h"
-#define NOPOWER 0
-#define MULTIPLEBULLETS 1
-#define DOUBLEDAMAGE 2
-#define FASTERBULLETS 3
-#define GAINLIFE 4
 
 /* Powerups:
  * Multiple bullets (5)
