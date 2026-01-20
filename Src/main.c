@@ -291,7 +291,7 @@ int main(void)
 				            grav[gN].y  = astroids[k].y;
 				            grav[gN].w  = 6;
 				            grav[gN].h  = 5;
-				            grav[gN].mu = 1000;
+				            grav[gN].mu = 150; //Gravity power
 				            gN++;
 				        }
 				    }

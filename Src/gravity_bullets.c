@@ -5,7 +5,7 @@
 #endif
 
 // TUNING
-#define BULLET_CHAR   'O'
+#define BULLET_CHAR   'o'
 
 // Softening: larger => softer near asteroid (less sudden jerks)
 // Units are "cells^2"
@@ -62,8 +62,8 @@ static void gravity_accel_at(const gbullet_t *p,
 
     for (int i = 0; i < src_n; i++) {
         // Rectangle center (asteroid)
-        int32_t cx = (int32_t)src[i].x + (src[i].w / 2);
-        int32_t cy = (int32_t)src[i].y + (src[i].h / 2);
+        int32_t cx = (int32_t)src[i].x + (src[i].w >> 1);
+        int32_t cy = (int32_t)src[i].y + (src[i].h >> 1);
 
         int32_t dx = cx - px;
         int32_t dy = cy - py;
@@ -77,8 +77,22 @@ static void gravity_accel_at(const gbullet_t *p,
         if (r2 < SOFTEN_R2) r2 = SOFTEN_R2;
 
         // ax_fp += (mu * dx * FP_ONE) / r2
-        ax_fp += (int32_t)((src[i].mu * dx * FP_ONE) / r2);
-        ay_fp += (int32_t)((src[i].mu * dy * FP_ONE) / r2);
+        // Approx gravity without division:
+        // Use distance zones and only shifts.
+        int32_t adx = (dx < 0) ? -dx : dx;
+        int32_t ady = (dy < 0) ? -dy : dy;
+        int32_t dist = (adx > ady) ? adx : ady;  // Chebyshev distance (cheap)
+
+        // dist zones -> strength shift
+        int sh;
+        if (dist <= 2) sh = 2;        // strongest
+        else if (dist <= 4) sh = 3;
+        else if (dist <= 8) sh = 4;
+        else if (dist <= 12) sh = 5;
+        else continue;                // too far, no effect
+
+        ax_fp += (src[i].mu * (dx << FP_SHIFT)) >> (sh); // +1 mean less gravity
+        ay_fp += (src[i].mu * (dy << FP_SHIFT)) >> (sh); // +1 mean less gravity
     }
 
     *out_ax_fp = ax_fp;
@@ -147,16 +161,18 @@ void gbullets_step_and_draw(gbullet_t *b, int n,
         b[i].vy_fp += (ay_fp * dt_fp) >> FP_SHIFT;
 
         // Integer damping (optional)
-        b[i].vx_fp = (b[i].vx_fp * DAMP_NUM) / DAMP_DEN;
-        b[i].vy_fp = (b[i].vy_fp * DAMP_NUM) / DAMP_DEN;
+        // Shift-based damping
+        // v = v - v/256  (K=8)  => about 0.996 per tick
+        b[i].vx_fp -= (b[i].vx_fp >> 8);
+        b[i].vy_fp -= (b[i].vy_fp >> 8);
 
         // 3) position update: x += v * dt
         b[i].x_fp += (b[i].vx_fp * dt_fp) >> FP_SHIFT;
         b[i].y_fp += (b[i].vy_fp * dt_fp) >> FP_SHIFT;
 
         // Convert to integer screen cells (rounded)
-        int xi = (int)((b[i].x_fp + (FP_ONE/2)) >> FP_SHIFT);
-        int yi = (int)((b[i].y_fp + (FP_ONE/2)) >> FP_SHIFT);
+        int xi = (int)((b[i].x_fp + (FP_ONE>>1)) >> FP_SHIFT);
+        int yi = (int)((b[i].y_fp + (FP_ONE>>1)) >> FP_SHIFT);
 
         // 4) If it flies out of the playing field (inside the frame)
         if (xi < PLAY_X1 || xi > PLAY_X2 || yi < PLAY_Y1 || yi > PLAY_Y2) {
