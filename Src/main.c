@@ -21,6 +21,7 @@
 #include "accelerometer.h"
 #include "collision.h"
 #include "gravity_bullets.h"
+#include "hud.h"
 
 #define max_astroids 8
 #define astroid_spawntime 5
@@ -116,6 +117,7 @@ int main(void)
 
 	// initializers
 	clock_init(); // initialize timer
+	hud_init();
 	lcd_init(); // initialize lcd
 	ADC_init();
 	led_init();
@@ -143,13 +145,14 @@ int main(void)
 	ArrowState arrow = {0,0};
 
 	// variables initializers
-	int screen = MENU, change = 1, difficulty = 1; // int to decide what screen is shown, and change to know whether the screen needs to change
+	int screen = GAME, change = 1, difficulty = 1; // int to decide what screen is shown, and change to know whether the screen needs to change
 	int prev_screen; // go from normal screen to boss key and back, depending on value
 	uint8_t PushButton = button(), CheckButton = button();
 	int shoot = 0, current_power_up = NOPOWER, faster_bullets;
 	int16_t points = 0;
 	int alien_amount = 2;
 	int astroid_modifier = 14;
+
 
 	// astroid initializers
 	astroid_t astroids[max_astroids] = {};
@@ -238,8 +241,17 @@ int main(void)
 			loc.l = 1;
 			sprintf(str, "min: %02ld, s: %02ld", t.m, t.s);
 			lcd_write_string(str, loc, buffer);
-		}
 
+			if (screen == GAME) {
+				hud_update(
+			    ship_hit.lives,
+			    points,
+			    current_power_up,
+			    t.m,
+			    t.s
+			 );
+		}
+	}
 		if (change !=0) {
 			switch_screen(hs, &change, screen, &arrow); // Switch screens if necessary
 			if (screen == GAME) {
@@ -254,13 +266,17 @@ int main(void)
 		switch(screen) {
 			case MENU:
 				Arrow_Update(&arrow, adc.c2);   // Flytter kun pilen
+				hud_clear();
 				break;
 			case DIFF:
 				Arrow_Update(&arrow, adc.c2);   // Flytter kun pilen
+				hud_clear();
 				break;
 			case HS:
+				hud_clear();
 				break;
 			case HELP:
+				hud_clear();
 				break;
 			case GAME:
 				// check if any aliens are alive
