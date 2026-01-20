@@ -6,7 +6,7 @@
  */
 
 #include "screens.h"
-
+#include "DeathScreen.h"
 void switch_screen(high_score_t hs, int *change, int screen, ArrowState *a){
 	clrscr();
 	window();
@@ -36,11 +36,7 @@ void switch_screen(high_score_t hs, int *change, int screen, ArrowState *a){
 			printf("%c[%d;%dH###   ###  ###  ###", ESC, 10, 30);
 			break;
 		case GAMEOVER:
-			printf("%c[%d;%dH###   ###  ", ESC, 6, 30);
-			printf("%c[%d;%dH#  # #   # ", ESC, 7, 30);
-			printf("%c[%d;%dH###  #   # ", ESC, 8, 30);
-			printf("%c[%d;%dH#  # #   # ", ESC, 9, 30);
-			printf("%c[%d;%dH###   ###  ", ESC, 10, 30);
+			Death();
 			break;
 	}
 	*change = 0; // stop the screens from changing
