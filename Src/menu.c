@@ -58,28 +58,10 @@ static void drawArrow(uint8_t index)
     printf("%c", 0x3E);
 }
 
-// Slet pil
-static void eraseArrow(uint8_t index)
-{
-    cursorMove(ARROW_X, arrowY(index));
-    printf(" ");
-}
-
-
-// ADC → OP / NED
-static int8_t adcToDir(uint16_t adc)
-{
-    if (adc > (ADC_CENTER + ADC_DEADZONE))
-        return 1;    // ned
-    else if (adc < (ADC_CENTER - ADC_DEADZONE))
-        return -1;   // op
-    else
-        return 0;    // neutral
-}
-
 void Arrow_Clear(ArrowState *arrow)
 {
-    eraseArrow(arrow->index);
+    cursorMove(ARROW_X, arrowY(arrow->index));
+    printf(" ");
 }
 
 

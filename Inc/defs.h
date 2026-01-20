@@ -20,6 +20,7 @@
 #define BOSS 5
 #define GAMEOVER 6
 #define NEXTLEVEL 7
+#define WIN 8
 #define NOPUSH 0
 #define WHITE 1
 #define RED 2
