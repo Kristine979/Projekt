@@ -51,11 +51,11 @@ void PrintTextHelp(int x1, int y1, int x2, int y2, const char text[])
 
 
 void help(ship_size_t *ship_size){
-	printf("%c[%d;%dH#   #  #####  #      #### ", ESC, 2, 2);
-	printf("%c[%d;%dH#   #  #      #      #   #", ESC, 3, 2);
-	printf("%c[%d;%dH#####  ####   #      #### ", ESC, 4, 2);
-	printf("%c[%d;%dH#   #  #      #      #    ", ESC, 5, 2);
-	printf("%c[%d;%dH#   #  #####  #####  #    ", ESC, 6, 2);
+	printf("%c[%d;%dH   #   #  #####  #      #### ", ESC, 2, 2);
+	printf("%c[%d;%dH   #   #  #      #      #   #", ESC, 3, 2);
+	printf("%c[%d;%dH   #####  ####   #      #### ", ESC, 4, 2);
+	printf("%c[%d;%dH   #   #  #      #      #    ", ESC, 5, 2);
+	printf("%c[%d;%dH   #   #  #####  #####  #    ", ESC, 6, 2);
 
 
 	PrintTextHelp(4, 7, 80, 28, "How to play the game:\n "
@@ -109,8 +109,8 @@ void help(ship_size_t *ship_size){
 	PrintText(4,50,20,52,0, "Back");
 	alien_sprite(10, 170, 17);
 	alien_sprite(10, 170, 22);
-	asteroid_sprite(7, 150, 20);
-	asteroid_sprite(7, 135, 16);
-	asteroid_sprite(7, 120, 23);
+	asteroid_sprite(8, 150, 20);
+	asteroid_sprite(8, 135, 16);
+	asteroid_sprite(8, 120, 23);
 	ship_3_sprite(110, 14, ship_size);
 }
