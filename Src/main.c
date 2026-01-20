@@ -278,9 +278,6 @@ int main(void)
 					//collision check between astroids and ship
 					shipAstroidCollision(&ship_coordinate, &ship_size, astroids, &ship_hit, difficulty);
 
-					// collision check between alien and bullet
-					is_alien_hit(aliens, gbullets, &points);
-
 					loc.l = 0;
 					sprintf(str, "%d", current_power_up);
 					lcd_write_string(str, loc, buffer);
@@ -312,6 +309,8 @@ int main(void)
 
 				    gbullets_step_and_draw(gbullets, MAXBULLETS, grav, gN, DT_FP);
 
+					// collision check between alien and bullet
+					is_alien_hit(aliens, gbullets, &points);
 
 				    // PowerUp stays the same in both modes
 				    if (PowerUp.alive == 1) {
