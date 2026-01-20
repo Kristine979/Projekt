@@ -20,5 +20,4 @@ void NextLevelScreen(){
 	printf("%c[%d;%dH#    ## #        #   #     #           #       #         # #   #       #      ", ESC, 7+YL, XL);
 	printf("%c[%d;%dH#     # ####### #     #    #           ####### #######    #    ####### #######", ESC, 8+YL, XL);
 
-	PrintText(85, 47, 95, 49, 0, "Continue");
 }
