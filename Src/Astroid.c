@@ -45,6 +45,7 @@ int rand_range() {
 	uint8_t random = rand();
 	random>>=2;
 	if (random>48) random -= 20;
+	if (random<2) random += 1;
     return (random+1);
 }
 

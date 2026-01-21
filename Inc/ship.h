@@ -25,7 +25,7 @@ typedef struct {
 } ship_t;
 
 typedef struct {
-	int hit, lives; // parameter der angiver om skibet er ramt og hvor mange liv der er tilbage
+	int hit, lives, just_hit; // parameter der angiver om skibet er ramt og hvor mange liv der er tilbage
 } ship_hit_t;
 
 void ship_vector(ship_vector_t *sv, ADC_t adc);

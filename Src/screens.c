@@ -6,7 +6,7 @@
  */
 
 #include "screens.h"
-#include "DeathScreen.h"
+
 void switch_screen(high_score_t hs, int *change, int screen, ArrowState *a, int alien_amount){
 	clrscr();
 	window();
@@ -28,12 +28,7 @@ void switch_screen(high_score_t hs, int *change, int screen, ArrowState *a, int 
 		case GAME:
 			break;
 		case BOSS:
-			// print out "BOSS" in big letters, one line at a time
-			printf("%c[%d;%dH###   ###   ###  ###", ESC, 6, 30);
-			printf("%c[%d;%dH#  # #   # #    #", ESC, 7, 30);
-			printf("%c[%d;%dH###  #   #  ##   ##", ESC, 8, 30);
-			printf("%c[%d;%dH#  # #   #    #    #", ESC, 9, 30);
-			printf("%c[%d;%dH###   ###  ###  ###", ESC, 10, 30);
+			boss(2, 53);
 			break;
 		case GAMEOVER:
 			Death();

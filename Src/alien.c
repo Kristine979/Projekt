@@ -30,7 +30,8 @@ void spawn_alien(alien_info_t *alien, int j, int alien_amount){
 void is_alien_hit(alien_info_t *alien, gbullet_t *b, int16_t *points, int alien_amount) {
     for (int i = 0; i<alien_amount; i++) {
     	for (int j = 0; j<MAXBULLETS; j++) {
-    		if (collision(alien[i].x, alien[i].y, 3,5, b[j].x_fp>>8, b[j].y_fp>>8, 1, 1) && b[j].alive == 1) { // check if aliens are hit
+    		if (collision(alien[i].x, alien[i].y, 3,5, b[j].x_fp>>8, b[j].y_fp>>8, 1, 1)
+    				&& b[j].alive == 1 && alien[i].lives > 0) { // check if aliens are hit
     			b[j].alive = 0;
     			alien_sprite(10, alien[i].x, alien[i].y);
     			setLED(0,0,1); // glow green

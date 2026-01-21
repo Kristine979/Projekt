@@ -62,7 +62,7 @@ int main(void)
 	int prev_screen; // go from normal screen to boss key and back, depending on value
 	uint8_t PushButton = button(), CheckButton = button();
 	int shoot = 0, current_power_up = NOPOWER, faster_bullets; int16_t points = 0;
-	int alien_amount = 8; int astroid_modifier = 14;
+	int alien_amount = 2; int astroid_modifier = 14;
 
 	// astroid initializers
 	astroid_t astroids[max_astroids] = {}; int astroid_timer = 0;
@@ -125,11 +125,12 @@ int main(void)
 		check_ADC(&adc);
 
 		// LCD setup
-		if (t.five_sec_counter == 30 || t.alien_led_clock == 3) {
+		if (t.five_sec_counter == 10) {
 			setLED(0,0,0);
 			if (current_power_up == STRONGERBULLETS) erase_strong_bullets(gbullets);
 			current_power_up = NOPOWER;
 		}
+		if (t.alien_led_clock == 3) setLED(0,0,0);
 
 		// print out on LCD and HUD
 		if (t.counter_flag == 1) {
@@ -180,10 +181,11 @@ int main(void)
 				is_alien_alive(aliens, &change, &screen, alien_amount);
 
 				if(ship_hit.hit==1){
-					if (acc_motion_bit() == 1){
+					if (acc_motion_bit() == 1 && ship_hit.just_hit == 0){
 						ship_hit.hit = 0;
 						setLED(0,0,0); // turn off LED
 					}
+					else ship_hit.just_hit = 0;
 				}
 				// collision check between alien and bullet
 				is_alien_hit(aliens, gbullets, &points, alien_amount);
@@ -284,12 +286,14 @@ int main(void)
 					ship_coordinate.x = 90; ship_coordinate.y = 20;
 					astroid_modifier = 16;
 				}
-				if(t.five_sec_counter > 5) {
+				if(t.five_sec_counter >= 5) {
 					change = 1;
 					alien_amount += 1;
 					screen = GAME;
 					astroid_modifier -= 2;
-					for (int i = 0; i<MAXBULLETS; i++) gbullets->alive = 0;
+					ship_hit.hit = 0;
+					for (int i = 0; i<MAXBULLETS; i++)
+						gbullets[i].alive = 0;
 				}
 				break;
 		}

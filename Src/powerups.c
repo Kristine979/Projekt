@@ -40,7 +40,7 @@ void spawn_power_up(power_up_t *pu) {
 }
 
 void move_power_up(power_up_t *pu, power_up_t pu_check, ship_coord_t sc, ship_size_t ss, int *current_power_up, ship_hit_t *ship_hit) {
-	if ((pu->x - 1) > 0 && did_ship_hit_power_up(pu_check, sc, ss, current_power_up, ship_hit) == 0) {
+	if ((pu->x - 2) > 0 && did_ship_hit_power_up(pu_check, sc, ss, current_power_up, ship_hit) == 0) {
 		// set new coordinates
 		pu->x -= 1;
 		// print correct power up

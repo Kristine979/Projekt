@@ -15,6 +15,7 @@
 #include "DeathScreen.h"
 #include "NextLevelScreen.h"
 #include "YouWinScreen.h"
+#include "boss.h"
 
 void switch_screen(high_score_t hs, int *change, int screen, ArrowState *a, int alien_amount);
 
