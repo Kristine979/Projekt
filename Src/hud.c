@@ -26,6 +26,7 @@ static void draw_lives(uint8_t lives) {
     //printf("%c[%d;%dH   ", ESC, HUD_Y, HUD_X+3);
     printf("%c[%d;%dHLives:   ", ESC, HUD_Y, HUD_X+3);
     for (uint8_t i = 0; i < lives; i++) printf("*");
+    printf("   ");
 }
 
 static void draw_time(uint8_t min, uint8_t sec) {
