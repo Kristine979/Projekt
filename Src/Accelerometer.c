@@ -144,6 +144,10 @@ int acc_motion_bit(void) {
     int dy = y - py; if (dy < 0) dy = -dy;              // abs difference for Y
     int dz = z - pz; if (dz < 0) dz = -dz;              // abs difference for Z
 
+    if (px==0 && py==0 && pz==0) {
+    	dx=0; dy=0;dz=0;
+    }
+
     px = x; py = y; pz = z;                             // update "previous" values
 
     return (dx + dy + dz) > 25;                          // threshold: >4 means "moving"
