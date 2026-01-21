@@ -5,14 +5,10 @@
  *      Author: Bruger
  */
 
+
 #ifndef BOSS_H_
 #define BOSS_H_
-#include "defs.h"
-#include "ADC.h"
-#include "screens.h"
-#include "ansi.h"
 
-
-
+void boss(int y1, int y2);
 
 #endif /* BOSS_H_ */
