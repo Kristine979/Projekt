@@ -7,7 +7,7 @@
 
 #include "screens.h"
 #include "DeathScreen.h"
-void switch_screen(high_score_t hs, int *change, int screen, ArrowState *a){
+void switch_screen(high_score_t hs, int *change, int screen, ArrowState *a, int alien_amount){
 	clrscr();
 	window();
 	switch(screen) {
@@ -39,7 +39,7 @@ void switch_screen(high_score_t hs, int *change, int screen, ArrowState *a){
 			Death();
 			break;
 		case NEXTLEVEL:
-			NextLevelScreen();
+			if (alien_amount < 9) NextLevelScreen();
 			break;
 		case WIN:
 			youwin();

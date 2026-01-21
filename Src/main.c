@@ -58,11 +58,11 @@ int main(void)
 	ArrowState arrow = {0,0};
 
 	// variables initializers
-	int screen = WIN, change = 1, difficulty = 1; // int to decide what screen is shown, and change to know whether the screen needs to change
+	int screen = MENU, change = 1, difficulty = 1; // int to decide what screen is shown, and change to know whether the screen needs to change
 	int prev_screen; // go from normal screen to boss key and back, depending on value
 	uint8_t PushButton = button(), CheckButton = button();
 	int shoot = 0, current_power_up = NOPOWER, faster_bullets; int16_t points = 0;
-	int alien_amount = 9; int astroid_modifier = 14;
+	int alien_amount = 8; int astroid_modifier = 14;
 
 	// astroid initializers
 	astroid_t astroids[max_astroids] = {}; int astroid_timer = 0;
@@ -74,6 +74,7 @@ int main(void)
 			screen = GAMEOVER;
 			change = 1;
 			ship_hit.lives = 3;
+			ship_hit.hit = 0;
 			for (int i = 0; i < max_astroids; i++) {
 				astroids[i].active=0;
 			}
@@ -156,7 +157,7 @@ int main(void)
 		}
 	}
 		if (change !=0) {
-			switch_screen(hs, &change, screen, &arrow); // Switch screens if necessary
+			switch_screen(hs, &change, screen, &arrow, alien_amount); // Switch screens if necessary
 			if (screen == GAME) {
 				for (int i = 0; i<alien_amount; i++) {
 					aliens[i].lives = 2;
@@ -272,6 +273,7 @@ int main(void)
 					screen = WIN;
 					change = 1;
 					ship_hit.lives = 3;
+					ship_hit.hit = 0;
 					for (int i = 0; i < max_astroids; i++) {
 						astroids[i].active=0;
 					}
