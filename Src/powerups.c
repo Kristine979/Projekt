@@ -66,7 +66,3 @@ void move_power_up(power_up_t *pu, power_up_t pu_check, ship_coord_t sc, ship_si
 		pu->alive = 0;
 	}
 }
-
-void got_power_up() {
-
-}

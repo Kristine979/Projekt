@@ -1,9 +1,4 @@
 
-
-#include "stm32f30x.h"
-#include "stm32f30x_rcc.h"
-#include "stm32f30x_gpio.h"
-#include <stdint.h>
 #include "accelerometer.h"
 
 /* ===== MMA7660 (accelerometer) constants ===== */

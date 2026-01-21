@@ -5,7 +5,7 @@
  *      Author: root
  */
 
-#include "Difficulty.h"
+#include "DifficultyScreen.h"
 
 
 void difficulty(){

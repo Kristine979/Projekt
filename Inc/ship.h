@@ -20,11 +20,6 @@ int32_t x, y;
 } ship_vector_t;
 
 typedef struct {
-	ship_coord_t coord;
-	// tilføj size og hit boolean
-} ship_t;
-
-typedef struct {
 	int hit, lives, just_hit; // parameter der angiver om skibet er ramt og hvor mange liv der er tilbage
 } ship_hit_t;
 

@@ -8,7 +8,11 @@
 #ifndef ACCELEROMETER_H_
 #define ACCELEROMETER_H_
 
-#define ESC 0x1B
+#include "stm32f30x.h"
+#include "stm32f30x_rcc.h"
+#include "stm32f30x_gpio.h"
+#include <stdint.h>
+#include "defs.h"
 
 void acc_init(void);
 int acc_motion_bit(void);

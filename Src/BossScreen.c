@@ -9,10 +9,7 @@
 
 #include <stdio.h>
 #include <stdint.h>
-#include "ansi.h"
-#include "menu.h"
-#include "Help.h"
-
+#include "BossScreen.h"
 
 void boss(int y1, int y2) {
 	int y = y1;

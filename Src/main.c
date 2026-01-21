@@ -12,10 +12,8 @@
 #include "ADC.h"
 #include "screens.h"
 #include "ship.h"
-#include "Difficulty.h"
 #include "alien.h"
 #include "Astroid.h"
-#include "boss.h"
 #include "powerups.h"
 #include "LED.h"
 #include "accelerometer.h"
@@ -169,7 +167,7 @@ int main(void)
 
 		// game play
 		switch(screen) {
-			case MENU:
+			case MENU: // all cases fall through to hud_clear()
 			case DIFF:
 				Arrow_Update(&arrow, adc.c2);   // Flytter kun pilen
 			case HS:

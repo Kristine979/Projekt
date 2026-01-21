@@ -10,12 +10,12 @@
 #include "defs.h"
 #include "menu.h"
 #include "HighScore.h"
-#include "Difficulty.h"
-#include "Help.h"
+#include "DifficultyScreen.h"
+#include "HelpScreen.h"
 #include "DeathScreen.h"
 #include "NextLevelScreen.h"
 #include "YouWinScreen.h"
-#include "boss.h"
+#include "BossScreen.h"
 
 void switch_screen(high_score_t hs, int *change, int screen, ArrowState *a, int alien_amount);
 
