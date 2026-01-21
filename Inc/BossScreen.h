@@ -2,7 +2,7 @@
  * boss.h
  *
  *  Created on: 15. jan. 2026
- *      Author: Bruger
+ *      Author: Kristine
  */
 
 
@@ -11,6 +11,8 @@
 #include "ansi.h"
 #include "menu.h"
 #include "HelpScreen.h"
+#include <stdio.h>
+#include <stdint.h>
 
 void boss(int y1, int y2);
 

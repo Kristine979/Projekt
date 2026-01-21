@@ -2,12 +2,15 @@
  * sprites.c
  *
  *  Created on: 12. jan. 2026
- *      Author: Bruger
+ *      Author: Kristine
  */
 
 #include "sprites.h"
 
 void alien_sprite(int color, int column, int row) {
+	/*
+	 * Draw sprite for an alien
+	 */
 	fgcolor(color);
 	printf("%c[%d;%dH\xDB\xDB \xDB\xDB", ESC, row, column);
 	printf("%c[%d;%dH\xDB \xDB \xDB", ESC, row+1, column);
@@ -16,6 +19,9 @@ void alien_sprite(int color, int column, int row) {
 }
 
 void asteroid_sprite(int color, int column, int row) {
+	/*
+	 * draw sprite for an astroid
+	 */
 	fgcolor(color);
 	printf("%c[%d;%dH \xDC\xDB\xDB\xDC ", ESC, row, column);
 	printf("%c[%d;%dH\xDB\xDB\xDB\xDB\xDB\xDB", ESC, row+1, column);
@@ -26,6 +32,9 @@ void asteroid_sprite(int color, int column, int row) {
 }
 
 void ship_1_sprite(int column, int row, ship_size_t *ship_size) {
+	/*
+	 * Draw ship sprite (difficulty 1)
+	 */
 	printf("%c[%d;%dH   \x5F\x5F ", ESC, row, column);
 	printf("%c[%d;%dH\xAF\x3D\x3C \x6F\x3E", ESC, row+1, column);
 	printf("%c[%d;%dH   \xEE\xEE ", ESC, row+2, column);
@@ -35,6 +44,9 @@ void ship_1_sprite(int column, int row, ship_size_t *ship_size) {
 }
 
 void ship_2_sprite(int column, int row, ship_size_t *ship_size) {
+	/*
+	 * Draw ship sprite (difficulty 2)
+	 */
 	printf("%c[%d;%dH   \x5C ", ESC, row, column);
 	printf("%c[%d;%dH\xAF\x3D\x28\x6F\x3E", ESC, row+1, column);
 	printf("%c[%d;%dH   \x2F ", ESC, row+2, column);
@@ -43,6 +55,9 @@ void ship_2_sprite(int column, int row, ship_size_t *ship_size) {
 }
 
 void ship_3_sprite(int column, int row, ship_size_t *ship_size) {
+	/*
+	 * Draw ship sprite (difficulty 3)
+	 */
 	printf("%c[%d;%dH   \x5F\x5F\x5C\x5F  ", ESC, row, column);
 	printf("%c[%d;%dH\xAF\x3D\x2F   \x28\x6F\x3E", ESC, row+1, column);
 	printf("%c[%d;%dH   \xEE\xEE\x2F\xEE  ", ESC, row+2, column);
@@ -51,6 +66,9 @@ void ship_3_sprite(int column, int row, ship_size_t *ship_size) {
 }
 
 void ship_4_sprite(int column, int row) {
+	/*
+	 * Draw stuck ship sprite (difficulty 1)
+	 */
 	printf("%c[%d;%dH\xDB \x5F\x5F\xDB", ESC, row, column);
 	printf("%c[%d;%dH\xAF\x3D\x3C\xDB\x6F\x3E", ESC, row+1, column);
 	printf("%c[%d;%dH \xDB \xEE\xEE\xDB ", ESC, row+2, column);
@@ -58,6 +76,9 @@ void ship_4_sprite(int column, int row) {
 }
 
 void ship_5_sprite(int column, int row) {
+	/*
+	 * Draw stuck ship sprite (difficulty 2)
+	 */
 	printf("%c[%d;%dH\xDB \x5C \xDB", ESC, row, column);
 	printf("%c[%d;%dH\xAF\x3D\x28\x6F\x3E", ESC, row+1, column);
 	printf("%c[%d;%dH \xDB\x2F \xDB", ESC, row+2, column);
@@ -66,6 +87,9 @@ void ship_5_sprite(int column, int row) {
 
 
 void ship_6_sprite(int column, int row) {
+	/*
+	 * Draw stuck ship sprite (difficulty 3)
+	 */
 	printf("%c[%d;%dH \xDB\x5F\x5F\xDB\x5C\x5F  ", ESC, row, column);
 	printf("%c[%d;%dH\xAF\x3D\x2F \xDB \x28\x6F\x3E", ESC, row+1, column);
 	printf("%c[%d;%dH  \xEE\xDB\xEE\x2F\xEE \xDB", ESC, row+2, column);

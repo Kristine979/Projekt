@@ -2,7 +2,7 @@
  * Help.h
  *
  *  Created on: 16 Jan 2026
- *      Author: root
+ *      Author: Yurii
  */
 
 #ifndef HELP_H_

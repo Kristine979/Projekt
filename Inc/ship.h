@@ -2,7 +2,7 @@
  * ship.h
  *
  *  Created on: 13. jan. 2026
- *      Author: Bruger
+ *      Author: Kristine
  */
 
 #ifndef SHIP_H_

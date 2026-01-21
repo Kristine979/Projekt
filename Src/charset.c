@@ -2,7 +2,7 @@
  * charset.c
  *
  *  Created on: 13. jan. 2026
- *      Author: Bruger
+ *      Author: Kristine
  */
 
 #include "charset.h"

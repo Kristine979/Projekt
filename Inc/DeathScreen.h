@@ -2,7 +2,7 @@
  * DeathScreen.h
  *
  *  Created on: 19 Jan 2026
- *      Author: root
+ *      Author: Yurii
  */
 
 #ifndef DEATHSCREEN_H_

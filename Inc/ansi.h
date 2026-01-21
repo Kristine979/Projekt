@@ -2,7 +2,7 @@
  * ansi.h
  *
  *  Created on: 5. jan. 2026
- *      Author: Bruger
+ *      Author: Kristine
  */
 
 #ifndef ANSI_H_

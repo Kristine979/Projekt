@@ -2,12 +2,15 @@
  * YouWinScreen.c
  *
  *  Created on: 20 Jan 2026
- *      Author: root
+ *      Author: Yurii
  */
 
 #include "YouWinScreen.h"
 
 void youwin(){
+	/*
+	 * Draw the win screen
+	 */
 	int XW = 50;
 	int YW = 10;
 	printf("%c[%d;%dH                                        ###################                                         ", ESC, 2+YW, XW);

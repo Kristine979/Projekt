@@ -2,12 +2,15 @@
  * screens.c
  *
  *  Created on: 13. jan. 2026
- *      Author: Bruger
+ *      Author: Kristine
  */
 
 #include "screens.h"
 
 void switch_screen(high_score_t hs, int *change, int screen, ArrowState *a, int alien_amount){
+	/*
+	 * Switch between the different screens
+	 */
 	clrscr();
 	window();
 	switch(screen) {

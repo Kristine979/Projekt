@@ -2,7 +2,7 @@
  * accelerometer.h
  *
  *  Created on: 15. jan. 2026
- *      Author: carol
+ *      Author: Caroline
  */
 
 #ifndef ACCELEROMETER_H_
@@ -14,8 +14,8 @@
 #include <stdint.h>
 #include "defs.h"
 
-void acc_init(void);
-int acc_motion_bit(void);
+void acc_init();
+int acc_motion_bit();
 void acc_delay_ms(int ms);
 
 #endif /* ACCELEROMETER_H_ */

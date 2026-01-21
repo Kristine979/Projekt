@@ -2,7 +2,7 @@
  * Astroid.c
  *
  *  Created on: 15. jan. 2026
- *      Author: alber
+ *      Author: Albert
  */
 
 #include "Astroid.h"
@@ -13,6 +13,9 @@
 
 
 void astroid_clear(astroid_t *a){
+	/*
+	 * Clear astroid from screen
+	 */
     int i;
     for (i = 0; i < ASTROID_HEIGHT; i++) {
         printf("%c[%d;%dH      ", ESC, a->y + i, a->x);
@@ -20,6 +23,9 @@ void astroid_clear(astroid_t *a){
 }
 
 void astroid_init(astroid_t *a, int16_t y, int16_t color, int8_t speed){
+	/*
+	 * Initializes the astroids
+	 */
     a->x = X2-15;
     a->y = y;
     a->color = color;
@@ -27,7 +33,11 @@ void astroid_init(astroid_t *a, int16_t y, int16_t color, int8_t speed){
     a->speed = speed;
 }
 
+
 void astroid_update(astroid_t *a){
+	/*
+	 * Update active status of the astroid
+	 */
     if (a->active == 0) return;
     astroid_clear(a);
     a->x -= a->speed;
@@ -36,12 +46,20 @@ void astroid_update(astroid_t *a){
     }
 }
 
+
 void astroid_draw(const astroid_t *a){
+	/*
+	 * Draw astroid
+	 */
     if (a->active == 0) return;
     asteroid_sprite(a->color, a->x, a->y);
 }
 
 int rand_range() {
+	/*
+	 * Generate a random number within a specified range
+	 * The wanted range is within the top and bottom border of the game window
+	 */
 	uint8_t random = rand();
 	random>>=2;
 	if (random>48) random -= 20;
@@ -51,14 +69,13 @@ int rand_range() {
 
 void astroid_spawn(astroid_t astroids[], int max_astroids, int16_t color, int8_t speed)
 {
+	// create a new astroid in an empty part of the memory
     for (int i = 0; i < max_astroids; i++) {
         if (astroids[i].active == 0) {
 
             int16_t y = rand_range();
-
-            // evt. random speed og color også:
-            int8_t  sp = speed; // eller rand_range(1, 3);
-            int16_t col = color; // eller vælg fra et lille array
+            int8_t  sp = speed;
+            int16_t col = color;
 
             astroid_init(&astroids[i], y, col, sp);
             break;

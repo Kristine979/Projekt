@@ -2,7 +2,7 @@
  * lcd_write.h
  *
  *  Created on: 13. jan. 2026
- *      Author: Bruger
+ *      Author: Kristine
  */
 
 #ifndef LCD_WRITE_H_

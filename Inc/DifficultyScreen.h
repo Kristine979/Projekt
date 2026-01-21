@@ -2,7 +2,7 @@
  * Difficulty.h
  *
  *  Created on: 15. jan. 2026
- *      Author: Bruger
+ *      Author: Kristine
  */
 
 #ifndef DIFFICULTY_H_

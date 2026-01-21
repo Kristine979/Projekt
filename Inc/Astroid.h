@@ -2,7 +2,7 @@
  * astroid.h
  *
  *  Created on: 12. jan. 2026
- *      Author: alber
+ *      Author: Albert
  */
 
 #ifndef ASTROID_H_

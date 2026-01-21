@@ -2,7 +2,7 @@
  * LED.h
  *
  *  Created on: 7. jan. 2026
- *      Author: Bruger
+ *      Author: Kristine
  */
 
 #ifndef LED_H_

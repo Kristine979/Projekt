@@ -2,16 +2,15 @@
  * boss.c
  *
  *  Created on: 15. jan. 2026
- *      Author: Bruger
+ *      Author: Kristine
  */
 
-
-
-#include <stdio.h>
-#include <stdint.h>
 #include "BossScreen.h"
 
 void boss(int y1, int y2) {
+	/*
+	 * Draw out the boss screen
+	 */
 	int y = y1;
     while (y <= y2) {
         gotoxy(30, y);

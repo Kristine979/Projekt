@@ -2,14 +2,16 @@
  * Difficulty.c
  *
  *  Created on: Jan 15, 2026
- *      Author: root
+ *      Author: Yurii
  */
 
 #include "DifficultyScreen.h"
 
 
 void difficulty(){
-	// print out "MENU" in big letters, one line at a time
+	/*
+	 * Draws the difficulty screen
+	 */
 	printf("%c[%d;%dH####  ##### ##### ##### #####   #### #   # #     ##### #   #", ESC, 2, 2);
 	printf("%c[%d;%dH#   #   #   #     #       #    #     #   # #       #   #   #", ESC, 3, 2);
 	printf("%c[%d;%dH#   #   #   ####  ####    #    #     #   # #       #    ###", ESC, 4, 2);

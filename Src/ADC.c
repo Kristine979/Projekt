@@ -2,14 +2,16 @@
  * ADC.c
  *
  *  Created on: 13. jan. 2026
- *      Author: Bruger
+ *      Author: Kristine
  */
 
 
 #include "ADC.h"
 
 void ADC_init() {
-	// initialize joystick
+	/*
+	 * initialize joystick
+	 */
 	RCC->AHBENR |= RCC_AHBPeriph_GPIOA; // Enable clock for GPIO Port A
 
 	// Set pin PA6 to input (joystick)
@@ -68,10 +70,17 @@ void ADC_init() {
 }
 
 void ADC_config(uint8_t channel) { // ADC_Channel_1 or ADC_Channel_2
+	/*
+	 * Configure specified channel (1 or 2)
+	 */
 	ADC_RegularChannelConfig(ADC1, channel, 1, ADC_SampleTime_1Cycles5);
 }
 
 void ADC_measure(ADC_t *adc) {
+	/*
+	 * Measure output from joystick
+	 */
+
 	// ADC1
 	ADC_config(ADC_Channel_15);
 	ADC_StartConversion(ADC1); // Start ADC read
@@ -86,14 +95,20 @@ void ADC_measure(ADC_t *adc) {
 }
 
 void check_ADC(ADC_t *adc) {
-	// check if ADC have been changed
+	/*
+	 * check if ADC have been changed
+	 */
 	ADC_config(2);   // joystick Y
 	ADC_measure(adc);
 }
 
 uint8_t button() {
+	/*
+	 * Check if either of the buttons have been pushed
+	 */
 	uint8_t output = NOPUSH;
 	uint16_t val;
+
 	val = GPIOB->IDR & (0x0001 << 0); //Read from pin PB0 (B2, SW1)
 	if (val != 0) { output = WHITE;}
 	val = WHITE;
@@ -105,6 +120,9 @@ uint8_t button() {
 }
 
 uint8_t IsButtonChanged(uint8_t *pb) {
+	/*
+	 * Return whether a button have been pushed or not
+	 */
 	if (*pb!=button()) {
 		*pb=button();
 		return button();

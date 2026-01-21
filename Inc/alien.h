@@ -2,7 +2,7 @@
  * alien.h
  *
  *  Created on: 14. jan. 2026
- *      Author: carol
+ *      Author: Caroline
  */
 
 #ifndef ALIEN_H_

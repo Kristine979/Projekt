@@ -2,12 +2,15 @@
  * clock.c
  *
  *  Created on: 8. jan. 2026
- *      Author: Bruger
+ *      Author: Kristine
  */
 
 #include "clock.h"
 
 void clock_init() {
+	/*
+	 * Initialize timer 15 and enable interrupt
+	 */
 	RCC->APB2ENR = RCC_APB2Periph_TIM15; // Enable clock line to timer 15;
 	TIM15->CR1 = 0x00000000; // Configure timer 15, counter disabled
 	TIM15->ARR = 0x1900; // Set reload value, 100Hz (6400)
@@ -21,6 +24,10 @@ void clock_init() {
 times_t t = {0};
 
 void TIM1_BRK_TIM15_IRQHandler() {
+	/*
+	 * Create functional counters and clocks
+	 * Used to control moving parts of the game
+	 */
 	if (t.cs < 99) {t.cs += 1;}
 	else {
 		t.cs = 0;

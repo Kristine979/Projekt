@@ -2,14 +2,16 @@
  * NextLevelScreen.c
  *
  *  Created on: 20 Jan 2026
- *      Author: root
+ *      Author: Yurii
  */
 
 
 #include "NextLevelScreen.h"
-#include "menu.h"
 
 void NextLevelScreen(){
+	/*
+	 * Draw next level screen
+	 */
 	int XL = 50;
 	int YL = 15;
 	printf("%c[%d;%dH#     # ####### #     # #######        #       ####### #     # ####### #      ", ESC, 2+YL, XL);

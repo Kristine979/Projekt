@@ -2,7 +2,7 @@
  * defs.h
  *
  *  Created on: 12. jan. 2026
- *      Author: Bruger
+ *      Author: Kristine
  */
 
 #ifndef DEFS_H_

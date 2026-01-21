@@ -2,13 +2,14 @@
  * hud.h
  *
  *  Created on: 20. jan. 2026
- *      Author: alber
+ *      Author: Albert
  */
 #ifndef HUD_H_
 #define HUD_H_
 
 #include "defs.h"
 #include <stdint.h>
+#include <stdio.h>
 
 
 #define HUD_X 2

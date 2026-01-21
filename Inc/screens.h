@@ -2,7 +2,7 @@
  * screens.h
  *
  *  Created on: 13. jan. 2026
- *      Author: Bruger
+ *      Author: Kristine
  */
 
 #ifndef SCREENS_H_

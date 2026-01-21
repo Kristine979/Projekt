@@ -2,14 +2,17 @@
  * Help.c
  *
  *  Created on: 20 Jan 2026
- *      Author: root
+ *      Author: Yurii
  */
 
 
 #include "HelpScreen.h"
-#include "sprites.h"
-// Print text inside a box without overwriting borders, supports '\n'
+
+
 void PrintTextHelp(int x1, int y1, int x2, int y2, const char text[])
+/*
+ * Print text inside a box without overwriting borders, supports '\n'
+ */
 {
     // 1) draw contour
     box(x1, y1, x2, y2);
@@ -51,6 +54,9 @@ void PrintTextHelp(int x1, int y1, int x2, int y2, const char text[])
 
 
 void help(ship_size_t *ship_size){
+	/*
+	 * Draw help screen
+	 */
 	printf("%c[%d;%dH   #   #  #####  #      #### ", ESC, 2, 2);
 	printf("%c[%d;%dH   #   #  #      #      #   #", ESC, 3, 2);
 	printf("%c[%d;%dH   #####  ####   #      #### ", ESC, 4, 2);

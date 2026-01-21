@@ -2,7 +2,7 @@
  * HighScore.h
  *
  *  Created on: 12. jan. 2026
- *      Author: Bruger
+ *      Author: Kristine
  */
 
 #ifndef HIGHSCORE_H_

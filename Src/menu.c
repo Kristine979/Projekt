@@ -2,24 +2,25 @@
  * menu.c
  *
  *  Created on: 12. jan. 2026
- *      Author: Bruger
+ *      Author: Kristine
  */
 
 #include "menu.h"
 
-
-/* Faste pil-positioner */
+// hardcoded arrow positions
 #define ARROW_X     3
 #define START_Y     8
 #define Y_SPACING   3
 #define ARROW_CNT   3
 
-/* ADC joystick */
+//ADC joystick
 #define ADC_CENTER    2048
 #define ADC_DEADZONE  300
 
 void PrintText(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t num, char text[]) {
-	// Print out given text in a box
+	/*
+	 * Print out given text in a box
+	 */
 		box(x1,y1,x2,y2);
 		printf("%c[%d;%dH%s", ESC, y1+1, x1+1, text);
 		if (num == 0) {
@@ -28,7 +29,9 @@ void PrintText(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t num,
 }
 
 void menu() {
-	// print out "MENU" in big letters, one line at a time
+	/*
+	 * print out "MENU" in big letters, one line at a time
+	 */
 	printf("%c[%d;%dH#   # #### #   # #   #", ESC, 2, 2);
 	printf("%c[%d;%dH## ## #    ##  # #   #", ESC, 3, 2);
 	printf("%c[%d;%dH# # # #### # # # #   #", ESC, 4, 2);
@@ -39,41 +42,52 @@ void menu() {
 	PrintText(4,10,20,12,1, "High score");
 	PrintText(4,13,20,15,1, "Help");
 }
-// Flyt cursor
-static void cursorMove(uint8_t x, uint8_t y)
-{
+
+static void cursorMove(uint8_t x, uint8_t y){
+	/*
+	 * Move cursor
+	 */
     printf("\033[%d;%dH", y, x);
 }
 
-// Beregn Y ud fra index
-static uint8_t arrowY(uint8_t index)
-{
+
+static uint8_t arrowY(uint8_t index){
+	/*
+	 * Calculate Y from index
+	 */
     return START_Y + (index * Y_SPACING);
 }
 
-// Tegn pil med 0x3E
-static void drawArrow(uint8_t index)
-{
+static void drawArrow(uint8_t index){
+	/*
+	 * Draw arrows using 0x3E
+	 */
     cursorMove(ARROW_X, arrowY(index));
     printf("%c", 0x3E);
 }
 
-void Arrow_Clear(ArrowState *arrow)
-{
+void Arrow_Clear(ArrowState *arrow){
+	/*
+	 * Clear arrow from screen
+	 */
     cursorMove(ARROW_X, arrowY(arrow->index));
     printf(" ");
 }
 
 
-void Arrow_init(ArrowState *arrow)
-{
+void Arrow_init(ArrowState *arrow){
+	/*
+	 * Initialize arrow
+	 */
     arrow->index   = 0;
     arrow->lastDir = 0;
     drawArrow(arrow->index);
 }
 
-void Arrow_Update(ArrowState *arrow, int32_t adcValue)
-{
+void Arrow_Update(ArrowState *arrow, int32_t adcValue){
+	/*
+	 * Update the arrows position, and draw a new one
+	 */
     int8_t dir;
 
     // ADC → retning
@@ -84,10 +98,10 @@ void Arrow_Update(ArrowState *arrow, int32_t adcValue)
     else
         dir = 0;       // NEUTRAL
 
-    //Flyt KUN når vi forlader neutral
+    // Move ONLY when leaving neutral
     if (dir != 0 && arrow->lastDir == 0)
     {
-        // slet gammel pil
+        // Erase the old arrow
         printf("\033[%d;%dH ", 8 + arrow->index * 3, 3);
 
         if (dir > 0 && arrow->index < 2)
@@ -95,10 +109,10 @@ void Arrow_Update(ArrowState *arrow, int32_t adcValue)
         else if (dir < 0 && arrow->index > 0)
             arrow->index--;
 
-        // tegn ny pil
+        // Draw new arrow
         printf("\033[%d;%dH%c", 8 + arrow->index * 3, 3, 0x3E);
     }
 
-    // gem sidste retning
+    // Save the last direction
     arrow->lastDir = dir;
 }

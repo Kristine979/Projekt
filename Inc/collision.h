@@ -2,7 +2,7 @@
  * collision.h
  *
  *  Created on: 17. jan. 2026
- *      Author: carol
+ *      Author: Caroline
  */
 
 #ifndef COLLISION_H_

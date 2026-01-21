@@ -2,7 +2,7 @@
  * YouWinScreen.h
  *
  *  Created on: 20 Jan 2026
- *      Author: root
+ *      Author: Yurii
  */
 
 #ifndef YOUWINSCREEN_H_

@@ -2,13 +2,16 @@
  * DeathScreen.c
  *
  *  Created on: 19 Jan 2026
- *      Author: root
+ *      Author: Yurii
  */
 
 
 #include "DeathScreen.h"
 
 void Death(){
+	/*
+	 * Draws the death screen
+	 */
 	int XD = 70;
 	int YD = 10;
 	printf("%c[%d;%dH                  ##############                  ", ESC, 2+YD, XD);

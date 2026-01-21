@@ -2,12 +2,16 @@
  * ship.c
  *
  *  Created on: 13. jan. 2026
- *      Author: Bruger
+ *      Author: Kristine
  */
 
 #include "ship.h"
 
 void ship_vector(ship_vector_t *sv, ADC_t adc) {
+	/*
+	 * Create a vector for the ships direction
+	 * Uses input from the joystick
+	 */
 	int offset = 1900;
 	if (adc.c1 > 1800 && adc.c1 < 2000) adc.c1 = 0;
 	else adc.c1 = adc.c1 - offset;
@@ -21,7 +25,11 @@ void ship_vector(ship_vector_t *sv, ADC_t adc) {
 	sv->y = adc.c2;
 }
 
-void draw_ship(int diff, ship_vector_t sv, ship_coord_t *sc, ship_size_t *ss, ship_hit_t *ship_hit){ /*TODO tilføj bool som argument*/
+void draw_ship(int diff, ship_vector_t sv, ship_coord_t *sc, ship_size_t *ss, ship_hit_t *ship_hit){
+	/*
+	 * draws the ship
+	 * ensures it only moves if it does not cross a border, and isn't stuck
+	 */
 	if (sv.x+sc->x > 2 && sv.x+sc->x < 167 && sc->y-sv.y > 1 && sc->y-sv.y < 52 && ship_hit->hit == 0) {
 		// remove current ship
 		for (int iy = 0; iy<ss->h; iy++) {
@@ -58,5 +66,3 @@ void draw_ship(int diff, ship_vector_t sv, ship_coord_t *sc, ship_size_t *ss, sh
 		}
 	}
 }
-
-//

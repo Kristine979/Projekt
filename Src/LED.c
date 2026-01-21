@@ -2,12 +2,15 @@
  * LED.c
  *
  *  Created on: 7. jan. 2026
- *      Author: Bruger
+ *      Author: Kristine
  */
 
 #include "LED.h"
 
 void led_init() {
+	/*
+	 * Initilalize LED
+	 */
 	// Set pin PA9 to output, blue
 	RCC->AHBENR |= RCC_AHBPeriph_GPIOA; // Enable clock for GPIO Port A
 	GPIOA->OSPEEDR &= ~(0x00000003 << (9 * 2)); // Clear speed register
@@ -46,6 +49,9 @@ void led_init() {
 }
 
 void setLED(int blue, int red, int green) {
+	/*
+	 * Set LED to a specific color
+	 */
 	GPIOA->ODR |= (0x0001 << 9); //Set pin PA9 (blue) to high
 	GPIOB->ODR |= (0x0001 << 4); //Set pin PB4 (red) to high
 	GPIOC->ODR |= (0x0001 << 7); //Set pin PC7 (green) to high

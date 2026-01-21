@@ -2,7 +2,7 @@
  * ADC.h
  *
  *  Created on: 13. jan. 2026
- *      Author: Bruger
+ *      Author: Kristine
  */
 
 #ifndef ADC_H_

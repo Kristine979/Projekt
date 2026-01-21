@@ -2,19 +2,23 @@
  * powerups.c
  *
  *  Created on: 16. jan. 2026
- *      Author: Bruger
+ *      Author: Kristine
  */
 
 #include "powerups.h"
 
 int did_ship_hit_power_up(power_up_t pu, ship_coord_t sc, ship_size_t ss, int *current_power_up, ship_hit_t *ship_hit) {
-	// return 1 if power up hits ship, 0 otherwise
+	/*
+	 * Check whether the ship hit a power up on the screen
+	 * return 1 if power up hits ship, 0 otherwise
+	 */
 	int is_x_same = 0;
 	int is_y_same = 0;
-	int x_coords[ss.l];
+	int x_coords[ss.l]; // all x-coordinates of the ship
 	for (int i = 0; i<ss.l; i++) x_coords[i] = sc.x+i;
-	int y_coords[ss.h];
+	int y_coords[ss.h]; // all y-coordinates of the ship
 	for (int i = 0; i<ss.h; i++) y_coords[i] = sc.y+i;
+	// check the coordinates of the power up against the two lists
 	for (int i = 0; i<ss.l; i++) {if (x_coords[i] == pu.x) is_x_same = 1;}
 	for (int i = 0; i<ss.h; i++) {if (y_coords[i] == pu.y) is_y_same = 1;}
 	if (is_x_same == 1 && is_y_same == 1) {
@@ -35,15 +39,21 @@ int did_ship_hit_power_up(power_up_t pu, ship_coord_t sc, ship_size_t ss, int *c
 }
 
 void spawn_power_up(power_up_t *pu) {
+	/*
+	 * Spawn power up at a random spot on the right of the screen
+	 */
 	pu->x = X2-8;
 	pu->y = rand_range();
 }
 
 void move_power_up(power_up_t *pu, power_up_t pu_check, ship_coord_t sc, ship_size_t ss, int *current_power_up, ship_hit_t *ship_hit) {
 	if ((pu->x - 2) > 0 && did_ship_hit_power_up(pu_check, sc, ss, current_power_up, ship_hit) == 0) {
+		/*
+		 * Moves the power up across the screen
+		 */
 		// set new coordinates
 		pu->x -= 1;
-		// print correct power up
+		// print correct power up symbol
 		switch (pu->power) {
 		case (MULTIPLEBULLETS):
 				printf("%c[%d;%dH\xB0", ESC, pu->y, pu->x);
@@ -58,7 +68,7 @@ void move_power_up(power_up_t *pu, power_up_t pu_check, ship_coord_t sc, ship_si
 				printf("%c[%d;%dH\x2B", ESC, pu->y, pu->x);
 				break;
 		}
-		// erase previous bullet
+		// erase previous power up
 		printf("%c[%d;%dH ", ESC, pu->y, pu->x+1);
 	}
 	else {

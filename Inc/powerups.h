@@ -2,7 +2,7 @@
  * powerups.h
  *
  *  Created on: 16. jan. 2026
- *      Author: Bruger
+ *      Author: Kristine
  */
 
 #ifndef POWERUPS_H_

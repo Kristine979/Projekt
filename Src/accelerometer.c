@@ -18,33 +18,33 @@ void acc_delay_ms(int ms) {
 }
 
 /* ===== small "wait" helpers (makes code easier to read) ===== */
-static void wait_not_busy(void) {
+static void wait_not_busy() {
     while (I2C1->ISR & I2C_ISR_BUSY) { }        // wait until I2C bus is free
 }
 
-static void clear_i2c_flags(void) {
+static void clear_i2c_flags() {
     I2C1->ICR = 0x3F38;                         // clear old STOP/NACK/ERR flags
 }
 
-static void wait_txis(void) {
+static void wait_txis() {
     while (!(I2C1->ISR & I2C_ISR_TXIS)) { }     // wait until we can write next byte
 }
 
-static void wait_rxne(void) {
+static void wait_rxne() {
     while (!(I2C1->ISR & I2C_ISR_RXNE)) { }     // wait until a byte is received
 }
 
-static void wait_tc(void) {
+static void wait_tc() {
     while (!(I2C1->ISR & I2C_ISR_TC)) { }       // wait until transfer stage is complete
 }
 
-static void wait_stop_and_clear(void) {
+static void wait_stop_and_clear() {
     while (!(I2C1->ISR & I2C_ISR_STOPF)) { }    // wait until STOP happened
     I2C1->ICR = I2C_ICR_STOPCF;                 // clear STOP flag
 }
 
 /* ===== init I2C pins + I2C peripheral ===== */
-static void i2c1_init(void) {
+static void i2c1_init() {
 
     RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE); // enable clock for GPIOB
     RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C1,  ENABLE); // enable clock for I2C1
@@ -119,7 +119,7 @@ static int8_t decode_mma6(uint8_t raw) {
 }
 
 /* ===== public: init sensor ===== */
-void acc_init(void) {
+void acc_init() {
 
     i2c1_init();                                        // setup pins + I2C hardware
     i2c_write_reg(REG_MODE, 0x01);                      // MODE=1 -> sensor active
@@ -127,7 +127,7 @@ void acc_init(void) {
 }
 
 /* ===== public: return 0 (still) or 1 (moving) ===== */
-int acc_motion_bit(void) {
+int acc_motion_bit() {
 
     static int8_t px = 0, py = 0, pz = 0;               // previous X/Y/Z (kept between calls)
 

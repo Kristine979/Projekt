@@ -2,13 +2,16 @@
  * HighScore.c
  *
  *  Created on: 12. jan. 2026
- *      Author: Bruger
+ *      Author: Kristine
  */
 
 #include "HighScore.h"
 
 void update_hs(high_score_t *hs, uint16_t new_score) {
-	// if the new score is a high score
+	/*
+	 * Updates the current list of highscores after each played game
+	 * Checks whether the new score should be on the board
+	 */
 	if (new_score > hs->h5) {
 		if (new_score > hs->h4) {
 			hs->h5 = hs->h4;
@@ -31,6 +34,7 @@ void update_hs(high_score_t *hs, uint16_t new_score) {
 }
 
 void hs_menu(high_score_t hs) {
+	// draws the high score screen
 	int x=2, y = 8;
 	// title
 	printf("%c[%d;%dH#   # ###  ###  #   #    ###  ###   ###  ###  ####", ESC, y-6, x);

@@ -2,7 +2,7 @@
  * clock.h
  *
  *  Created on: 8. jan. 2026
- *      Author: Bruger
+ *      Author: Kristine
  */
 
 #ifndef CLOCK_H_
